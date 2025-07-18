@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using UrbanReferralNetwork.Services;
 using UrbanReferralNetwork.Models;
+using UrbanReferralNetwork.Data;
 
 namespace UrbanReferralNetwork.Controllers
 {
@@ -9,10 +11,12 @@ namespace UrbanReferralNetwork.Controllers
     public class ReferralController : ControllerBase
     {
         private readonly IGeospatialService _geospatialService;
+        private readonly UrbanReferralContext _context;
 
-        public ReferralController(IGeospatialService geospatialService)
+        public ReferralController(IGeospatialService geospatialService, UrbanReferralContext context)
         {
             _geospatialService = geospatialService;
+            _context = context;
         }
 
         [HttpPost("find-contractors")]
