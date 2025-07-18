@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Registration - Admin Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .main-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .hero-section {
+            flex: 1;
+            background: linear-gradient(135deg, #1a365d 0%, #2d5a87 100%);
+            color: white;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://urbanreferralnetwork.com/assets/img/light-bulb.png') center/cover;
+            opacity: 0.1;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 500px;
+        }
+
+        .hero-logo {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .hero-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .hero-features li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .hero-features li::before {
+            content: '🧑‍💼';
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .hero-contact {
+            background: rgba(255,255,255,0.1);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .hero-contact-title {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .hero-contact-phone {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ffd700;
+        }
+
+        .hero-contact-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .registration-section {
+            flex: 1.2;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: white;
+            max-width: 700px;
+            overflow-y: auto;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .brand-badge {
+            background: linear-gradient(135deg, #1a365d 0%, #2d5a87 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a365d;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1rem;
+            color: #6b7280;
+        }
+
+        .form-container {
+            padding: 2rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-size: 14px;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+            background: white;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .form-checkbox input {
+            width: 18px;
+            height: 18px;
+        }
+
+        .service-types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 8px;
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .service-types-grid .form-checkbox {
+            margin: 0;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s;
+        }
+
+        .service-types-grid .form-checkbox:hover {
+            border-color: #667eea;
+            background: #f8faff;
+        }
+
+        .service-types-grid .form-checkbox input:checked + label {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 14px;
+            display: none;
+        }
+
+        .message.error {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .message.success {
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .loading-spinner {
+            border: 2px solid #f3f4f6;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .help-text {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .password-requirements {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .password-requirements ul {
+            margin: 0;
+            padding-left: 16px;
+        }
+
+        .password-input-group {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .password-input-group .form-input {
+            flex: 1;
+        }
+
+        .password-input-group .btn {
+            white-space: nowrap;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .hero-section {
+                padding: 50px 30px;
+            }
+            
+            .registration-section {
+                padding: 50px 30px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .hero-section {
+                min-height: 40vh;
+                padding: 40px 20px;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-logo {
+                font-size: 2.5rem;
+            }
+            
+            .registration-section {
+                padding: 40px 20px;
+                max-width: none;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                min-height: 35vh;
+                padding: 30px 15px;
+            }
+            
+            .hero-title {
+                font-size: 1.8rem;
+                line-height: 1.1;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .hero-logo {
+                font-size: 2rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            .hero-features {
+                margin-bottom: 1.5rem;
+            }
+            
+            .hero-features li {
+                font-size: 1rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            .hero-contact {
+                padding: 15px;
+            }
+            
+            .hero-contact-phone {
+                font-size: 1.1rem;
+            }
+            
+            .registration-section {
+                padding: 30px 15px;
+            }
+            
+            .container {
+                max-width: none;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .form-container {
+                padding: 1.5rem;
+            }
+            
+            .form-grid {
+                gap: 1rem;
+            }
+            
+            .form-input, .form-select {
+                font-size: 16px;
+                padding: 14px 16px;
+            }
+            
+            .btn {
+                padding: 14px 20px;
+                font-size: 16px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-section {
+                min-height: 30vh;
+                padding: 20px 10px;
+            }
+            
+            .hero-title {
+                font-size: 1.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .hero-logo {
+                font-size: 1.8rem;
+            }
+            
+            .hero-features li {
+                font-size: 0.9rem;
+            }
+            
+            .hero-contact {
+                padding: 12px;
+            }
+            
+            .hero-contact-phone {
+                font-size: 1rem;
+            }
+            
+            .hero-contact-title, .hero-contact-subtitle {
+                font-size: 0.8rem;
+            }
+            
+            .registration-section {
+                padding: 20px 10px;
+            }
+            
+            .header {
+                margin-bottom: 30px;
+            }
+            
+            .header h1 {
+                font-size: 1.3rem;
+            }
+            
+            .header p {
+                font-size: 0.9rem;
+            }
+            
+            .brand-badge {
+                font-size: 10px;
+                padding: 6px 12px;
+            }
+            
+            .form-container {
+                padding: 1rem;
+            }
+            
+            .form-group {
+                margin-bottom: 1rem;
+            }
+            
+            .form-label {
+                font-size: 13px;
+                margin-bottom: 0.4rem;
+            }
+            
+            .form-input, .form-select {
+                font-size: 16px;
+                padding: 12px;
+            }
+            
+            .help-text {
+                font-size: 11px;
+            }
+            
+            .password-requirements {
+                padding: 10px;
+                font-size: 11px;
+            }
+            
+            .btn {
+                padding: 12px 16px;
+                font-size: 15px;
+            }
+            
+            .button-group {
+                margin-top: 1.5rem;
+                padding-top: 1.5rem;
+            }
+
+            .service-types-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            
+            .message {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+        }
+
+        /* Animation */
+        .container {
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .hero-content {
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="hero-content">
+                <div class="hero-logo">🏢</div>
+                <h1 class="hero-title">Admin Portal</h1>
+                <p class="hero-subtitle">Agent Management System</p>
+                
+                <ul class="hero-features">
+                    <li>Create New Agent Accounts</li>
+                    <li>Set Role-Based Permissions</li>
+                    <li>Manage User Access</li>
+                    <li>Monitor System Activity</li>
+                </ul>
+                
+                <div class="hero-contact">
+                    <p class="hero-contact-title">Admin Support</p>
+                    <p class="hero-contact-phone">1-800-777-7777</p>
+                    <p class="hero-contact-subtitle">Available for Technical Assistance</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registration Section -->
+        <div class="registration-section">
+            <div class="container">
+                <div class="header">
+                    <div class="brand-badge">ADMIN ONLY ACCESS</div>
+                    <h1>🧑‍💼 Agent Registration</h1>
+                    <p>Add new agents to the Urban Referral Network system</p>
+                </div>
+
+                <div class="form-container">
+            <div class="message" id="messageDiv"></div>
+            <div class="loading" id="loadingDiv">
+                <div class="loading-spinner"></div>
+                <p>Creating agent account...</p>
+            </div>
+
+            <form id="agentRegistrationForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="agentCode" class="form-label">Agent Code *</label>
+                        <input type="text" id="agentCode" class="form-input" required maxlength="20" placeholder="e.g., AGENT_001">
+                        <div class="help-text">Unique identifier for the agent</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userRole" class="form-label">User Role *</label>
+                        <select id="userRole" class="form-select" required>
+                            <option value="Agent">Agent</option>
+                            <option value="Supervisor">Supervisor</option>
+                            <option value="Manager">Manager</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="firstName" class="form-label">First Name *</label>
+                        <input type="text" id="firstName" class="form-input" required maxlength="50" placeholder="John">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastName" class="form-label">Last Name *</label>
+                        <input type="text" id="lastName" class="form-input" required maxlength="50" placeholder="Doe">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address *</label>
+                        <input type="email" id="email" class="form-input" required maxlength="100" placeholder="john.doe@company.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" id="phone" class="form-input" maxlength="20" placeholder="(555) 123-4567">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="extension" class="form-label">Extension</label>
+                        <input type="text" id="extension" class="form-input" maxlength="10" placeholder="1234">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="department" class="form-label">Department</label>
+                        <select id="department" class="form-select">
+                            <option value="Customer Service">Customer Service</option>
+                            <option value="Sales">Sales</option>
+                            <option value="Technical Support">Technical Support</option>
+                            <option value="Management">Management</option>
+                            <option value="Administration">Administration</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shift" class="form-label">Shift</label>
+                        <select id="shift" class="form-select">
+                            <option value="">Select Shift</option>
+                            <option value="Morning">Morning (8AM - 4PM)</option>
+                            <option value="Afternoon">Afternoon (12PM - 8PM)</option>
+                            <option value="Evening">Evening (4PM - 12AM)</option>
+                            <option value="Night">Night (12AM - 8AM)</option>
+                            <option value="Flexible">Flexible</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="skillLevel" class="form-label">Skill Level</label>
+                        <select id="skillLevel" class="form-select">
+                            <option value="1">1 - Beginner</option>
+                            <option value="2">2 - Basic</option>
+                            <option value="3">3 - Intermediate</option>
+                            <option value="4">4 - Advanced</option>
+                            <option value="5">5 - Expert</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="maxConcurrentCalls" class="form-label">Max Concurrent Calls</label>
+                        <input type="number" id="maxConcurrentCalls" class="form-input" min="1" max="10" value="1">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">Service Types</label>
+                        <div class="service-types-grid">
+                            <div class="form-checkbox">
+                                <input type="checkbox" id="plumbing" name="serviceTypes" value="Plumbing">
+                                <label for="plumbing">🔧 Plumbing</label>
+                            </div>
+                            <div class="form-checkbox">
+                                <input type="checkbox" id="electrical" name="serviceTypes" value="Electrical">
+                                <label for="electrical">⚡ Electrical</label>
+                            </div>
+                            <div class="form-checkbox">
+                                <input type="checkbox" id="hvac" name="serviceTypes" value="HVAC">
+                                <label for="hvac">❄️ HVAC</label>
+                            </div>
+                            <div class="form-checkbox">
+                                <input type="checkbox" id="roofing" name="serviceTypes" value="Roofing">
+                                <label for="roofing">🏠 Roofing</label>
+                            </div>
+                            <div class="form-checkbox">
+                                <input type="checkbox" id="flooring" name="serviceTypes" value="Flooring">
+                                <label for="flooring">🪵 Flooring</label>
+                            </div>
+                            <div class="form-checkbox">
+                                <input type="checkbox" id="painting" name="serviceTypes" value="Painting">
+                                <label for="painting">🎨 Painting</label>
+                            </div>
+                            <div class="form-checkbox">
+                                <input type="checkbox" id="landscaping" name="serviceTypes" value="Landscaping">
+                                <label for="landscaping">🌿 Landscaping</label>
+                            </div>
+                            <div class="form-checkbox">
+                                <input type="checkbox" id="general" name="serviceTypes" value="General Contractor">
+                                <label for="general">🔨 General Contractor</label>
+                            </div>
+                        </div>
+                        <div class="help-text">Select all service types this agent can handle</div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="password" class="form-label">Initial Password *</label>
+                        <div class="password-input-group">
+                            <input type="password" id="password" class="form-input" required minlength="8" maxlength="100">
+                            <button type="button" class="btn btn-secondary" onclick="generatePassword()">🎲 Generate</button>
+                            <button type="button" class="btn btn-secondary" onclick="togglePasswordVisibility()">👁️ Show</button>
+                        </div>
+                        <div class="password-requirements">
+                            <strong>Password Requirements:</strong>
+                            <ul>
+                                <li>At least 8 characters long</li>
+                                <li>Include uppercase and lowercase letters</li>
+                                <li>Include at least one number</li>
+                                <li>Include at least one special character</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="confirmPassword" class="form-label">Confirm Password *</label>
+                        <input type="password" id="confirmPassword" class="form-input" required minlength="8" maxlength="100">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <div class="form-checkbox">
+                            <input type="checkbox" id="mustChangePassword" checked>
+                            <label for="mustChangePassword">Require password change on first login</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <div class="form-checkbox">
+                            <input type="checkbox" id="sendCredentials" checked>
+                            <label for="sendCredentials">Send login credentials to user via email</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <a href="/pages/dashboard.html" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">Create Agent</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api';
+
+        // Check admin authentication
+        window.addEventListener('load', async () => {
+            const sessionToken = localStorage.getItem('sessionToken');
+            const userRole = localStorage.getItem('userRole');
+
+            if (!sessionToken || !userRole || userRole.toLowerCase() !== 'admin') {
+                alert('Admin access required');
+                window.location.href = '/unified-login.html';
+                return;
+            }
+
+            // Validate session
+            try {
+                const response = await fetch(`${API_BASE}/Auth/validate`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${sessionToken}` }
+                });
+                const result = await response.json();
+                if (result.result !== 'VALID' || !result.userRole || result.userRole.toLowerCase() !== 'admin') {
+                    throw new Error('Invalid session');
+                }
+            } catch (error) {
+                alert('Session expired. Please login again.');
+                localStorage.clear();
+                window.location.href = '/unified-login.html';
+            }
+        });
+
+        // Form submission
+        document.getElementById('agentRegistrationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await handleRegistration();
+        });
+
+        // Password confirmation validation
+        document.getElementById('confirmPassword').addEventListener('input', validatePasswordMatch);
+        document.getElementById('password').addEventListener('input', validatePasswordMatch);
+
+        function validatePasswordMatch() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const confirmField = document.getElementById('confirmPassword');
+
+            if (confirmPassword && password !== confirmPassword) {
+                confirmField.setCustomValidity('Passwords do not match');
+            } else {
+                confirmField.setCustomValidity('');
+            }
+        }
+
+        async function handleRegistration() {
+            const submitBtn = document.getElementById('submitBtn');
+            const loadingDiv = document.getElementById('loadingDiv');
+            const form = document.getElementById('agentRegistrationForm');
+
+            // Validate form
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            // Show loading
+            submitBtn.disabled = true;
+            loadingDiv.style.display = 'block';
+            hideMessage();
+
+            try {
+                const formData = {
+                    agentCode: document.getElementById('agentCode').value.trim(),
+                    firstName: document.getElementById('firstName').value.trim(),
+                    lastName: document.getElementById('lastName').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    phone: document.getElementById('phone').value.trim() || null,
+                    extension: document.getElementById('extension').value.trim() || null,
+                    department: document.getElementById('department').value,
+                    shift: document.getElementById('shift').value || null,
+                    skillLevel: parseInt(document.getElementById('skillLevel').value),
+                    serviceTypes: getSelectedServiceTypes(),
+                    maxConcurrentCalls: parseInt(document.getElementById('maxConcurrentCalls').value),
+                    userRole: document.getElementById('userRole').value,
+                    password: document.getElementById('password').value,
+                    mustChangePassword: document.getElementById('mustChangePassword').checked
+                };
+
+                const sessionToken = localStorage.getItem('sessionToken');
+                const response = await fetch(`${API_BASE}/Auth/register-agent`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${sessionToken}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    showMessage('success', `Agent ${result.agentCode} created successfully!`);
+                    form.reset();
+                    document.getElementById('mustChangePassword').checked = true;
+                    
+                    // Redirect after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = '/pages/dashboard.html';
+                    }, 2000);
+                } else {
+                    showMessage('error', result.error || 'Failed to create agent');
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                showMessage('error', 'Network error. Please try again.');
+            } finally {
+                submitBtn.disabled = false;
+                loadingDiv.style.display = 'none';
+            }
+        }
+
+        function showMessage(type, text) {
+            const messageDiv = document.getElementById('messageDiv');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = text;
+            messageDiv.style.display = 'block';
+        }
+
+        function hideMessage() {
+            document.getElementById('messageDiv').style.display = 'none';
+        }
+
+        // Auto-generate agent code
+        document.getElementById('firstName').addEventListener('input', generateAgentCode);
+        document.getElementById('lastName').addEventListener('input', generateAgentCode);
+
+        function generateAgentCode() {
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const agentCodeField = document.getElementById('agentCode');
+
+            if (firstName && lastName && !agentCodeField.value) {
+                const code = `${firstName.charAt(0)}${lastName.charAt(0)}_${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`.toUpperCase();
+                agentCodeField.value = code;
+            }
+        }
+
+        // Get selected service types
+        function getSelectedServiceTypes() {
+            const checkboxes = document.querySelectorAll('input[name="serviceTypes"]:checked');
+            const selectedTypes = Array.from(checkboxes).map(cb => cb.value);
+            return selectedTypes.length > 0 ? selectedTypes.join(', ') : null;
+        }
+
+        // Password generation function
+        function generatePassword() {
+            const length = 12;
+            const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const lowercase = 'abcdefghijklmnopqrstuvwxyz';
+            const numbers = '0123456789';
+            const symbols = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+            
+            let password = '';
+            
+            // Ensure at least one character from each category
+            password += uppercase[Math.floor(Math.random() * uppercase.length)];
+            password += lowercase[Math.floor(Math.random() * lowercase.length)];
+            password += numbers[Math.floor(Math.random() * numbers.length)];
+            password += symbols[Math.floor(Math.random() * symbols.length)];
+            
+            // Fill the rest randomly
+            const allChars = uppercase + lowercase + numbers + symbols;
+            for (let i = 4; i < length; i++) {
+                password += allChars[Math.floor(Math.random() * allChars.length)];
+            }
+            
+            // Shuffle the password
+            password = password.split('').sort(() => Math.random() - 0.5).join('');
+            
+            // Set the password
+            const passwordField = document.getElementById('password');
+            const confirmPasswordField = document.getElementById('confirmPassword');
+            
+            passwordField.value = password;
+            confirmPasswordField.value = password;
+            
+            // Show the password temporarily
+            passwordField.type = 'text';
+            setTimeout(() => {
+                passwordField.type = 'password';
+            }, 3000);
+            
+            // Validate password match
+            validatePasswordMatch();
+            
+            console.log('🎲 Generated password:', password);
+        }
+
+        // Toggle password visibility
+        function togglePasswordVisibility() {
+            const passwordField = document.getElementById('password');
+            const toggleBtn = event.target;
+            
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleBtn.textContent = '🙈 Hide';
+            } else {
+                passwordField.type = 'password';
+                toggleBtn.textContent = '👁️ Show';
+            }
+        }
+    </script>
+</body>
+</html>

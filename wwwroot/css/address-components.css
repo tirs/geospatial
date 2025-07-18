@@ -1,0 +1,245 @@
+/* Address Auto-Complete Styles */
+.address-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+}
+
+.suggestion-item {
+    padding: 12px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #f3f4f6;
+    transition: background-color 0.2s;
+}
+
+.suggestion-item:hover,
+.suggestion-item.active {
+    background-color: #f3f4f6;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+/* Service Area Map Styles */
+.service-area-map-container {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+}
+
+#serviceAreaMap {
+    width: 100%;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+}
+
+.map-empty-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #6b7280;
+}
+
+.service-area-map-header {
+    margin-bottom: 16px;
+}
+
+.service-area-map-header h3 {
+    color: #1f2937;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.service-area-map-header p {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+/* Service Area List Styles */
+.service-area-info {
+    background: #f9fafb;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.service-area-info h3 {
+    color: #1f2937;
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.service-area-info p {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin: 4px 0;
+}
+
+.zip-codes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.zip-code-item {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.zip-code-item:hover {
+    border-color: #3182ce;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.zip-code-item strong {
+    display: block;
+    color: #1f2937;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.zip-code-item div {
+    color: #6b7280;
+    font-size: 0.75rem;
+    margin: 4px 0;
+}
+
+.zip-code-item small {
+    color: #9ca3af;
+    font-size: 0.625rem;
+}
+
+/* Error Message Styles */
+.error-message {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+}
+
+.error-message p {
+    color: #dc2626;
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+/* Address Input Container */
+.address-input-container {
+    position: relative;
+}
+
+.address-input-container input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.2s;
+}
+
+.address-input-container input:focus {
+    outline: none;
+    border-color: #3182ce;
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+}
+
+/* Loading State */
+.address-loading {
+    position: relative;
+}
+
+.address-loading::after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid #e5e7eb;
+    border-top: 2px solid #3182ce;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .zip-codes-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 8px;
+    }
+    
+    .service-area-map-container {
+        padding: 16px;
+        margin: 16px 0;
+    }
+    
+    .suggestion-item {
+        padding: 10px 12px;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .address-suggestions {
+        background: #1f2937;
+        border-color: #374151;
+    }
+    
+    .suggestion-item {
+        border-bottom-color: #374151;
+        color: #f9fafb;
+    }
+    
+    .suggestion-item:hover,
+    .suggestion-item.active {
+        background-color: #374151;
+    }
+    
+    .service-area-map-container {
+        background: #1f2937;
+        color: #f9fafb;
+    }
+    
+    .zip-code-item {
+        background: #374151;
+        border-color: #4b5563;
+        color: #f9fafb;
+    }
+    
+    .zip-code-item:hover {
+        border-color: #60a5fa;
+    }
+}

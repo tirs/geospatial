@@ -1,0 +1,234 @@
+/* Universal Navigation Styles */
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 1000;
+    padding: 0;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 24px;
+    text-decoration: none;
+    color: white;
+    font-weight: 700;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.nav-brand:hover {
+    transform: scale(1.02);
+    color: #3182ce;
+}
+
+.nav-brand .brand-icon {
+    font-size: 1.8rem;
+    animation: brandFloat 3s ease-in-out infinite;
+}
+
+@keyframes brandFloat {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-2px) rotate(2deg); }
+}
+
+.nav-brand .brand-text {
+    background: linear-gradient(135deg, #2b6cb0, #3182ce);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 24px;
+}
+
+.nav-btn {
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.nav-btn-primary {
+    background: linear-gradient(135deg, #1a365d, #2b6cb0);
+    color: white;
+    box-shadow: 0 4px 12px rgba(26, 54, 93, 0.3);
+}
+
+.nav-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(26, 54, 93, 0.4);
+}
+
+.nav-btn-secondary {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.nav-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-1px);
+}
+
+.nav-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.nav-menu-toggle:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+
+
+/* Mobile Navigation */
+@media (max-width: 768px) {
+    .top-nav {
+        height: 60px;
+        padding: 0 16px;
+    }
+
+    .nav-brand {
+        padding: 0;
+        font-size: 1.1rem;
+    }
+
+    .nav-brand .brand-icon {
+        font-size: 1.5rem;
+    }
+
+    .nav-actions {
+        padding: 0;
+        gap: 12px;
+    }
+
+    .nav-btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+
+    .nav-btn .btn-text {
+        display: none;
+    }
+
+    .nav-menu-toggle {
+        display: block;
+    }
+}
+
+@media (max-width: 480px) {
+    .top-nav {
+        height: 56px;
+    }
+
+    .nav-brand .brand-text {
+        display: none;
+    }
+
+    .nav-actions {
+        gap: 8px;
+    }
+
+    .nav-btn {
+        padding: 6px 12px;
+        min-width: 40px;
+        justify-content: center;
+    }
+}
+
+/* Page content adjustment */
+.page-content {
+    margin-top: 70px;
+    min-height: calc(100vh - 70px);
+    padding-top: 20px;
+}
+
+/* Ensure all containers work with navigation */
+.container,
+.app-container,
+.admin-container {
+    margin-top: 70px;
+    min-height: calc(100vh - 70px);
+}
+
+@media (max-width: 768px) {
+    .page-content {
+        margin-top: 60px;
+        min-height: calc(100vh - 60px);
+        padding-top: 15px;
+    }
+    
+    .container,
+    .app-container,
+    .admin-container {
+        margin-top: 60px;
+        min-height: calc(100vh - 60px);
+    }
+}
+
+@media (max-width: 480px) {
+    .page-content {
+        margin-top: 56px;
+        min-height: calc(100vh - 56px);
+        padding-top: 10px;
+    }
+    
+    .container,
+    .app-container,
+    .admin-container {
+        margin-top: 56px;
+        min-height: calc(100vh - 56px);
+    }
+}
+
+/* Animation for page transitions */
+.page-content {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

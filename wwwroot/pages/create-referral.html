@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Referral - Urban Referral Network</title>
+    <link rel="stylesheet" href="../css/navigation.css">
+    <link rel="stylesheet" href="../css/urban-theme.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 50%, #3182ce 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .page-header h1 {
+            color: #1f2937;
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+        .page-header p {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+        .redirect-message {
+            background: #f0f9ff;
+            border: 2px solid #0ea5e9;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .redirect-message h3 {
+            color: #0c4a6e;
+            margin-bottom: 12px;
+        }
+        .redirect-message p {
+            color: #075985;
+            margin-bottom: 20px;
+        }
+        .btn {
+            background: linear-gradient(135deg, #1a365d, #2b6cb0);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1>📋 Create Referral</h1>
+            <p>Generate customer referrals with selected contractors</p>
+        </div>
+
+        <div class="redirect-message">
+            <h3>🔄 Redirecting to Contractor Finder</h3>
+            <p>To create a referral, you need to first find and select contractors. You'll be redirected to the contractor finder page where you can search, select contractors, and then create your referral.</p>
+            <a href="contractor-finder-production.html" class="btn">🔍 Go to Contractor Finder</a>
+        </div>
+
+        <script>
+            // Auto-redirect after 3 seconds
+            setTimeout(() => {
+                window.location.href = 'contractor-finder-production.html';
+            }, 3000);
+        </script>
+    </div>
+</body>
+</html>

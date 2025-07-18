@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Registration - Urban Referral Network</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a365d;
+            --primary-light: #2d5a87;
+            --accent-color: #667eea;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --warning-color: #f59e0b;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+            min-height: 100vh;
+            color: var(--gray-900);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+        }
+
+        .logo-text h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .logo-text p {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        .header-contact {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .main-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .registration-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            color: var(--white);
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .card-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header-icon {
+            position: relative;
+            z-index: 1;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .header-title {
+            position: relative;
+            z-index: 1;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-subtitle {
+            position: relative;
+            z-index: 1;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .progress-bar {
+            background: var(--gray-200);
+            height: 4px;
+            position: relative;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--accent-color), var(--success-color));
+            height: 100%;
+            width: 33.33%;
+            transition: width 0.3s ease;
+        }
+
+        .form-container {
+            padding: 2rem;
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .step-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .step-description {
+            color: var(--gray-600);
+            margin-bottom: 2rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: var(--gray-700);
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .required {
+            color: var(--error-color);
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            background: var(--white);
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-item:hover {
+            background: var(--gray-50);
+            border-color: var(--gray-300);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        .checkbox-item.checked {
+            background: #eff6ff;
+            border-color: var(--accent-color);
+        }
+
+        .message {
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+            display: none;
+        }
+
+        .message.error {
+            background: #fef2f2;
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        .message.success {
+            background: #f0fdf4;
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--primary-light) 100%);
+            color: var(--white);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--gray-700);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-50);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading-spinner {
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .footer {
+            background: var(--white);
+            border-top: 1px solid var(--gray-200);
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            text-align: center;
+        }
+
+        .footer-text {
+            color: var(--gray-500);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .main-container {
+                margin: 1rem auto;
+                padding: 0 0.5rem;
+            }
+
+            .card-header {
+                padding: 1.5rem;
+            }
+
+            .header-title {
+                font-size: 1.5rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 1rem;
+            }
+
+            .btn {
+                padding: 0.625rem 1.25rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Hidden class */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo-icon">🏢</div>
+                <div class="logo-text">
+                    <h1>Urban Referral Network</h1>
+                    <p>Professional Contractor Registration</p>
+                </div>
+            </div>
+            <div class="header-contact">
+                <span>📞</span>
+                <span>1-800-777-7777</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <div class="registration-card">
+            <!-- Card Header -->
+            <div class="card-header">
+                <div class="header-icon">🔧</div>
+                <h1 class="header-title">Join Our Network</h1>
+                <p class="header-subtitle">Register as a trusted contractor partner</p>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- Form Container -->
+            <div class="form-container">
+                <!-- Messages -->
+                <div class="message" id="messageDiv"></div>
+
+                <!-- Registration Form -->
+                <form id="registrationForm">
+                    <!-- Step 1: Company Information -->
+                    <div class="step active" id="step1">
+                        <h2 class="step-title">Company Information</h2>
+                        <p class="step-description">Tell us about your business</p>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="companyName" class="form-label">Company Name <span class="required">*</span></label>
+                                <input type="text" id="companyName" class="form-input" required placeholder="ABC Plumbing Services">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="businessType" class="form-label">Business Type <span class="required">*</span></label>
+                                <select id="businessType" class="form-select" required>
+                                    <option value="">Select business type</option>
+                                    <option value="LLC">LLC</option>
+                                    <option value="Corporation">Corporation</option>
+                                    <option value="Partnership">Partnership</option>
+                                    <option value="Sole Proprietorship">Sole Proprietorship</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="licenseNumber" class="form-label">License Number <span class="required">*</span></label>
+                                <input type="text" id="licenseNumber" class="form-input" required placeholder="Enter license number">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="yearsInBusiness" class="form-label">Years in Business <span class="required">*</span></label>
+                                <select id="yearsInBusiness" class="form-select" required>
+                                    <option value="">Select years</option>
+                                    <option value="1-2">1-2 years</option>
+                                    <option value="3-5">3-5 years</option>
+                                    <option value="6-10">6-10 years</option>
+                                    <option value="11-20">11-20 years</option>
+                                    <option value="20+">20+ years</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label for="businessAddress" class="form-label">Business Address <span class="required">*</span></label>
+                                <input type="text" id="businessAddress" class="form-input" required placeholder="123 Main St, City, State, ZIP">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Contact Information -->
+                    <div class="step" id="step2">
+                        <h2 class="step-title">Contact Information</h2>
+                        <p class="step-description">How can we reach you?</p>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="contactName" class="form-label">Primary Contact Name <span class="required">*</span></label>
+                                <input type="text" id="contactName" class="form-input" required placeholder="John Smith">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contactTitle" class="form-label">Title/Position</label>
+                                <input type="text" id="contactTitle" class="form-input" placeholder="Owner, Manager, etc.">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone" class="form-label">Phone Number <span class="required">*</span></label>
+                                <input type="tel" id="phone" class="form-input" required placeholder="(555) 123-4567">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email Address <span class="required">*</span></label>
+                                <input type="email" id="email" class="form-input" required placeholder="contact@company.com">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="website" class="form-label">Website</label>
+                                <input type="url" id="website" class="form-input" placeholder="https://www.company.com">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="emergencyContact" class="form-label">Emergency Contact</label>
+                                <input type="tel" id="emergencyContact" class="form-input" placeholder="(555) 987-6543">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Services & Credentials -->
+                    <div class="step" id="step3">
+                        <h2 class="step-title">Services & Credentials</h2>
+                        <p class="step-description">What services do you provide?</p>
+
+                        <div class="form-group">
+                            <label class="form-label">Service Types <span class="required">*</span></label>
+                            <div class="checkbox-group" id="serviceTypes">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="plumbing" name="services" value="Plumbing">
+                                    <label for="plumbing">Plumbing</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="electrical" name="services" value="Electrical">
+                                    <label for="electrical">Electrical</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="hvac" name="services" value="HVAC">
+                                    <label for="hvac">HVAC</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="roofing" name="services" value="Roofing">
+                                    <label for="roofing">Roofing</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="flooring" name="services" value="Flooring">
+                                    <label for="flooring">Flooring</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="painting" name="services" value="Painting">
+                                    <label for="painting">Painting</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="landscaping" name="services" value="Landscaping">
+                                    <label for="landscaping">Landscaping</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="general" name="services" value="General Contracting">
+                                    <label for="general">General Contracting</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="insuranceProvider" class="form-label">Insurance Provider <span class="required">*</span></label>
+                                <input type="text" id="insuranceProvider" class="form-input" required placeholder="Insurance company name">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="insuranceAmount" class="form-label">Coverage Amount <span class="required">*</span></label>
+                                <select id="insuranceAmount" class="form-select" required>
+                                    <option value="">Select coverage</option>
+                                    <option value="500000">$500,000</option>
+                                    <option value="1000000">$1,000,000</option>
+                                    <option value="2000000">$2,000,000</option>
+                                    <option value="5000000">$5,000,000+</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label for="specializations" class="form-label">Specializations</label>
+                                <textarea id="specializations" class="form-textarea" placeholder="Describe any special skills, certifications, or areas of expertise..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Button Group -->
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" id="prevBtn" onclick="changeStep(-1)">
+                        ← Previous
+                    </button>
+                    <button type="button" class="btn btn-primary" id="nextBtn" onclick="changeStep(1)">
+                        <span id="nextBtnText">Next →</span>
+                        <div class="loading-spinner hidden" id="loadingSpinner"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="footer-text">&copy; 2025 Urban Referral Network. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link">Contractor Agreement</a>
+                <a href="tel:18007777777" class="footer-link">Support: 1-800-777-7777</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const API_BASE = '/api';
+        let currentStep = 1;
+        const totalSteps = 3;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeForm();
+            updateProgress();
+            updateButtons();
+        });
+
+        function initializeForm() {
+            // Initialize checkbox interactions
+            const checkboxItems = document.querySelectorAll('.checkbox-item');
+            checkboxItems.forEach(item => {
+                const checkbox = item.querySelector('input[type="checkbox"]');
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        item.classList.add('checked');
+                    } else {
+                        item.classList.remove('checked');
+                    }
+                });
+            });
+
+            // Form validation
+            const form = document.getElementById('registrationForm');
+            form.addEventListener('submit', handleSubmit);
+        }
+
+        function changeStep(direction) {
+            if (direction === 1 && !validateCurrentStep()) {
+                return;
+            }
+
+            // Hide current step
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+
+            // Update step number
+            currentStep += direction;
+
+            // Show new step
+            document.getElementById(`step${currentStep}`).classList.add('active');
+
+            // Update progress and buttons
+            updateProgress();
+            updateButtons();
+
+            // Scroll to top
+            document.querySelector('.registration-card').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function updateProgress() {
+            const progressFill = document.getElementById('progressFill');
+            const percentage = (currentStep / totalSteps) * 100;
+            progressFill.style.width = `${percentage}%`;
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const nextBtnText = document.getElementById('nextBtnText');
+
+            // Previous button
+            prevBtn.style.display = currentStep === 1 ? 'none' : 'inline-flex';
+
+            // Next button
+            if (currentStep === totalSteps) {
+                nextBtnText.textContent = 'Submit Registration';
+                nextBtn.onclick = handleSubmit;
+            } else {
+                nextBtnText.textContent = 'Next →';
+                nextBtn.onclick = () => changeStep(1);
+            }
+        }
+
+        function validateCurrentStep() {
+            const currentStepElement = document.getElementById(`step${currentStep}`);
+            const requiredFields = currentStepElement.querySelectorAll('[required]');
+            let isValid = true;
+
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = 'var(--error-color)';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = 'var(--gray-300)';
+                }
+            });
+
+            // Special validation for step 3 (services)
+            if (currentStep === 3) {
+                const checkedServices = document.querySelectorAll('input[name="services"]:checked');
+                if (checkedServices.length === 0) {
+                    showMessage('Please select at least one service type', 'error');
+                    isValid = false;
+                }
+            }
+
+            if (!isValid) {
+                showMessage('Please fill in all required fields', 'error');
+            } else {
+                hideMessage();
+            }
+
+            return isValid;
+        }
+
+        async function handleSubmit(e) {
+            if (e) e.preventDefault();
+
+            if (!validateCurrentStep()) {
+                return;
+            }
+
+            const nextBtn = document.getElementById('nextBtn');
+            const nextBtnText = document.getElementById('nextBtnText');
+            const spinner = document.getElementById('loadingSpinner');
+
+            // Show loading state
+            nextBtn.disabled = true;
+            nextBtnText.classList.add('hidden');
+            spinner.classList.remove('hidden');
+            hideMessage();
+
+            try {
+                // Collect form data
+                const formData = collectFormData();
+
+                // Submit to API
+                const response = await fetch(`${API_BASE}/Contractor/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.result === 'SUCCESS') {
+                    showMessage('Registration submitted successfully! We will review your application and contact you within 2-3 business days.', 'success');
+                    
+                    // Redirect after delay
+                    setTimeout(() => {
+                        window.location.href = '/professional-login.html';
+                    }, 3000);
+                } else {
+                    showMessage(result.message || 'Registration failed. Please try again.', 'error');
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                showMessage('Connection error. Please check your network and try again.', 'error');
+            } finally {
+                // Reset button state
+                nextBtn.disabled = false;
+                nextBtnText.classList.remove('hidden');
+                spinner.classList.add('hidden');
+            }
+        }
+
+        function collectFormData() {
+            // Collect selected services
+            const selectedServices = Array.from(document.querySelectorAll('input[name="services"]:checked'))
+                .map(checkbox => checkbox.value);
+
+            return {
+                companyName: document.getElementById('companyName').value.trim(),
+                businessType: document.getElementById('businessType').value,
+                licenseNumber: document.getElementById('licenseNumber').value.trim(),
+                yearsInBusiness: document.getElementById('yearsInBusiness').value,
+                businessAddress: document.getElementById('businessAddress').value.trim(),
+                contactName: document.getElementById('contactName').value.trim(),
+                contactTitle: document.getElementById('contactTitle').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                website: document.getElementById('website').value.trim(),
+                emergencyContact: document.getElementById('emergencyContact').value.trim(),
+                serviceTypes: selectedServices,
+                insuranceProvider: document.getElementById('insuranceProvider').value.trim(),
+                insuranceAmount: document.getElementById('insuranceAmount').value,
+                specializations: document.getElementById('specializations').value.trim()
+            };
+        }
+
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('messageDiv');
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+            messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function hideMessage() {
+            const messageDiv = document.getElementById('messageDiv');
+            messageDiv.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

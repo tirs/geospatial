@@ -1,0 +1,61 @@
+URBAN REFERRAL NETWORK - PRODUCTION DEPLOYMENT INSTRUCTIONS
+===========================================================
+
+DEPLOYMENT LOCATION: https://urbanreferralnetwork.com/core
+
+REQUIREMENTS:
+- .NET 8.0 Runtime must be installed on the server
+- IIS with ASP.NET Core Module v2
+- SQL Server access (already configured)
+
+DEPLOYMENT STEPS:
+
+1. UPLOAD FILES:
+   - Upload entire contents of "publish-production" folder to "/core" directory on server
+   - Ensure web.config is included in the root of /core directory
+
+2. IIS CONFIGURATION:
+   - Create application under Default Web Site called "core"
+   - Point to the uploaded files directory
+   - Set Application Pool to "No Managed Code"
+   - Enable "Load User Profile" in Application Pool settings
+
+3. PERMISSIONS:
+   - Grant IIS_IUSRS read/execute permissions to application folder
+   - Grant IIS_IUSRS write permissions to "logs" subfolder (if exists)
+   - Grant IIS_IUSRS write permissions to "keys" subfolder for data protection
+
+4. ENVIRONMENT VARIABLES:
+   - ASPNETCORE_ENVIRONMENT = Production
+   - ASPNETCORE_PATHBASE = /core
+
+5. FIREWALL/SECURITY:
+   - Ensure port 443 (HTTPS) is open
+   - SSL certificate must be installed for urbanreferralnetwork.com
+
+6. VERIFICATION:
+   - Visit https://urbanreferralnetwork.com/core
+   - Check https://urbanreferralnetwork.com/core/health for health status
+   - Monitor logs for any errors
+
+IMPORTANT NOTES:
+- The application will automatically use the production database
+- Rate limiting is enabled (60 requests/minute, 1000/hour)
+- HTTPS is enforced in production
+- Database migrations are disabled (tables already exist)
+- Default login page is "unified-login.html"
+
+TROUBLESHOOTING:
+- Check IIS logs if site doesn't load
+- Ensure .NET 8.0 runtime is installed
+- Verify database connection string in appsettings.Production.json
+- Check that web.config has correct process path
+
+AFTER DEPLOYMENT:
+- Test login functionality
+- Verify API endpoints work
+- Check contractor search functionality
+- Test geospatial features
+
+CONTACT:
+For deployment issues, check the application logs in the logs folder.

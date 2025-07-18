@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Referral Network - Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .main-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .hero-section {
+            flex: 1;
+            background: linear-gradient(135deg, #1a365d 0%, #2d5a87 100%);
+            color: white;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://urbanreferralnetwork.com/assets/img/callme.jpg') center/cover;
+            opacity: 0.1;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 500px;
+        }
+
+        .hero-logo {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .hero-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .hero-features li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .hero-features li::before {
+            content: '✓';
+            background: #28a745;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-weight: bold;
+        }
+
+        .hero-contact {
+            background: rgba(255,255,255,0.1);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .hero-phone {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffd700;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-phone:hover {
+            color: #ffed4e;
+        }
+
+        .hero-contact-title {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .hero-contact-availability {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .login-section {
+            flex: 1;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: white;
+            max-width: 600px;
+        }
+
+        .login-container {
+            max-width: 450px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #1a365d;
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a365d;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            font-size: 1rem;
+            color: #6b7280;
+            margin-bottom: 2rem;
+        }
+
+        .user-type-selector {
+            display: flex;
+            background: #f3f4f6;
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 30px;
+        }
+
+        .user-type-btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #6b7280;
+        }
+
+        .user-type-btn.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message, .success-message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .error-message {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .success-message {
+            background: #f0fdf4;
+            color: #16a34a;
+        }
+
+        .loading {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .loading-spinner {
+            border: 2px solid #f3f4f6;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .register-link {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .register-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-text {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #9ca3af;
+            text-align: center;
+        }
+
+        .brand-badge {
+            background: linear-gradient(135deg, #1a365d 0%, #2d5a87 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .security-note {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #0369a1;
+            text-align: center;
+        }
+
+        .security-note::before {
+            content: '🔒';
+            margin-right: 8px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .hero-section {
+                padding: 50px 30px;
+            }
+            
+            .login-section {
+                padding: 50px 30px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .hero-section {
+                min-height: 40vh;
+                padding: 40px 20px;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-logo {
+                font-size: 2.5rem;
+            }
+            
+            .login-section {
+                padding: 40px 20px;
+                max-width: none;
+            }
+            
+            .user-type-selector {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .user-type-btn {
+                padding: 16px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                min-height: 35vh;
+                padding: 30px 15px;
+            }
+            
+            .hero-title {
+                font-size: 1.8rem;
+                line-height: 1.1;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .hero-logo {
+                font-size: 2rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            .hero-features {
+                margin-bottom: 1.5rem;
+            }
+            
+            .hero-features li {
+                font-size: 1rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            .hero-phone {
+                font-size: 1.5rem;
+            }
+            
+            .login-section {
+                padding: 30px 15px;
+            }
+            
+            .login-container {
+                max-width: none;
+            }
+            
+            .login-title {
+                font-size: 1.5rem;
+            }
+            
+            .login-logo {
+                font-size: 2.5rem;
+            }
+            
+            .form-input {
+                font-size: 16px;
+                padding: 14px 16px;
+            }
+            
+            .login-btn {
+                padding: 16px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-section {
+                min-height: 30vh;
+                padding: 20px 10px;
+            }
+            
+            .hero-title {
+                font-size: 1.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .hero-logo {
+                font-size: 1.8rem;
+            }
+            
+            .hero-features li {
+                font-size: 0.9rem;
+            }
+            
+            .hero-contact {
+                padding: 15px;
+            }
+            
+            .hero-phone {
+                font-size: 1.3rem;
+            }
+            
+            .login-section {
+                padding: 20px 10px;
+            }
+            
+            .login-header {
+                margin-bottom: 30px;
+            }
+            
+            .login-title {
+                font-size: 1.3rem;
+            }
+            
+            .login-subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .brand-badge {
+                font-size: 10px;
+                padding: 6px 12px;
+            }
+            
+            .user-type-selector {
+                margin-bottom: 20px;
+            }
+            
+            .user-type-btn {
+                font-size: 14px;
+                padding: 12px;
+            }
+            
+            .form-group {
+                margin-bottom: 16px;
+            }
+            
+            .form-label {
+                font-size: 13px;
+            }
+            
+
+            
+            .security-note {
+                font-size: 11px;
+                padding: 10px;
+            }
+        }
+
+        /* Animation */
+        .login-container {
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .hero-content {
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="hero-content">
+                <div class="hero-logo">🏢</div>
+                <h1 class="hero-title">Urban Referral Network</h1>
+                <p class="hero-subtitle">Created to Protect the Consumer</p>
+                
+                <ul class="hero-features">
+                    <li>Quality Products & Services</li>
+                    <li>Trusted Local Contractors</li>
+                    <li>Consumer Protection</li>
+                    <li>Community Investment</li>
+                </ul>
+                
+                <div class="hero-contact">
+                    <p class="hero-contact-title">When in Need of Service</p>
+                    <a href="tel:18007777777" class="hero-phone">1-800-777-7777</a>
+                    <p class="hero-contact-availability">Available 24/7 for Your Service Needs</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Section -->
+        <div class="login-section">
+            <div class="login-container">
+                <div class="login-header">
+                    <div class="brand-badge">SECURE PORTAL ACCESS</div>
+                    <div class="login-logo">🔐</div>
+                    <h2 class="login-title">Welcome Back</h2>
+                    <p class="login-subtitle">Sign in to access your dashboard</p>
+                </div>
+
+        <div class="user-type-selector">
+            <button type="button" class="user-type-btn active" data-type="agent">
+                Staff Login
+            </button>
+            <button type="button" class="user-type-btn" data-type="contractor">
+                Contractor Login
+            </button>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+        <div class="success-message" id="successMessage"></div>
+
+        <form id="loginForm">
+            <!-- Agent Login Fields -->
+            <div id="agentFields">
+                <div class="form-group">
+                    <label for="agentCode" class="form-label">Agent Code</label>
+                    <input type="text" id="agentCode" class="form-input" placeholder="Enter your agent code">
+                </div>
+                <div class="form-group">
+                    <label for="agentPassword" class="form-label">Password</label>
+                    <input type="password" id="agentPassword" class="form-input" placeholder="Enter your password">
+                </div>
+            </div>
+
+            <!-- Contractor Login Fields -->
+            <div id="contractorFields">
+                <div class="form-group">
+                    <label for="contractorPhone" class="form-label">Phone Number</label>
+                    <input type="tel" id="contractorPhone" class="form-input" placeholder="Enter your phone number">
+                </div>
+                <div class="form-group">
+                    <label for="contractorPassword" class="form-label">Password</label>
+                    <input type="password" id="contractorPassword" class="form-input" placeholder="Enter your password">
+                </div>
+            </div>
+
+            <button type="submit" class="login-btn" id="loginBtn">
+                <span id="loginText">Sign In</span>
+                <div class="loading" id="loading">
+                    <div class="loading-spinner"></div>
+                </div>
+            </button>
+        </form>
+
+        <div class="register-link" id="registerLink">
+            <div id="agentRegister">
+                Need an account? Contact your administrator
+            </div>
+            <div id="contractorRegister">
+                New contractor? <a href="/pages/contractor-registration-new.html">Register here</a>
+            </div>
+        </div>
+
+                <div class="security-note">
+                    Your login information is encrypted and secure
+                </div>
+
+                <div class="footer-text">
+                    &copy; 2025 Urban Referral Network - Los Angeles County
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api';
+        let currentUserType = 'agent';
+
+        // User type switching
+        document.querySelectorAll('.user-type-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.user-type-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentUserType = btn.dataset.type;
+                switchUserType(currentUserType);
+            });
+        });
+
+        function switchUserType(type) {
+            const elements = {
+                agent: ['agentFields', 'agentHelp', 'agentRegister'],
+                contractor: ['contractorFields', 'contractorHelp', 'contractorRegister']
+            };
+
+            // Hide all elements first
+            [...elements.agent, ...elements.contractor].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+
+            // Show elements for current type
+            elements[type].forEach(id => {
+                document.getElementById(id).classList.remove('hidden');
+            });
+
+            hideMessages();
+        }
+
+        // Form submission
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await handleLogin();
+        });
+
+        async function handleLogin() {
+            const loginBtn = document.getElementById('loginBtn');
+            const loginText = document.getElementById('loginText');
+            const loading = document.getElementById('loading');
+
+            // Show loading state
+            loginBtn.disabled = true;
+            loginText.classList.add('hidden');
+            loading.classList.remove('hidden');
+            hideMessages();
+
+            try {
+                if (currentUserType === 'agent') {
+                    await handleAgentLogin();
+                } else {
+                    await handleContractorLogin();
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showError('Connection error. Please check your network and try again.');
+            } finally {
+                // Reset button state
+                loginBtn.disabled = false;
+                loginText.classList.remove('hidden');
+                loading.classList.add('hidden');
+            }
+        }
+
+        async function handleAgentLogin() {
+            const agentCode = document.getElementById('agentCode').value.trim();
+            const password = document.getElementById('agentPassword').value;
+
+            if (!agentCode || !password) {
+                showError('Please enter both agent code and password');
+                return;
+            }
+
+            const response = await fetch(`${API_BASE}/Auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ agentCode, password })
+            });
+
+            const result = await response.json();
+
+            if (result.result === 'SUCCESS') {
+                localStorage.setItem('sessionToken', result.sessionToken);
+                localStorage.setItem('userRole', result.userRole);
+                localStorage.setItem('userType', 'agent');
+                localStorage.setItem('agentName', `${result.firstName} ${result.lastName}`);
+                localStorage.setItem('agentId', result.agentId);
+
+                showSuccess('Login successful! Redirecting...');
+
+                setTimeout(() => {
+                    if (result.mustChangePassword) {
+                        window.location.href = '/change-password.html';
+                    } else {
+                        switch (result.userRole) {
+                            case 'Admin':
+                            case 'Manager':
+                                window.location.href = '/pages/dashboard.html';
+                                break;
+                            default:
+                                window.location.href = '/pages/call-center.html';
+                        }
+                    }
+                }, 1000);
+            } else {
+                handleLoginError(result);
+            }
+        }
+
+        async function handleContractorLogin() {
+            const phone = document.getElementById('contractorPhone').value.trim();
+            const password = document.getElementById('contractorPassword').value;
+
+            if (!phone || !password) {
+                showError('Please enter both phone number and password');
+                return;
+            }
+
+            const response = await fetch(`${API_BASE}/Auth/contractor-login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone, password })
+            });
+
+            const result = await response.json();
+
+            if (result.result === 'SUCCESS') {
+                localStorage.setItem('sessionToken', result.sessionToken);
+                localStorage.setItem('userType', 'contractor');
+                localStorage.setItem('contractorId', result.contractorId);
+                localStorage.setItem('companyName', result.companyName);
+                localStorage.setItem('contactName', result.contactName);
+
+                showSuccess('Login successful! Redirecting...');
+
+                setTimeout(() => {
+                    window.location.href = '/pages/contractor-dashboard.html';
+                }, 1000);
+            } else {
+                handleLoginError(result);
+            }
+        }
+
+        function handleLoginError(result) {
+            switch (result.result) {
+                case 'INVALID_CREDENTIALS':
+                    showError('Invalid credentials. Please check your login information.');
+                    break;
+                case 'ACCOUNT_LOCKED':
+                    showError('Account is locked. Please contact your supervisor.');
+                    break;
+                default:
+                    showError(result.message || 'Login failed. Please try again.');
+            }
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.classList.remove('hidden');
+            document.getElementById('successMessage').classList.add('hidden');
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.classList.remove('hidden');
+            document.getElementById('errorMessage').classList.add('hidden');
+        }
+
+        function hideMessages() {
+            document.getElementById('errorMessage').classList.add('hidden');
+            document.getElementById('successMessage').classList.add('hidden');
+        }
+
+        // Check if already logged in
+        window.addEventListener('load', async () => {
+            const sessionToken = localStorage.getItem('sessionToken');
+            const userType = localStorage.getItem('userType');
+            
+            if (sessionToken && userType) {
+                try {
+                    let endpoint = userType === 'agent' ? '/Auth/validate' : '/Auth/contractor-validate';
+                    const response = await fetch(`${API_BASE}${endpoint}`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${sessionToken}` }
+                    });
+                    const result = await response.json();
+                    
+                    if (result.result === 'VALID') {
+                        // Already logged in, redirect
+                        if (userType === 'agent') {
+                            const userRole = localStorage.getItem('userRole');
+                            switch (userRole) {
+                                case 'Admin':
+                                case 'Manager':
+                                    window.location.href = '/pages/dashboard.html';
+                                    break;
+                                default:
+                                    window.location.href = '/pages/call-center.html';
+                            }
+                        } else {
+                            window.location.href = '/pages/contractor-dashboard.html';
+                        }
+                    }
+                } catch (error) {
+                    console.log('Session validation failed:', error);
+                    // Clear invalid session
+                    localStorage.clear();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

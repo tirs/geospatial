@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Urban Referral Network</title>
+    <link rel="stylesheet" href="../css/navigation.css">
+    <link rel="stylesheet" href="../css/urban-theme.css">
+    <link rel="stylesheet" href="../css/admin-dashboard.css">
+</head>
+<body>
+    <div class="admin-container">
+        <nav class="admin-nav">
+            <button class="nav-btn active" data-section="overview">Overview</button>
+            <button class="nav-btn" data-section="contractors">Contractors</button>
+            <button class="nav-btn" data-section="referrals">Referrals</button>
+            <button class="nav-btn" data-section="coverage">Coverage Map</button>
+        </nav>
+
+        <main class="admin-main">
+            <!-- Overview Section -->
+            <section id="overview" class="admin-section active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-info">
+                            <h3>Active Contractors</h3>
+                            <div class="stat-number" id="totalContractors">-</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📍</div>
+                        <div class="stat-info">
+                            <h3>ZIP Codes Covered</h3>
+                            <div class="stat-number" id="totalZipCodes">-</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📋</div>
+                        <div class="stat-info">
+                            <h3>Total Referrals</h3>
+                            <div class="stat-number" id="totalReferrals">-</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-info">
+                            <h3>This Month</h3>
+                            <div class="stat-number" id="monthlyReferrals">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <h3>Quick Actions</h3>
+                    <div class="action-buttons">
+                        <button class="action-btn" onclick="window.location.href='/pages/admin-agent-registration.html'">
+                            🧑‍💼 Add New Agent
+                        </button>
+                        <button class="action-btn" onclick="adminDashboard.showSection('contractors')">
+                            🏢 Add Contractor
+                        </button>
+                        <button class="action-btn" onclick="adminDashboard.testZipCode()">
+                            📍 Test ZIP Code
+                        </button>
+                        <button class="action-btn" onclick="adminDashboard.viewReports()">
+                            📊 View Reports
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contractors Section -->
+            <section id="contractors" class="admin-section">
+                <div class="section-header">
+                    <h3>Contractor Management</h3>
+                    <button class="btn-primary" onclick="adminDashboard.showAddContractor()">
+                        Add New Contractor
+                    </button>
+                </div>
+
+                <div class="contractors-table">
+                    <table id="contractorsTable">
+                        <thead>
+                            <tr>
+                                <th>Company Name</th>
+                                <th>Contact</th>
+                                <th>Phone</th>
+                                <th>ZIP Code</th>
+                                <th>Services</th>
+                                <th>Rating</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="contractorsTableBody">
+                            <tr>
+                                <td colspan="8" class="loading">Loading contractors...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Referrals Section -->
+            <section id="referrals" class="admin-section">
+                <div class="section-header">
+                    <h3>Recent Referrals</h3>
+                    <div class="filters">
+                        <label for="statusFilter" class="sr-only">Filter by status</label>
+                        <select id="statusFilter" title="Filter referrals by status" aria-label="Filter by status">
+                            <option value="">All Status</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                        <label for="dateFilter" class="sr-only">Filter by date</label>
+                        <input type="date" id="dateFilter" title="Filter referrals by date" aria-label="Filter by date">
+                    </div>
+                </div>
+
+                <div class="referrals-table">
+                    <table id="referralsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Customer</th>
+                                <th>Phone</th>
+                                <th>ZIP Code</th>
+                                <th>Service</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Contractors</th>
+                            </tr>
+                        </thead>
+                        <tbody id="referralsTableBody">
+                            <tr>
+                                <td colspan="8" class="loading">Loading referrals...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Coverage Section -->
+            <section id="coverage" class="admin-section">
+                <div class="section-header">
+                    <h3>Coverage Analysis</h3>
+                    <button class="btn-secondary" onclick="adminDashboard.refreshCoverage()">
+                        Refresh Data
+                    </button>
+                </div>
+
+                <div class="coverage-grid">
+                    <div class="coverage-card">
+                        <h4>ZIP Code Coverage</h4>
+                        <div class="coverage-chart" id="zipCoverageChart">
+                            <div class="chart-placeholder">Coverage visualization will be displayed here</div>
+                        </div>
+                    </div>
+                    <div class="coverage-card">
+                        <h4>Service Type Distribution</h4>
+                        <div class="service-distribution" id="serviceDistribution">
+                            <div class="chart-placeholder">Service distribution chart</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="coverage-details">
+                    <h4>Coverage Details</h4>
+                    <div class="coverage-list" id="coverageList">
+                        <div class="loading">Loading coverage data...</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Add Contractor Modal -->
+        <div class="modal" id="addContractorModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Add New Contractor</h3>
+                    <button class="modal-close" onclick="adminDashboard.hideModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="addContractorForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="companyName">Company Name *</label>
+                                <input type="text" id="companyName" name="companyName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactName">Contact Name *</label>
+                                <input type="text" id="contactName" name="contactName" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Phone *</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" name="address">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="zipCode">ZIP Code *</label>
+                                <input type="text" id="zipCode" name="zipCode" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="serviceRadius">Service Radius (miles)</label>
+                                <input type="number" id="serviceRadius" name="serviceRadius" value="25" min="5" max="100">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="serviceTypes">Service Types</label>
+                            <div class="service-checkboxes" id="serviceCheckboxes">
+                                <!-- Will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="adminDashboard.hideModal()">Cancel</button>
+                    <button type="submit" form="addContractorForm" class="btn-primary">Add Contractor</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/navigation.js"></script>
+    <script src="../js/admin-dashboard.js"></script>
+    <script>
+        // Set page-specific navigation info
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.navigationManager) {
+                window.navigationManager.setPageInfo('Admin Dashboard');
+            }
+        });
+    </script></script>
+</body>
+</html>
