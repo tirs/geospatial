@@ -32,6 +32,14 @@ window.setAdminRole = function() {
 
 // Production build - debug functions removed
 
+// Helper function to get API URL with correct base path
+function getApiUrl(endpoint) {
+    const isCustomDomain = window.location.hostname === 'urbanreferralnetwork.com';
+    const isSubApp = window.location.pathname.startsWith('/geospatial');
+    const basePath = (isCustomDomain && isSubApp) ? '/geospatial' : '';
+    return `${basePath}${endpoint}`;
+}
+
 window.addNewUser = function() {
     console.log('🚀 addNewUser function called');
     
@@ -323,7 +331,7 @@ async function saveUserDirectly(name, email, role, password, phone = '') {
         console.log('🚀 Creating user:', { ...userData, password: '[HIDDEN]' });
         
         // Make API call to create user
-        const response = await fetch('/api/Auth/register', {
+        const response = await fetch(getApiUrl('/api/Auth/register'), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

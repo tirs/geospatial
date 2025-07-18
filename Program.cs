@@ -143,6 +143,15 @@ builder.Services.AddDataProtection()
 // Add Rate Limiting
 builder.Services.ConfigureRateLimiting(builder.Configuration);
 
+// Configure forwarded headers for IIS reverse proxy
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor | 
+                              Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto;
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
+});
+
 // Add Health Checks
 builder.Services.AddHealthChecks()
     .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!,
@@ -176,12 +185,16 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configure path base for subdirectory deployment
-// Disabled for Render deployment
-// if (!app.Environment.IsDevelopment())
-// {
-//     app.UsePathBase("/core");
-// }
+// Configure path base for IIS sub-application deployment
+var pathBase = Environment.GetEnvironmentVariable("ASPNETCORE_PATHBASE");
+if (!string.IsNullOrEmpty(pathBase))
+{
+    app.UsePathBase(pathBase);
+    Log.Information("🌐 Using path base: {PathBase}", pathBase);
+}
+
+// Configure forwarded headers for IIS
+app.UseForwardedHeaders();
 
 // Auto-create database and seed admin user
 using (var scope = app.Services.CreateScope())

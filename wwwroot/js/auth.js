@@ -1,7 +1,11 @@
 // Authentication utility functions
 class AuthService {
     constructor() {
-        this.API_BASE = '/api';
+        // Auto-detect base path for sub-application
+        const isCustomDomain = window.location.hostname === 'urbanreferralnetwork.com';
+        const isSubApp = window.location.pathname.startsWith('/geospatial');
+        const basePath = (isCustomDomain && isSubApp) ? '/geospatial' : '';
+        this.API_BASE = `${basePath}/api`;
         this.sessionToken = localStorage.getItem('sessionToken');
         this.userRole = localStorage.getItem('userRole');
         this.agentName = localStorage.getItem('agentName');

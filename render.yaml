@@ -14,3 +14,5 @@ services:
       - key: ConnectionStrings__DefaultConnection
         value: Server=sql8011.arnaco.com;Database=db_a28254_urbaweb;User Id=db_a28254_urbaweb_admin;Password=6Th38P623hLg;Encrypt=true;TrustServerCertificate=true;MultipleActiveResultSets=true
     healthCheckPath: /health
+    # Note: This render.yaml is for standalone deployment
+    # For sub-application deployment, use web.config instead
