@@ -192,11 +192,26 @@ using (var scope = app.Services.CreateScope())
     if (app.Environment.IsDevelopment())
     {
         context.Database.EnsureCreated();
+        SeedData.Initialize(context);
     }
     else
     {
-        // In production, database already exists - skip migrations
-        // context.Database.Migrate();
+        // In production/render, database already exists with data - just ensure migrations
+        try 
+        {
+            // Test connection first
+            await context.Database.CanConnectAsync();
+            Console.WriteLine("✅ Database connection successful");
+            
+            // Apply any pending migrations
+            context.Database.Migrate();
+            Console.WriteLine("✅ Database migrations applied");
+        }
+        catch (Exception ex)
+        {
+            // Log migration error but don't fail startup
+            Console.WriteLine($"⚠️ Database warning: {ex.Message}");
+        }
     }
     
     // Create default admin user if none exists

@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 class ContractorManager {
     constructor() {
-        this.apiBase = (CONFIG?.API_BASE_URL || 'http://localhost:5000/api').replace('/referral', '');
+        this.apiBase = (CONFIG?.API_BASE_URL || '/api/referral').replace('/referral', '');
         this.contractors = [];
         this.filteredContractors = [];
         this.viewMode = 'manage'; // 'manage' or 'view'

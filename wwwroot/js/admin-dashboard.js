@@ -350,7 +350,7 @@ class AdminDashboard {
         if (!zipCode) return;
 
         try {
-            const response = await fetch(`http://localhost:5003/api/referral/validate-zipcode/${zipCode}`);
+            const response = await fetch(`${CONFIG?.API_BASE_URL || '/api/referral'}/validate-zipcode/${zipCode}`);
             const data = await response.json();
             
             if (data.isValid) {

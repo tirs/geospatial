@@ -3,12 +3,13 @@ const CONFIG = {
     // API Configuration - Auto-detect environment and path
     API_BASE_URL: (() => {
         const isLocal = window.location.hostname === 'localhost';
-        const basePath = isLocal ? '' : '/geospatial';
+        // For Render deployment, no base path needed
+        const basePath = '';
         return `${basePath}/api/referral`;
     })(),
     
     // Base path for navigation
-    BASE_PATH: window.location.hostname === 'localhost' ? '' : '/geospatial',
+    BASE_PATH: '',
     
     // Environment detection
     ENVIRONMENT: window.location.hostname === 'localhost' ? 'development' : 'production',

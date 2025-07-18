@@ -152,16 +152,27 @@ namespace UrbanReferralNetwork.Services
 
         public async Task<bool> ValidateZipCodeAsync(string zipCode)
         {
-            if (string.IsNullOrWhiteSpace(zipCode))
-                return false;
+            try
+            {
+                if (string.IsNullOrWhiteSpace(zipCode))
+                    return false;
 
-            // Basic format validation
-            if (!IsValidZipCodeFormat(zipCode))
-                return false;
+                // Basic format validation
+                if (!IsValidZipCodeFormat(zipCode))
+                    return false;
 
-            // Check if ZIP code exists in database
-            return await _context.ZipCodes
-                .AnyAsync(z => z.ZipCodeValue == zipCode && z.IsActive);
+                // Check if ZIP code exists in database
+                var exists = await _context.ZipCodes
+                    .AnyAsync(z => z.ZipCodeValue == zipCode && z.IsActive);
+                
+                return exists;
+            }
+            catch (Exception ex)
+            {
+                // Log the error but don't throw - return false for invalid
+                Console.WriteLine($"ZIP validation error for {zipCode}: {ex.Message}");
+                return false;
+            }
         }
 
         public double CalculateDistance(decimal lat1, decimal lon1, decimal lat2, decimal lon2)

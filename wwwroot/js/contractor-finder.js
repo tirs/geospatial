@@ -2,7 +2,7 @@
 console.log('🚀 ContractorFinder JavaScript loaded - Version 2.0');
 class ContractorFinder {
     constructor() {
-        this.apiBase = CONFIG?.API_BASE_URL || 'http://localhost:5000/api/referral';
+        this.apiBase = CONFIG?.API_BASE_URL || '/api/referral';
         this.selectedContractors = [];
         this.currentSearchData = null;
         this.isDashboard = document.getElementById('dashboard-section') !== null;

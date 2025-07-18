@@ -1,7 +1,7 @@
 // Call Center Management System - Optimized & Accessible
 class CallCenterManager {
     constructor() {
-        this.apiBase = CONFIG?.API_BASE_URL || 'http://localhost:5003/api/referral';
+        this.apiBase = CONFIG?.API_BASE_URL || '/api/referral';
         this.currentCall = null;
         this.callQueue = [];
         this.stats = {

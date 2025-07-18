@@ -97,12 +97,105 @@ namespace UrbanReferralNetwork.Controllers
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(zipCode))
+                {
+                    return BadRequest(new { error = "ZIP code is required", zipCode = zipCode, isValid = false });
+                }
+
                 var isValid = await _geospatialService.ValidateZipCodeAsync(zipCode);
-                return Ok(new { zipCode = zipCode, isValid = isValid });
+                
+                return Ok(new { 
+                    zipCode = zipCode, 
+                    isValid = isValid,
+                    message = isValid ? "ZIP code is valid" : "ZIP code not found in coverage area"
+                });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { error = "Internal server error", details = ex.Message });
+                return StatusCode(500, new { 
+                    error = "Internal server error", 
+                    details = ex.Message,
+                    zipCode = zipCode,
+                    isValid = false 
+                });
+            }
+        }
+
+        [HttpGet("test-db-connection")]
+        public async Task<IActionResult> TestDatabaseConnection()
+        {
+            try
+            {
+                var connectionString = _context.Database.GetConnectionString();
+                var zipCount = await _context.ZipCodes.CountAsync();
+                var activeZipCount = await _context.ZipCodes.CountAsync(z => z.IsActive);
+                
+                // Get sample ZIP codes for verification
+                var sampleZips = await _context.ZipCodes
+                    .Where(z => z.IsActive)
+                    .Take(5)
+                    .Select(z => new { z.ZipCodeValue, z.City })
+                    .ToListAsync();
+                
+                return Ok(new { 
+                    success = true,
+                    environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"),
+                    connectionString = connectionString?.Substring(0, Math.Min(50, connectionString.Length)) + "...",
+                    totalZipCodes = zipCount,
+                    activeZipCodes = activeZipCount,
+                    sampleZipCodes = sampleZips,
+                    message = "Database connection successful"
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { 
+                    success = false,
+                    environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"),
+                    error = "Database connection failed", 
+                    details = ex.Message,
+                    stackTrace = ex.StackTrace
+                });
+            }
+        }
+
+        [HttpGet("debug-zip/{zipCode}")]
+        public async Task<IActionResult> DebugZipCode(string zipCode)
+        {
+            try
+            {
+                // Step 1: Format validation
+                var formatValid = !string.IsNullOrWhiteSpace(zipCode) && 
+                    (zipCode.Length == 5 && zipCode.All(char.IsDigit) ||
+                     zipCode.Length == 10 && zipCode[5] == '-' && 
+                     zipCode.Take(5).All(char.IsDigit) && zipCode.Skip(6).All(char.IsDigit));
+
+                // Step 2: Database lookup
+                var dbRecord = await _context.ZipCodes
+                    .Where(z => z.ZipCodeValue == zipCode)
+                    .Select(z => new { z.ZipCodeValue, z.City, z.IsActive, z.Latitude, z.Longitude })
+                    .FirstOrDefaultAsync();
+
+                // Step 3: Active check
+                var isActive = dbRecord?.IsActive ?? false;
+
+                return Ok(new {
+                    zipCode = zipCode,
+                    formatValid = formatValid,
+                    foundInDatabase = dbRecord != null,
+                    isActive = isActive,
+                    record = dbRecord,
+                    finalResult = formatValid && dbRecord != null && isActive,
+                    environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new {
+                    zipCode = zipCode,
+                    error = ex.Message,
+                    stackTrace = ex.StackTrace
+                });
             }
         }
 
