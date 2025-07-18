@@ -33,6 +33,15 @@ if (builder.Environment.IsProduction())
     });
 }
 
+// Configure allowed hosts for Render
+if (builder.Environment.IsProduction())
+{
+    builder.WebHost.UseKestrel(options =>
+    {
+        options.AllowSynchronousIO = true;
+    });
+}
+
 // Add Serilog
 builder.Host.UseSerilog();
 
@@ -148,20 +157,31 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("SecurePolicy", policy =>
     {
-        policy.WithOrigins(allowedOrigins)
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials();
+        if (builder.Environment.IsProduction())
+        {
+            // Allow all origins in production for Render
+            policy.AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        }
+        else
+        {
+            policy.WithOrigins(allowedOrigins)
+                  .AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .AllowCredentials();
+        }
     });
 });
 
 var app = builder.Build();
 
 // Configure path base for subdirectory deployment
-if (!app.Environment.IsDevelopment())
-{
-    app.UsePathBase("/core");
-}
+// Disabled for Render deployment
+// if (!app.Environment.IsDevelopment())
+// {
+//     app.UsePathBase("/core");
+// }
 
 // Auto-create database and seed admin user
 using (var scope = app.Services.CreateScope())
