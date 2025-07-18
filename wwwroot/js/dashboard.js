@@ -70,43 +70,52 @@ function showAddUserModal() {
         existingModal.remove();
     }
     
-    // Create modal HTML
+    // Create modal HTML with improved styling and validation
     const modalHTML = `
-        <div class="modal" style="display: flex;">
-            <div class="modal-content">
+        <div class="modal" style="display: flex;" onclick="closeModalOnBackdrop(event)">
+            <div class="modal-content" onclick="event.stopPropagation()">
                 <div class="modal-header">
-                    <h3>➕ Add New User</h3>
-                    <button class="modal-close" onclick="this.closest('.modal').remove()">✕</button>
+                    <h3>👤 Add New User</h3>
+                    <button class="modal-close" onclick="this.closest('.modal').remove()" title="Close">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form id="addUserForm">
+                    <form id="addUserForm" onsubmit="event.preventDefault(); saveNewUserFromModal();">
                         <div class="form-group">
                             <label for="newUserName">Full Name *</label>
-                            <input type="text" id="newUserName" required placeholder="Enter full name">
+                            <input type="text" id="newUserName" required placeholder="Enter full name" autocomplete="name">
                         </div>
                         <div class="form-group">
                             <label for="newUserEmail">Email Address *</label>
-                            <input type="email" id="newUserEmail" required placeholder="user@urbanreferral.com">
+                            <input type="email" id="newUserEmail" required placeholder="user@urbanreferral.com" autocomplete="email">
                         </div>
                         <div class="form-group">
                             <label for="newUserRole">Role *</label>
                             <select id="newUserRole" required>
                                 <option value="">Select role...</option>
-                                <option value="Agent">Agent</option>
-                                <option value="Supervisor">Supervisor</option>
-                                <option value="Manager">Manager</option>
-                                <option value="Admin">Admin</option>
+                                <option value="Agent">🎯 Agent</option>
+                                <option value="Supervisor">👥 Supervisor</option>
+                                <option value="Manager">📊 Manager</option>
+                                <option value="Admin">🔑 Admin</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="newUserPassword">Temporary Password *</label>
-                            <input type="password" id="newUserPassword" required placeholder="Enter temporary password">
+                            <div style="display: flex; gap: 8px;">
+                                <input type="password" id="newUserPassword" required placeholder="Enter temporary password" minlength="6" style="flex: 1;">
+                                <button type="button" onclick="generatePassword()" style="padding: 8px 12px; background: #f3f4f6; border: 1px solid #d1d5db; border-radius: 6px; cursor: pointer;" title="Generate Password">🎲</button>
+                                <button type="button" onclick="togglePasswordVisibility()" style="padding: 8px 12px; background: #f3f4f6; border: 1px solid #d1d5db; border-radius: 6px; cursor: pointer;" title="Show/Hide Password">👁️</button>
+                            </div>
+                            <small style="color: #6b7280; font-size: 12px;">Minimum 6 characters • Click 🎲 to generate</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="newUserPhone">Phone Number (Optional)</label>
+                            <input type="tel" id="newUserPhone" placeholder="+1 (555) 123-4567" autocomplete="tel">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn-secondary" onclick="this.closest('.modal').remove()">Cancel</button>
-                    <button class="btn-primary" onclick="saveNewUserFromModal()">➕ Add User</button>
+                    <button type="button" class="btn-secondary" onclick="this.closest('.modal').remove()">❌ Cancel</button>
+                    <button type="button" class="btn-primary" onclick="saveNewUserFromModal()" id="saveUserBtn">➕ Add User</button>
                 </div>
             </div>
         </div>
@@ -114,46 +123,204 @@ function showAddUserModal() {
     
     // Add modal to page
     document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Focus on first input and add keyboard shortcuts
+    setTimeout(() => {
+        document.getElementById('newUserName').focus();
+        
+        // Add keyboard shortcuts
+        const modal = document.querySelector('.modal');
+        modal.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                modal.remove();
+            } else if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                saveNewUserFromModal();
+            }
+        });
+    }, 100);
+}
+
+// Close modal when clicking backdrop
+function closeModalOnBackdrop(event) {
+    if (event.target.classList.contains('modal')) {
+        event.target.remove();
+    }
+}
+
+// Generate secure password
+function generatePassword() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+    let password = '';
+    
+    // Ensure at least one of each type
+    password += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[Math.floor(Math.random() * 26)]; // Uppercase
+    password += 'abcdefghijklmnopqrstuvwxyz'[Math.floor(Math.random() * 26)]; // Lowercase
+    password += '0123456789'[Math.floor(Math.random() * 10)]; // Number
+    password += '!@#$%^&*'[Math.floor(Math.random() * 8)]; // Special
+    
+    // Fill remaining characters
+    for (let i = 4; i < 12; i++) {
+        password += chars[Math.floor(Math.random() * chars.length)];
+    }
+    
+    // Shuffle the password
+    password = password.split('').sort(() => Math.random() - 0.5).join('');
+    
+    // Set the password
+    const passwordInput = document.getElementById('newUserPassword');
+    passwordInput.value = password;
+    passwordInput.type = 'text'; // Show generated password
+    
+    // Copy to clipboard
+    navigator.clipboard.writeText(password).then(() => {
+        showModalSuccess('🎲 Password generated and copied to clipboard!');
+    }).catch(() => {
+        showModalSuccess('🎲 Password generated!');
+    });
+    
+    // Hide password after 3 seconds
+    setTimeout(() => {
+        passwordInput.type = 'password';
+    }, 3000);
+}
+
+// Toggle password visibility
+function togglePasswordVisibility() {
+    const passwordInput = document.getElementById('newUserPassword');
+    const button = event.target;
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        button.textContent = '🙈';
+        button.title = 'Hide Password';
+    } else {
+        passwordInput.type = 'password';
+        button.textContent = '👁️';
+        button.title = 'Show Password';
+    }
 }
 
 // Function to save new user from modal
 function saveNewUserFromModal() {
-    const name = document.getElementById('newUserName').value;
-    const email = document.getElementById('newUserEmail').value;
+    const name = document.getElementById('newUserName').value.trim();
+    const email = document.getElementById('newUserEmail').value.trim();
     const role = document.getElementById('newUserRole').value;
     const password = document.getElementById('newUserPassword').value;
+    const phone = document.getElementById('newUserPhone').value.trim();
     
+    // Validation
     if (!name || !email || !role || !password) {
-        alert('❌ Please fill in all required fields');
+        showModalError('❌ Please fill in all required fields');
         return;
     }
     
-    // Call the dashboard's saveNewUser method if available
-    if (window.dashboard && window.dashboard.saveNewUser) {
-        // Temporarily set the avatar field for compatibility
-        const avatarInput = document.getElementById('newUserAvatar');
-        if (!avatarInput) {
-            const form = document.getElementById('addUserForm');
-            form.insertAdjacentHTML('beforeend', '<input type="hidden" id="newUserAvatar" value="👤">');
-        }
-        
-        window.dashboard.saveNewUser();
-        document.querySelector('.modal').remove();
-    } else {
-        // Fallback: save user directly
-        saveUserDirectly(name, email, role, password);
+    if (password.length < 6) {
+        showModalError('❌ Password must be at least 6 characters long');
+        return;
     }
+    
+    if (!isValidEmail(email)) {
+        showModalError('❌ Please enter a valid email address');
+        return;
+    }
+    
+    // Save user directly via API
+    saveUserDirectly(name, email, role, password, phone);
 }
 
-// Fallback function to save user directly
-async function saveUserDirectly(name, email, role, password) {
+// Validation helper functions
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function showModalError(message) {
+    // Remove existing error
+    const existingError = document.querySelector('.modal-error');
+    if (existingError) {
+        existingError.remove();
+    }
+    
+    // Add error message
+    const modalBody = document.querySelector('.modal-body');
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'modal-error';
+    errorDiv.style.cssText = `
+        background: #fee2e2;
+        color: #dc2626;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 16px;
+        border: 1px solid #fecaca;
+        font-size: 14px;
+    `;
+    errorDiv.textContent = message;
+    modalBody.insertBefore(errorDiv, modalBody.firstChild);
+    
+    // Remove error after 5 seconds
+    setTimeout(() => {
+        if (errorDiv.parentNode) {
+            errorDiv.remove();
+        }
+    }, 5000);
+}
+
+function showModalSuccess(message) {
+    // Remove existing messages
+    const existingError = document.querySelector('.modal-error');
+    if (existingError) {
+        existingError.remove();
+    }
+    
+    // Add success message
+    const modalBody = document.querySelector('.modal-body');
+    const successDiv = document.createElement('div');
+    successDiv.className = 'modal-success';
+    successDiv.style.cssText = `
+        background: #dcfce7;
+        color: #16a34a;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 16px;
+        border: 1px solid #bbf7d0;
+        font-size: 14px;
+    `;
+    successDiv.textContent = message;
+    modalBody.insertBefore(successDiv, modalBody.firstChild);
+}
+
+// Function to save user directly via API
+async function saveUserDirectly(name, email, role, password, phone = '') {
     try {
-        // Show loading
+        // Show loading state
         const modal = document.querySelector('.modal');
-        const button = modal.querySelector('.btn-primary');
+        const button = modal.querySelector('#saveUserBtn');
         const originalText = button.textContent;
-        button.textContent = '⏳ Adding...';
+        button.textContent = '⏳ Creating User...';
         button.disabled = true;
+        
+        // Remove any existing error messages
+        const existingError = document.querySelector('.modal-error');
+        if (existingError) {
+            existingError.remove();
+        }
+        
+        // Prepare user data
+        const userData = {
+            firstName: name.split(' ')[0] || name,
+            lastName: name.split(' ').slice(1).join(' ') || '',
+            email: email,
+            password: password,
+            role: role
+        };
+        
+        // Add phone if provided
+        if (phone) {
+            userData.phoneNumber = phone;
+        }
+        
+        console.log('🚀 Creating user:', { ...userData, password: '[HIDDEN]' });
         
         // Make API call to create user
         const response = await fetch('/api/Auth/register', {
@@ -162,34 +329,62 @@ async function saveUserDirectly(name, email, role, password) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('sessionToken')}`
             },
-            body: JSON.stringify({
-                firstName: name.split(' ')[0] || name,
-                lastName: name.split(' ').slice(1).join(' ') || '',
-                email: email,
-                password: password,
-                role: role
-            })
+            body: JSON.stringify(userData)
         });
         
         if (response.ok) {
-            alert('✅ User added successfully!');
-            modal.remove();
+            const result = await response.json();
+            console.log('✅ User created successfully:', result);
             
-            // Refresh users list if dashboard exists
-            if (window.dashboard && window.dashboard.loadUsers) {
-                window.dashboard.loadUsers();
-            }
+            showModalSuccess('✅ User created successfully!');
+            
+            // Close modal after 2 seconds
+            setTimeout(() => {
+                modal.remove();
+                
+                // Refresh users list if dashboard exists
+                if (window.dashboard && window.dashboard.loadUsers) {
+                    window.dashboard.loadUsers();
+                }
+                
+                // Show notification if available
+                if (window.dashboard && window.dashboard.showNotification) {
+                    window.dashboard.showNotification(`✅ User ${name} added successfully!`, 'success');
+                }
+            }, 2000);
+            
         } else {
-            const error = await response.text();
-            alert(`❌ Failed to add user: ${error}`);
+            const errorText = await response.text();
+            console.error('❌ Failed to create user:', errorText);
+            
+            let errorMessage = '❌ Failed to create user';
+            try {
+                const errorObj = JSON.parse(errorText);
+                if (errorObj.message) {
+                    errorMessage = `❌ ${errorObj.message}`;
+                } else if (errorObj.errors) {
+                    const firstError = Object.values(errorObj.errors)[0];
+                    if (Array.isArray(firstError)) {
+                        errorMessage = `❌ ${firstError[0]}`;
+                    }
+                }
+            } catch (e) {
+                if (errorText.includes('already exists')) {
+                    errorMessage = '❌ A user with this email already exists';
+                } else if (errorText.includes('password')) {
+                    errorMessage = '❌ Password does not meet requirements';
+                }
+            }
+            
+            showModalError(errorMessage);
             button.textContent = originalText;
             button.disabled = false;
         }
     } catch (error) {
-        console.error('Error adding user:', error);
-        alert('❌ Error adding user. Please try again.');
+        console.error('❌ Network error creating user:', error);
+        showModalError('❌ Network error. Please check your connection and try again.');
         
-        const button = document.querySelector('.modal .btn-primary');
+        const button = document.querySelector('#saveUserBtn');
         if (button) {
             button.textContent = '➕ Add User';
             button.disabled = false;
