@@ -51,27 +51,151 @@ window.addNewUser = function() {
         return;
     }
     
-    console.log('✅ Admin access confirmed, redirecting...');
+    console.log('✅ Admin access confirmed, showing modal...');
     
-    // Show loading message
-    if (window.dashboard && window.dashboard.showNotification) {
-        window.dashboard.showNotification('🔄 Opening user registration form...', 'info');
-    }
-    
-    // Redirect to admin agent registration page
-    try {
-        const targetUrl = 'admin-agent-registration.html';
-        console.log('🔄 Redirecting to:', targetUrl);
-        window.location.href = targetUrl;
-    } catch (error) {
-        console.error('❌ Redirect failed:', error);
-        if (window.dashboard && window.dashboard.showNotification) {
-            window.dashboard.showNotification('❌ Failed to open registration form', 'error');
-        } else {
-            alert('❌ Failed to open registration form');
-        }
+    // Show the add user modal instead of redirecting
+    if (window.dashboard && window.dashboard.showAddUserModal) {
+        window.dashboard.showAddUserModal();
+    } else {
+        // Fallback: create and show modal directly
+        showAddUserModal();
     }
 };
+
+// Standalone function to show add user modal
+function showAddUserModal() {
+    // Remove any existing modal
+    const existingModal = document.querySelector('.modal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    // Create modal HTML
+    const modalHTML = `
+        <div class="modal" style="display: flex;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>➕ Add New User</h3>
+                    <button class="modal-close" onclick="this.closest('.modal').remove()">✕</button>
+                </div>
+                <div class="modal-body">
+                    <form id="addUserForm">
+                        <div class="form-group">
+                            <label for="newUserName">Full Name *</label>
+                            <input type="text" id="newUserName" required placeholder="Enter full name">
+                        </div>
+                        <div class="form-group">
+                            <label for="newUserEmail">Email Address *</label>
+                            <input type="email" id="newUserEmail" required placeholder="user@urbanreferral.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="newUserRole">Role *</label>
+                            <select id="newUserRole" required>
+                                <option value="">Select role...</option>
+                                <option value="Agent">Agent</option>
+                                <option value="Supervisor">Supervisor</option>
+                                <option value="Manager">Manager</option>
+                                <option value="Admin">Admin</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="newUserPassword">Temporary Password *</label>
+                            <input type="password" id="newUserPassword" required placeholder="Enter temporary password">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="this.closest('.modal').remove()">Cancel</button>
+                    <button class="btn-primary" onclick="saveNewUserFromModal()">➕ Add User</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Add modal to page
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+}
+
+// Function to save new user from modal
+function saveNewUserFromModal() {
+    const name = document.getElementById('newUserName').value;
+    const email = document.getElementById('newUserEmail').value;
+    const role = document.getElementById('newUserRole').value;
+    const password = document.getElementById('newUserPassword').value;
+    
+    if (!name || !email || !role || !password) {
+        alert('❌ Please fill in all required fields');
+        return;
+    }
+    
+    // Call the dashboard's saveNewUser method if available
+    if (window.dashboard && window.dashboard.saveNewUser) {
+        // Temporarily set the avatar field for compatibility
+        const avatarInput = document.getElementById('newUserAvatar');
+        if (!avatarInput) {
+            const form = document.getElementById('addUserForm');
+            form.insertAdjacentHTML('beforeend', '<input type="hidden" id="newUserAvatar" value="👤">');
+        }
+        
+        window.dashboard.saveNewUser();
+        document.querySelector('.modal').remove();
+    } else {
+        // Fallback: save user directly
+        saveUserDirectly(name, email, role, password);
+    }
+}
+
+// Fallback function to save user directly
+async function saveUserDirectly(name, email, role, password) {
+    try {
+        // Show loading
+        const modal = document.querySelector('.modal');
+        const button = modal.querySelector('.btn-primary');
+        const originalText = button.textContent;
+        button.textContent = '⏳ Adding...';
+        button.disabled = true;
+        
+        // Make API call to create user
+        const response = await fetch('/api/Auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('sessionToken')}`
+            },
+            body: JSON.stringify({
+                firstName: name.split(' ')[0] || name,
+                lastName: name.split(' ').slice(1).join(' ') || '',
+                email: email,
+                password: password,
+                role: role
+            })
+        });
+        
+        if (response.ok) {
+            alert('✅ User added successfully!');
+            modal.remove();
+            
+            // Refresh users list if dashboard exists
+            if (window.dashboard && window.dashboard.loadUsers) {
+                window.dashboard.loadUsers();
+            }
+        } else {
+            const error = await response.text();
+            alert(`❌ Failed to add user: ${error}`);
+            button.textContent = originalText;
+            button.disabled = false;
+        }
+    } catch (error) {
+        console.error('Error adding user:', error);
+        alert('❌ Error adding user. Please try again.');
+        
+        const button = document.querySelector('.modal .btn-primary');
+        if (button) {
+            button.textContent = '➕ Add User';
+            button.disabled = false;
+        }
+    }
+}
 
 class Dashboard {
     constructor() {
