@@ -1,13 +1,9 @@
 services:
   - type: web
     name: urban-referral-network
-    runtime: dotnet
-    env: dotnet
+    runtime: docker
     rootDir: ./geospatial
-    buildCommand: |
-      dotnet restore
-      dotnet publish -c Release -o ./publish --no-restore
-    startCommand: dotnet ./publish/UrbanReferralNetwork.dll
+    dockerfilePath: ./Dockerfile
     plan: starter
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
