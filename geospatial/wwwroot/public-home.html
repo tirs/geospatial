@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Referral Network - Los Angeles</title>
+    <script>
+        // Redirect to unified login for staff access
+        // Public users can still access this page by going to /public-home.html directly
+        if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+            window.location.href = '/unified-login.html';
+        }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 60px;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 18px 35px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: all 0.3s;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .cta-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-btn.primary {
+            background: #4CAF50;
+            border-color: #4CAF50;
+        }
+
+        .cta-btn.primary:hover {
+            background: #45a049;
+            border-color: #45a049;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            opacity: 0.9;
+        }
+
+        .section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section h2 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 50px;
+        }
+
+        .how-it-works {
+            background: #f8f9fa;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .step {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+        }
+
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 0 auto 20px;
+        }
+
+        .step h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .step p {
+            color: #666;
+        }
+
+        .contact-section {
+            background: #333;
+            color: white;
+            text-align: center;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2em;
+        }
+
+        .admin-link {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #667eea;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .admin-link:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .register-section {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .register-btn {
+            display: inline-flex;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5em;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>🏢 Urban Referral Network</h1>
+        <p>Connecting Los Angeles customers with trusted local contractors. Professional referral service for all your home improvement needs.</p>
+        
+        <div class="cta-buttons">
+            <a href="pages/contractor-registration-new.html" class="cta-btn primary">
+                🏗️ Join as Contractor
+            </a>
+            <a href="tel:1-800-777-7777" class="cta-btn">
+                📞 Call for Service
+            </a>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Targeted Referrals</h3>
+                <p>We match customers with the 3 closest qualified contractors in their area</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⭐</div>
+                <h3>Quality Assured</h3>
+                <p>All contractors are vetted and approved before joining our network</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📍</div>
+                <h3>Local Focus</h3>
+                <p>Serving the greater Los Angeles area with local expertise</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="section how-it-works">
+        <h2>How It Works</h2>
+        <p class="section-subtitle">Simple process for contractors and customers</p>
+        
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Customer Calls</h3>
+                <p>Customers call our referral line for home improvement services</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>We Find Contractors</h3>
+                <p>Our system finds the 3 closest qualified contractors in their area</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Referrals Sent</h3>
+                <p>Customer receives contact information for all 3 contractors</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Work Gets Done</h3>
+                <p>Customer chooses their preferred contractor and work begins</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- For Contractors -->
+    <section class="section">
+        <h2>Join Our Contractor Network</h2>
+        <p class="section-subtitle">Start receiving qualified customer referrals today</p>
+        
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">✍️</div>
+                <h3>Register Online</h3>
+                <p>Complete our simple registration form with your business details</p>
+            </div>
+            <div class="step">
+                <div class="step-number">✅</div>
+                <h3>Get Approved</h3>
+                <p>We review your application and approve qualified contractors</p>
+            </div>
+            <div class="step">
+                <div class="step-number">📞</div>
+                <h3>Receive Referrals</h3>
+                <p>Start getting calls from customers in your service area</p>
+            </div>
+            <div class="step">
+                <div class="step-number">💰</div>
+                <h3>Grow Your Business</h3>
+                <p>Build your customer base with quality referrals</p>
+            </div>
+        </div>
+
+        <div class="register-section">
+            <a href="pages/contractor-registration-new.html" class="cta-btn primary register-btn">
+                🚀 Register Now - It's Free!
+            </a>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section contact-section">
+        <h2>Contact Us</h2>
+        <p class="section-subtitle">Ready to get started? We're here to help</p>
+        
+        <div class="contact-info">
+            <div class="contact-item">
+                <span>📞</span>
+                <span>1-800-777-7777</span>
+            </div>
+            <div class="contact-item">
+                <span>🌐</span>
+                <span>Los Angeles Area</span>
+            </div>
+            <div class="contact-item">
+                <span>⏰</span>
+                <span>24/7 Service</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Link -->
+    <a href="login.html" class="admin-link">
+        👨‍💼 Staff Login
+    </a>
+</body>
+</html>

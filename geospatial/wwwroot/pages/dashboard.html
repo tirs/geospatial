@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Referral Network - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/navigation.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/contractor-finder.css">
+    <link rel="stylesheet" href="../css/quick-actions-production.css">
+    <link rel="stylesheet" href="../css/referral-management.css">
+    <meta name="description" content="Urban Referral Network Dashboard - Manage contractors and referrals">
+</head>
+<body>
+    <!-- Navigation Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="logo-icon">🏢</span>
+                <span class="logo-text">Urban Referral</span>
+            </div>
+            <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar menu" title="Toggle sidebar menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        
+        <div class="sidebar-menu">
+            <div class="menu-section">
+                <h3 class="menu-title">Main</h3>
+                <ul class="menu-list">
+                    <li class="menu-item active">
+                        <a href="#dashboard" class="menu-link" data-section="dashboard">
+                            <span class="menu-icon">📊</span>
+                            <span class="menu-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#contractor-finder" class="menu-link" data-section="contractor-finder">
+                            <span class="menu-icon">🔍</span>
+                            <span class="menu-text">Find Contractors</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#referrals" class="menu-link" data-section="referrals">
+                            <span class="menu-icon">📋</span>
+                            <span class="menu-text">Referrals</span>
+                            <span class="menu-badge" id="referralsBadge">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="menu-section">
+                <h3 class="menu-title">Management</h3>
+                <ul class="menu-list">
+                    <li class="menu-item">
+                        <a href="#contractors" class="menu-link" data-section="contractors">
+                            <span class="menu-icon">👷</span>
+                            <span class="menu-text">Contractors</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#pending-contractors" class="menu-link" data-section="pending-contractors">
+                            <span class="menu-icon">⏳</span>
+                            <span class="menu-text">Pending Contractors</span>
+                            <span class="menu-badge" id="pendingContractorsBadge">0</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#analytics" class="menu-link" data-section="analytics">
+                            <span class="menu-icon">📈</span>
+                            <span class="menu-text">Analytics</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#settings" class="menu-link" data-section="settings">
+                            <span class="menu-icon">⚙️</span>
+                            <span class="menu-text">Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar">👤</div>
+                <div class="user-info">
+                    <div class="user-name">Call Center</div>
+                    <div class="user-role">Operator</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="header-left">
+                <button type="button" class="mobile-menu-toggle" id="mobileMenuToggle" title="Toggle mobile menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <h1 class="page-title">Dashboard</h1>
+            </div>
+            
+            <div class="header-right">
+                <div class="search-box">
+                    <input type="text" placeholder="Search..." class="search-input">
+                    <button class="search-btn">🔍</button>
+                </div>
+                
+                <div class="header-actions">
+                    <span class="user-name">Loading...</span>
+                    <button class="logout-btn" title="Logout">🚪</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="content-area">
+            <!-- Dashboard Section -->
+            <section class="content-section active" id="dashboard-section">
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card primary">
+                        <div class="stat-icon">👷</div>
+                        <div class="stat-content">
+                            <div class="stat-number">6</div>
+                            <div class="stat-label">Active Contractors</div>
+                            <div class="stat-change neutral">Loading...</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card success">
+                        <div class="stat-icon">📋</div>
+                        <div class="stat-content">
+                            <div class="stat-number" data-stat="total-referrals">0</div>
+                            <div class="stat-label">Total Referrals</div>
+                            <div class="stat-change positive">Live data</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card warning">
+                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-content">
+                            <div class="stat-number" data-stat="pending-referrals">0</div>
+                            <div class="stat-label">Pending Referrals</div>
+                            <div class="stat-change neutral">Live data</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card info">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-content">
+                            <div class="stat-number" data-stat="completed-referrals">0</div>
+                            <div class="stat-label">Completed Referrals</div>
+                            <div class="stat-change positive">Live data</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h3>Quick Actions</h3>
+                    <div class="actions-grid">
+                        <button class="action-card" data-action="find-contractors" title="Search for contractors in your area">
+                            <div class="action-icon">🔍</div>
+                            <div class="action-title">Find Contractors</div>
+                            <div class="action-desc">Search for contractors in your area</div>
+                        </button>
+                        
+                        <button class="action-card" data-action="create-referral" title="Generate a new customer referral">
+                            <div class="action-icon">📋</div>
+                            <div class="action-title">Create Referral</div>
+                            <div class="action-desc">Generate a new customer referral</div>
+                        </button>
+                        
+                        <button class="action-card" data-action="view-reports" title="Access analytics and reports">
+                            <div class="action-icon">📊</div>
+                            <div class="action-title">View Reports</div>
+                            <div class="action-desc">Access analytics and reports</div>
+                        </button>
+                        
+                        <button class="action-card" data-action="manage-contractors" title="Add or edit contractor profiles">
+                            <div class="action-icon">👷</div>
+                            <div class="action-title">Manage Contractors</div>
+                            <div class="action-desc">Add or edit contractor profiles</div>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contractor Finder Section -->
+            <section class="content-section" id="contractor-finder-section">
+                <div class="section-header">
+                    <h2>Find Contractors</h2>
+                    <p>Search for qualified contractors in Los Angeles area</p>
+                </div>
+                
+                <div class="finder-container">
+                    <!-- Search Form -->
+                    <div class="search-panel">
+                        <div class="panel-header">
+                            <h3>Search Criteria</h3>
+                        </div>
+                        <form id="contractorSearchForm" class="search-form">
+                            <div class="form-group">
+                                <label for="zipCode">ZIP Code *</label>
+                                <input type="text" id="zipCode" name="zipCode" required 
+                                       placeholder="Enter ZIP code (e.g., 90210)" maxlength="10"
+                                       autocomplete="postal-code">
+                                <div class="validation-message" id="zipValidation"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="serviceType">Service Type</label>
+                                <select id="serviceType" name="serviceType">
+                                    <option value="">All Services</option>
+                                    <option value="Plumbing">🔧 Plumbing</option>
+                                    <option value="Electrical">⚡ Electrical</option>
+                                    <option value="HVAC">❄️ HVAC</option>
+                                    <option value="Roofing">🏠 Roofing</option>
+                                    <option value="Flooring">🏗️ Flooring</option>
+                                    <option value="Painting">🎨 Painting</option>
+                                    <option value="Landscaping">🌿 Landscaping</option>
+                                    <option value="Handyman">🔨 Handyman</option>
+                                    <option value="Pool Service">🏊 Pool Service</option>
+                                    <option value="Pest Control">🐛 Pest Control</option>
+                                    <option value="Cleaning">🧹 Cleaning</option>
+                                    <option value="Moving">📦 Moving</option>
+                                    <option value="Security">🔒 Security</option>
+                                    <option value="Solar">☀️ Solar</option>
+                                    <option value="Windows">🪟 Windows</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="maxDistance">Search Radius</label>
+                                <select id="maxDistance" name="maxDistance">
+                                    <option value="10">📍 10 miles</option>
+                                    <option value="15">📍 15 miles</option>
+                                    <option value="25" selected>📍 25 miles</option>
+                                    <option value="35">📍 35 miles</option>
+                                    <option value="50">📍 50 miles</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="search-btn primary" id="searchBtn">
+                                <span class="btn-text">🔍 Find Contractors</span>
+                                <span class="btn-loading">Searching...</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Results Panel -->
+                    <div class="results-panel" id="resultsPanel">
+                        <div class="panel-header">
+                            <h3>Search Results</h3>
+                            <div class="results-actions">
+                                <div class="results-info" id="resultsInfo"></div>
+                                <button type="button" class="btn-secondary" id="newSearchBtn">
+                                    🔄 New Search
+                                </button>
+                            </div>
+                        </div>
+                        <div class="contractors-grid" id="contractorsGrid"></div>
+                    </div>
+                </div>
+
+                <!-- Referral Form -->
+                <div class="referral-panel" id="referralPanel">
+                    <div class="panel-header">
+                        <h3>Create Referral</h3>
+                    </div>
+                    <form id="referralForm" class="referral-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="customerName">Customer Name *</label>
+                                <input type="text" id="customerName" name="customerName" required
+                                       placeholder="Enter customer's full name" autocomplete="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="customerPhone">Customer Phone *</label>
+                                <input type="tel" id="customerPhone" name="customerPhone" required
+                                       placeholder="(555) 123-4567" autocomplete="tel">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="customerNotes">Additional Notes</label>
+                            <textarea id="customerNotes" name="customerNotes" rows="3" 
+                                      placeholder="Any special requirements or notes..."></textarea>
+                        </div>
+
+                        <!-- Enhanced Tracking Fields -->
+                        <div class="tracking-section">
+                            <h3>📊 Referral Tracking</h3>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="status">Status</label>
+                                    <select id="status" name="status">
+                                        <option value="Referred">Referred</option>
+                                        <option value="Contacted">Contacted</option>
+                                        <option value="Appointment">Appointment Scheduled</option>
+                                        <option value="Estimate">Estimate Provided</option>
+                                        <option value="Work Started">Work Started</option>
+                                        <option value="Completed">Completed</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="appointmentDate">Appointment Date</label>
+                                    <input type="datetime-local" id="appointmentDate" name="appointmentDate">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="estimateAmount">Estimate Amount ($)</label>
+                                    <input type="number" id="estimateAmount" name="estimateAmount" 
+                                           step="0.01" min="0" placeholder="0.00">
+                                </div>
+                                <div class="form-group">
+                                    <label for="workStartDate">Work Start Date</label>
+                                    <input type="date" id="workStartDate" name="workStartDate">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="workCompletedDate">Work Completed Date</label>
+                                    <input type="date" id="workCompletedDate" name="workCompletedDate">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="estimateNotes">Estimate Notes</label>
+                                <textarea id="estimateNotes" name="estimateNotes" rows="2" 
+                                          placeholder="Details about the estimate, scope of work, etc..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="selected-contractors" id="selectedContractors">
+                            <h3>Selected Contractors</h3>
+                            <p class="empty-state">No contractors selected yet.</p>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" id="cancelReferral">Cancel</button>
+                            <button type="submit" class="btn-primary" id="createReferralBtn">
+                                <span class="btn-text">✅ Create Referral</span>
+                                <span class="btn-loading">
+                                    <div class="spinner"></div>
+                                    Creating...
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Referrals Section -->
+            <section class="content-section" id="referrals-section">
+                <div class="section-header">
+                    <h2>Referral Management</h2>
+                    <p>Manage and track customer referrals</p>
+                </div>
+                
+                <div class="referrals-container">
+                    <div class="referrals-filters">
+                        <div class="filter-group">
+                            <label for="statusFilter">Status:</label>
+                            <select id="statusFilter">
+                                <option value="">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="contacted">Contacted</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="dateFilter">Date Range:</label>
+                            <select id="dateFilter">
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="all">All Time</option>
+                            </select>
+                        </div>
+                        <button class="btn primary" onclick="refreshReferrals()">Refresh</button>
+                    </div>
+                    
+                    <div class="referrals-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Customer</th>
+                                    <th>Service</th>
+                                    <th>Contractor</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="referralsTableBody">
+                                <!-- Referrals will be loaded dynamically -->
+                                <tr>
+                                    <td colspan="7" class="referrals-loading-cell">
+                                        <div class="referrals-loading-icon"></div>
+                                        <h3>Loading referrals...</h3>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contractors Section -->
+            <section class="content-section" id="contractors-section">
+                <div class="section-header">
+                    <h2>Contractor Management</h2>
+                    <p>Manage contractor profiles and performance</p>
+                </div>
+                
+                <div class="contractors-container">
+                    <div class="contractors-actions">
+                        <button class="btn primary" onclick="addNewContractor()">➕ Add New Contractor</button>
+                        <button class="btn secondary" onclick="exportContractors()">📊 Export Data</button>
+                        <div class="search-box">
+                            <input type="text" placeholder="Search contractors..." id="contractorSearch" 
+                                   onkeypress="if(event.key==='Enter') searchContractors()"
+                                   oninput="if(this.value==='') searchContractors()">
+                            <button class="search-btn" onclick="searchContractors()">🔍</button>
+                            <button class="search-btn btn-gray" onclick="clearSearch()" title="Clear Search">✕</button>
+                        </div>
+                    </div>
+                    
+                    <div class="contractors-grid" id="contractorsManagementGrid">
+                        <!-- Contractors will be loaded dynamically -->
+                        <div class="loading-state">
+                            <p>Loading contractors...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pending Contractors Section -->
+            <section class="content-section" id="pending-contractors-section">
+                <div class="section-header">
+                    <h2>⏳ Pending Contractor Applications</h2>
+                    <p>Review and approve new contractor registrations</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid" id="pendingStatsContainer">
+                    <div class="stat-card primary">
+                        <div class="stat-icon">📋</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="totalPendingCount">0</div>
+                            <div class="stat-label">Total Pending</div>
+                            <div class="stat-change positive">+0 today</div>
+                        </div>
+                    </div>
+                    <div class="stat-card warning">
+                        <div class="stat-icon">⚠️</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="urgentPendingCount">0</div>
+                            <div class="stat-label">Urgent (2+ days)</div>
+                            <div class="stat-change negative">Needs attention</div>
+                        </div>
+                    </div>
+                    <div class="stat-card success">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="todayPendingCount">0</div>
+                            <div class="stat-label">Applied Today</div>
+                            <div class="stat-change positive">Fresh applications</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending Contractors Grid -->
+                <div class="pending-contractors-container">
+                    <div class="section-toolbar">
+                        <div class="toolbar-left">
+                            <h3>Pending Applications</h3>
+                        </div>
+                        <div class="toolbar-right">
+                            <button class="btn-primary" onclick="window.dashboard.refreshPendingContractors()">
+                                🔄 Refresh
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="pending-contractors-grid" id="pendingContractorsGrid">
+                        <!-- Pending contractors will be loaded dynamically -->
+                        <div class="loading-state">
+                            <div class="loading-spinner"></div>
+                            <p>Loading pending contractors...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section class="content-section" id="analytics-section">
+                <div class="section-header">
+                    <h2>Analytics & Reports</h2>
+                    <p>Performance metrics and business insights</p>
+                </div>
+                
+                <div class="analytics-container">
+                    <div class="analytics-filters">
+                        <div class="filter-group">
+                            <label for="analyticsDateRange">Date Range:</label>
+                            <select id="analyticsDateRange">
+                                <option value="7">Last 7 Days</option>
+                                <option value="30" selected>Last 30 Days</option>
+                                <option value="90">Last 90 Days</option>
+                                <option value="365">Last Year</option>
+                            </select>
+                        </div>
+                        <button class="btn primary" onclick="updateAnalytics()">🔄 Update</button>
+                        <button class="btn secondary" onclick="exportReport()">📊 Export Report</button>
+                        <button class="btn info" onclick="generateSampleData()" title="Generate sample data for testing">🎲 Sample Data</button>
+                    </div>
+                    
+                    <div class="analytics-grid">
+                        <div class="analytics-card">
+                            <h4>📈 Referral Trends</h4>
+                            <div class="chart-placeholder">
+                                <div class="chart-bar h-60"></div>
+                                <div class="chart-bar h-80"></div>
+                                <div class="chart-bar h-45"></div>
+                                <div class="chart-bar h-90"></div>
+                                <div class="chart-bar h-70"></div>
+                                <div class="chart-bar h-85"></div>
+                                <div class="chart-bar h-95"></div>
+                            </div>
+                            <p class="chart-description">Daily referral volume over the past week</p>
+                        </div>
+                        
+                        <div class="analytics-card">
+                            <h4>🎯 Conversion Rates</h4>
+                            <div class="metric-display">
+                                <div class="metric-item">
+                                    <span class="metric-value">78%</span>
+                                    <span class="metric-label">Contact Rate</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-value">65%</span>
+                                    <span class="metric-label">Completion Rate</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-value">4.7</span>
+                                    <span class="metric-label">Avg Rating</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="analytics-card">
+                            <h4>🏆 Top Performers</h4>
+                            <div class="top-performers">
+                                <div class="performer-item">
+                                    <span class="rank">1</span>
+                                    <span class="name">ABC Plumbing</span>
+                                    <span class="score">98%</span>
+                                </div>
+                                <div class="performer-item">
+                                    <span class="rank">2</span>
+                                    <span class="name">Quick Fix Electric</span>
+                                    <span class="score">95%</span>
+                                </div>
+                                <div class="performer-item">
+                                    <span class="rank">3</span>
+                                    <span class="name">Cool Air HVAC</span>
+                                    <span class="score">92%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="analytics-card">
+                            <h4>📊 Service Distribution</h4>
+                            <div class="service-stats">
+                                <div class="service-item">
+                                    <span class="service-name">Plumbing</span>
+                                    <div class="service-bar">
+                                        <div class="service-fill w-35"></div>
+                                    </div>
+                                    <span class="service-percent">35%</span>
+                                </div>
+                                <div class="service-item">
+                                    <span class="service-name">Electrical</span>
+                                    <div class="service-bar">
+                                        <div class="service-fill w-28"></div>
+                                    </div>
+                                    <span class="service-percent">28%</span>
+                                </div>
+                                <div class="service-item">
+                                    <span class="service-name">HVAC</span>
+                                    <div class="service-bar">
+                                        <div class="service-fill w-22"></div>
+                                    </div>
+                                    <span class="service-percent">22%</span>
+                                </div>
+                                <div class="service-item">
+                                    <span class="service-name">Other</span>
+                                    <div class="service-bar">
+                                        <div class="service-fill w-15"></div>
+                                    </div>
+                                    <span class="service-percent">15%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section class="content-section" id="settings-section">
+                <div class="section-header">
+                    <h2>System Settings</h2>
+                    <p>Configure system preferences and user settings</p>
+                </div>
+                
+                <div class="settings-container">
+                    <div class="settings-tabs">
+                        <button class="tab-btn active" onclick="showSettingsTab('general')">General</button>
+                        <button class="tab-btn" onclick="showSettingsTab('notifications')">Notifications</button>
+                        <button class="tab-btn" onclick="showSettingsTab('users')">Users</button>
+                        <button class="tab-btn" onclick="showSettingsTab('system')">System</button>
+                    </div>
+                    
+                    <div class="settings-content">
+                        <!-- General Settings -->
+                        <div class="settings-tab active" id="general-tab">
+                            <h4>General Settings</h4>
+                            <div class="settings-form">
+                                <div class="form-group">
+                                    <label for="companyName">Company Name</label>
+                                    <input type="text" id="companyName" value="Urban Referral Network">
+                                </div>
+                                <div class="form-group">
+                                    <label for="defaultRadius">Default Search Radius (miles)</label>
+                                    <select id="defaultRadius">
+                                        <option value="10">10 miles</option>
+                                        <option value="15">15 miles</option>
+                                        <option value="25" selected>25 miles</option>
+                                        <option value="35">35 miles</option>
+                                        <option value="50">50 miles</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="timezone">Timezone</label>
+                                    <select id="timezone">
+                                        <option value="PST" selected>Pacific Standard Time</option>
+                                        <option value="MST">Mountain Standard Time</option>
+                                        <option value="CST">Central Standard Time</option>
+                                        <option value="EST">Eastern Standard Time</option>
+                                    </select>
+                                </div>
+                                <button class="btn primary" onclick="saveGeneralSettings()">💾 Save Changes</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Notifications Settings -->
+                        <div class="settings-tab" id="notifications-tab">
+                            <h4>Notification Settings</h4>
+                            <div class="settings-form">
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="emailReferrals" checked>
+                                        <span class="checkmark"></span>
+                                        📧 Email notifications for new referrals
+                                    </label>
+                                    <small class="setting-description">Get notified via email when new referrals are created</small>
+                                </div>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="smsAlerts" checked>
+                                        <span class="checkmark"></span>
+                                        📱 SMS alerts for urgent requests
+                                    </label>
+                                    <small class="setting-description">Receive text messages for high-priority referrals</small>
+                                </div>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="dailyReports">
+                                        <span class="checkmark"></span>
+                                        📊 Daily performance reports
+                                    </label>
+                                    <small class="setting-description">Receive daily analytics and performance summaries</small>
+                                </div>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="systemMaintenance" checked>
+                                        <span class="checkmark"></span>
+                                        🔧 System maintenance notifications
+                                    </label>
+                                    <small class="setting-description">Get alerts about system updates and maintenance</small>
+                                </div>
+                                <button class="btn primary" onclick="saveNotificationSettings()">💾 Save Changes</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Users Settings -->
+                        <div class="settings-tab" id="users-tab">
+                            <h4>User Management</h4>
+                            <div class="users-header">
+                                <p>Manage system users and their permissions</p>
+                                <button class="btn primary" onclick="addNewUser()">➕ Add New User</button>
+                            </div>
+                            <div class="debug-controls">
+                                <small>🔧 Debug Controls:</small>
+                                <div class="debug-controls-buttons">
+                                    <button class="btn" onclick="setAdminRole()">🔑 Set Admin Role</button>
+                                    <button class="btn" onclick="checkUserRole()">📋 Check Role</button>
+                                </div>
+                            </div>
+                            <div class="users-list">
+                                <div class="loading-users">
+                                    <div class="spinner"></div>
+                                    <p>Loading users...</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- System Settings -->
+                        <div class="settings-tab" id="system-tab">
+                            <h4>System Configuration</h4>
+                            <div class="settings-form">
+                                <div class="form-group">
+                                    <label for="maxReferrals">🔢 Max Referrals per Request</label>
+                                    <input type="number" id="maxReferrals" value="3" min="1" max="10">
+                                    <small class="setting-description">Maximum number of contractors to show per search</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="sessionTimeout">⏱️ Session Timeout (minutes)</label>
+                                    <input type="number" id="sessionTimeout" value="30" min="5" max="120">
+                                    <small class="setting-description">How long users stay logged in without activity</small>
+                                </div>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="autoBackups" checked>
+                                        <span class="checkmark"></span>
+                                        💾 Enable automatic backups
+                                    </label>
+                                    <small class="setting-description">Automatically backup system data daily</small>
+                                </div>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="maintenanceMode">
+                                        <span class="checkmark"></span>
+                                        🚧 Maintenance mode
+                                    </label>
+                                    <small class="setting-description warning">⚠️ Enables maintenance mode - limits system access</small>
+                                </div>
+                                <div class="system-actions">
+                                    <button class="btn primary" onclick="saveSystemSettings()">💾 Save Changes</button>
+                                    <button class="btn secondary" onclick="window.dashboard.resetSystemSettings()">🔄 Reset to Defaults</button>
+                                </div>
+                                
+                                <div class="system-tools">
+                                    <h5>🛠️ System Tools</h5>
+                                    <div>
+
+                                        <button class="btn info" onclick="window.dashboard.exportSettings()">📤 Export Settings</button>
+                                        <button class="btn info" onclick="window.dashboard.importSettings()">📥 Import Settings</button>
+                                        <button class="btn warning" onclick="window.dashboard.clearAllData()">🗑️ Clear All Data</button>
+                                        <button class="btn secondary" onclick="window.dashboard.showSystemStatus()">📊 System Status</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🎉 Referral Created Successfully!</h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Your referral has been created and logged in the system.</p>
+                <div class="referral-details" id="referralDetails"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn primary" id="newSearch">New Search</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contractor Management Modals -->
+    <div class="modal" id="contractorModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add New Contractor</h3>
+                <button class="modal-close" onclick="closeContractorModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="contractorForm" class="contractor-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contractorName">Business Name *</label>
+                            <input type="text" id="contractorName" name="contractorName" required
+                                   placeholder="Enter business name">
+                        </div>
+                        <div class="form-group">
+                            <label for="contractorPhone">Phone Number *</label>
+                            <input type="tel" id="contractorPhone" name="contractorPhone" required
+                                   placeholder="(555) 123-4567">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contractorEmail">Email Address *</label>
+                            <input type="email" id="contractorEmail" name="contractorEmail" required
+                                   placeholder="contact@business.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="serviceType">Service Type *</label>
+                            <select id="serviceType" name="serviceType" required>
+                                <option value="">Select Service Type</option>
+                                <option value="Plumbing">Plumbing</option>
+                                <option value="Electrical">Electrical</option>
+                                <option value="HVAC">HVAC</option>
+                                <option value="General Contractor">General Contractor</option>
+                                <option value="Roofing">Roofing</option>
+                                <option value="Flooring">Flooring</option>
+                                <option value="Painting">Painting</option>
+                                <option value="Landscaping">Landscaping</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="serviceArea">Service Area (ZIP Codes)</label>
+                        <input type="text" id="serviceArea" name="serviceArea"
+                               placeholder="90210, 90211, 90212">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="specialties">Specialties</label>
+                        <textarea id="specialties" name="specialties" rows="3"
+                                  placeholder="List specialties and services offered..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeContractorModal()">Cancel</button>
+                <button type="button" class="btn-primary" onclick="saveContractor()">💾 Save Contractor</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contractor Details Modal -->
+    <div class="modal" id="contractorDetailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Contractor Details</h3>
+                <button class="modal-close" onclick="closeContractorDetailsModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="contractorDetailsContent">
+                    <p>Loading contractor details...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeContractorDetailsModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/navigation.js"></script>
+    <script src="../js/dashboard.js"></script>
+    <script src="../js/referral-manager.js"></script>
+    <script src="../js/referral-system-tester.js"></script>
+    <script src="../js/action-buttons-tester.js"></script>
+    <script src="../js/quick-actions-production.js"></script>
+    <script src="../js/analytics-manager.js"></script>
+    <script src="../js/contractor-manager.js"></script>
+    <script src="../js/contractor-finder.js"></script>
+    <script src="../js/quick-actions-tester.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        // Set page-specific navigation info and protect page
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Protect this page - require supervisor level access or higher
+            const isAuthorized = await auth.initializePage(PERMISSIONS.SUPERVISOR);
+            
+            if (isAuthorized) {
+                if (window.navigationManager) {
+                    window.navigationManager.setPageInfo('Dashboard');
+                }
+                
+                // Update user info in navigation
+                const userNameElements = document.querySelectorAll('.user-name, .agent-name');
+                userNameElements.forEach(el => {
+                    if (auth.agentName) {
+                        el.textContent = auth.agentName;
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

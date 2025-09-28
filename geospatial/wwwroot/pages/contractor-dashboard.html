@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Contractor Dashboard - Urban Referral Network</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/urban-theme.css">
+    <link rel="stylesheet" href="/css/contractor-dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <div class="logo-icon">🏢</div>
+                    <div class="logo-text">
+                        <h1>Urban Referral</h1>
+                        <p>Contractor Portal</p>
+                    </div>
+                </div>
+                <button type="button" class="mobile-toggle" id="sidebarToggle" title="Toggle sidebar menu" aria-label="Toggle sidebar navigation">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+            
+            <div class="sidebar-content">
+                <div class="contractor-profile">
+                    <div class="profile-image">
+                        <span class="profile-initial" id="profileInitial">C</span>
+                    </div>
+                    <div class="profile-info">
+                        <h3 id="contractorName">Company Name</h3>
+                        <p id="contractorStatus" class="status-badge active">Active</p>
+                    </div>
+                </div>
+                
+                <nav class="sidebar-nav">
+                    <ul>
+                        <li class="nav-item active" data-section="dashboard">
+                            <a href="#dashboard">
+                                <span class="nav-icon">📊</span>
+                                <span class="nav-text">Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" data-section="referrals">
+                            <a href="#referrals">
+                                <span class="nav-icon">📋</span>
+                                <span class="nav-text">Referrals</span>
+                                <span class="badge" id="newReferralsBadge">0</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" data-section="profile">
+                            <a href="#profile">
+                                <span class="nav-icon">👤</span>
+                                <span class="nav-text">My Profile</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" data-section="services">
+                            <a href="#services">
+                                <span class="nav-icon">🔧</span>
+                                <span class="nav-text">Services</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" data-section="performance">
+                            <a href="#performance">
+                                <span class="nav-icon">📈</span>
+                                <span class="nav-text">Performance</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" data-section="settings">
+                            <a href="#settings">
+                                <span class="nav-icon">⚙️</span>
+                                <span class="nav-text">Settings</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <div class="sidebar-footer">
+                    <button id="logoutBtn" class="logout-btn">
+                        <span class="nav-icon">🚪</span>
+                        <span class="nav-text">Logout</span>
+                    </button>
+                    <p class="support-text">Need help? <a href="tel:18007777777">Call Support</a></p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="content-header">
+                <div class="header-left">
+                    <h1 id="sectionTitle">Dashboard</h1>
+                    <p id="sectionDescription">Welcome to your contractor portal</p>
+                </div>
+                <div class="header-right">
+                    <div class="notification-bell">
+                        <span class="bell-icon">🔔</span>
+                        <span class="notification-badge" id="notificationCount">2</span>
+                    </div>
+                    <div class="header-profile" id="headerProfile">
+                        <span class="profile-initial">C</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section class="content-section active" id="dashboardSection">
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon new-referrals">📋</div>
+                        <div class="stat-content">
+                            <h3 class="stat-value" id="newReferralsCount">0</h3>
+                            <p class="stat-label">New Referrals</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon total-referrals">📊</div>
+                        <div class="stat-content">
+                            <h3 class="stat-value" id="totalReferralsCount">0</h3>
+                            <p class="stat-label">Total Referrals</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon conversion-rate">📈</div>
+                        <div class="stat-content">
+                            <h3 class="stat-value" id="conversionRate">0%</h3>
+                            <p class="stat-label">Conversion Rate</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon rating">⭐</div>
+                        <div class="stat-content">
+                            <h3 class="stat-value" id="ratingValue">0.0</h3>
+                            <p class="stat-label">Rating</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-row">
+                    <div class="dashboard-card recent-referrals">
+                        <div class="card-header">
+                            <h2>Recent Referrals</h2>
+                            <a href="#referrals" class="view-all">View All</a>
+                        </div>
+                        <div class="card-content">
+                            <div class="referral-list" id="recentReferralsList">
+                                <div class="empty-state">
+                                    <div class="empty-icon">📋</div>
+                                    <p>No recent referrals</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card performance-chart">
+                        <div class="card-header">
+                            <h2>Performance Overview</h2>
+                            <div class="time-filter">
+                                <button class="time-btn active" data-period="week">Week</button>
+                                <button class="time-btn" data-period="month">Month</button>
+                                <button class="time-btn" data-period="year">Year</button>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="chart-container" id="performanceChart">
+                                <div class="empty-state">
+                                    <div class="empty-icon">📈</div>
+                                    <p>Performance data will appear here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-row">
+                    <div class="dashboard-card service-area">
+                        <div class="card-header">
+                            <h2>Service Area</h2>
+                            <a href="#profile" class="edit-link">Edit</a>
+                        </div>
+                        <div class="card-content">
+                            <div class="service-area-map" id="serviceAreaMap">
+                                <div class="empty-state">
+                                    <div class="empty-icon">🗺️</div>
+                                    <p>Map loading...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card quick-actions">
+                        <div class="card-header">
+                            <h2>Quick Actions</h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="action-buttons">
+                                <button class="action-btn" id="updateAvailabilityBtn">
+                                    <span class="action-icon">📅</span>
+                                    <span class="action-text">Update Availability</span>
+                                </button>
+                                <button class="action-btn" id="updateServicesBtn">
+                                    <span class="action-icon">🔧</span>
+                                    <span class="action-text">Update Services</span>
+                                </button>
+                                <button class="action-btn" id="updateProfileBtn">
+                                    <span class="action-icon">👤</span>
+                                    <span class="action-text">Edit Profile</span>
+                                </button>
+                                <button class="action-btn" id="contactSupportBtn">
+                                    <span class="action-icon">📞</span>
+                                    <span class="action-text">Contact Support</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Referrals Section -->
+            <section class="content-section" id="referralsSection">
+                <div class="section-header">
+                    <h2>Manage Referrals</h2>
+                    <div class="filter-controls">
+                        <div class="search-box">
+                            <input type="text" id="referralSearch" placeholder="Search referrals..." aria-label="Search referrals">
+                            <button class="search-btn" aria-label="Search" title="Search referrals">🔍</button>
+                        </div>
+                        <div class="filter-dropdown">
+                            <select id="statusFilter" aria-label="Filter by status" title="Filter referrals by status">
+                                <option value="all">All Status</option>
+                                <option value="new">New</option>
+                                <option value="contacted">Contacted</option>
+                                <option value="scheduled">Scheduled</option>
+                                <option value="completed">Completed</option>
+                                <option value="lost">Lost</option>
+                            </select>
+                        </div>
+                        <div class="date-filter">
+                            <input type="date" id="dateFilter" aria-label="Filter by date" title="Filter referrals by date">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="referrals-table-container">
+                    <table class="referrals-table">
+                        <thead>
+                            <tr>
+                                <th>Referral ID</th>
+                                <th>Customer</th>
+                                <th>Service Type</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="referralsTableBody">
+                            <!-- Referrals will be loaded here -->
+                        </tbody>
+                    </table>
+                    <div class="empty-state" id="noReferralsMessage">
+                        <div class="empty-icon">📋</div>
+                        <p>No referrals found</p>
+                    </div>
+                </div>
+                
+                <div class="pagination">
+                    <button class="pagination-btn" id="prevPage" disabled>Previous</button>
+                    <span class="pagination-info" id="paginationInfo">Page 1 of 1</span>
+                    <button class="pagination-btn" id="nextPage" disabled>Next</button>
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section class="content-section" id="profileSection">
+                <div class="profile-header">
+                    <div class="profile-overview">
+                        <div class="profile-image large">
+                            <span class="profile-initial" id="largeProfileInitial">C</span>
+                        </div>
+                        <div class="profile-details">
+                            <h2 id="profileCompanyName">Company Name</h2>
+                            <p id="profileContactName">Contact Person</p>
+                            <div class="profile-badges">
+                                <span class="profile-badge" id="profileVerifiedBadge">✓ Verified</span>
+                                <span class="profile-badge" id="profileRatingBadge">⭐ 0.0</span>
+                                <span class="profile-badge" id="profileExperienceBadge">🔧 Experience: N/A</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="edit-profile-btn" id="editProfileBtn">Edit Profile</button>
+                </div>
+                
+                <div class="profile-content">
+                    <div class="profile-section">
+                        <h3>Company Information</h3>
+                        <div class="profile-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Company Name</label>
+                                    <p id="infoCompanyName" class="profile-info-value">-</p>
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact Person</label>
+                                    <p id="infoContactName" class="profile-info-value">-</p>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <p id="infoPhone" class="profile-info-value">-</p>
+                                </div>
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <p id="infoEmail" class="profile-info-value">-</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-section">
+                        <h3>Location & Service Area</h3>
+                        <div class="profile-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Business Address</label>
+                                    <p id="infoAddress" class="profile-info-value">-</p>
+                                </div>
+                                <div class="form-group">
+                                    <label>ZIP Code</label>
+                                    <p id="infoZipCode" class="profile-info-value">-</p>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Service Radius</label>
+                                    <p id="infoServiceRadius" class="profile-info-value">-</p>
+                                </div>
+                                <div class="form-group">
+                                    <label>Coverage Area</label>
+                                    <p id="infoCoverageArea" class="profile-info-value">-</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-section">
+                        <h3>Professional Information</h3>
+                        <div class="profile-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Years of Experience</label>
+                                    <p id="infoExperience" class="profile-info-value">-</p>
+                                </div>
+                                <div class="form-group">
+                                    <label>License Number</label>
+                                    <p id="infoLicense" class="profile-info-value">-</p>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group full-width">
+                                    <label>Insurance Information</label>
+                                    <p id="infoInsurance" class="profile-info-value">-</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profile Edit Modal -->
+                <div class="modal" id="profileEditModal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2>Edit Profile</h2>
+                            <button class="close-modal" id="closeProfileModal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editProfileForm">
+                                <div class="form-section">
+                                    <h3>Company Information</h3>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="editCompanyName">Company Name</label>
+                                            <input type="text" id="editCompanyName" name="companyName">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editContactName">Contact Person</label>
+                                            <input type="text" id="editContactName" name="contactName">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="editPhone">Phone Number</label>
+                                            <input type="tel" id="editPhone" name="phone">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editEmail">Email Address</label>
+                                            <input type="email" id="editEmail" name="email">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-section">
+                                    <h3>Location & Service Area</h3>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="editAddress">Business Address</label>
+                                            <input type="text" id="editAddress" name="address">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editZipCode">ZIP Code</label>
+                                            <select id="editZipCode" name="zipCode"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="editServiceRadius">Service Radius (miles)</label>
+                                            <select id="editServiceRadius" name="serviceRadius">
+                                                <option value="10">10 miles</option>
+                                                <option value="15">15 miles</option>
+                                                <option value="20">20 miles</option>
+                                                <option value="25">25 miles</option>
+                                                <option value="30">30 miles</option>
+                                                <option value="35">35 miles</option>
+                                                <option value="40">40 miles</option>
+                                                <option value="50">50 miles</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-section">
+                                    <h3>Professional Information</h3>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="editExperience">Years of Experience</label>
+                                            <select id="editExperience" name="experience">
+                                                <option value="">Select experience</option>
+                                                <option value="1-2">1-2 years</option>
+                                                <option value="3-5">3-5 years</option>
+                                                <option value="6-10">6-10 years</option>
+                                                <option value="11-15">11-15 years</option>
+                                                <option value="16+">16+ years</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editLicense">License Number</label>
+                                            <input type="text" id="editLicense" name="license">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group full-width">
+                                            <label for="editInsurance">Insurance Information</label>
+                                            <textarea id="editInsurance" name="insurance" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button type="button" class="cancel-btn" id="cancelProfileEdit">Cancel</button>
+                                    <button type="submit" class="save-btn">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Services Section -->
+            <section class="content-section" id="servicesSection">
+                <div class="section-header">
+                    <h2>Manage Services</h2>
+                    <button class="action-button" id="saveServicesBtn">Save Changes</button>
+                </div>
+                
+                <div class="services-container">
+                    <div class="services-list" id="servicesList">
+                        <!-- Services will be loaded here -->
+                    </div>
+                    
+                    <div class="service-details">
+                        <div class="service-pricing">
+                            <h3>Service Pricing</h3>
+                            <p class="service-description">Set your pricing ranges for each service to help match you with appropriate customers.</p>
+                            
+                            <div class="pricing-table" id="pricingTable">
+                                <!-- Pricing fields will be loaded here -->
+                            </div>
+                        </div>
+                        
+                        <div class="service-availability">
+                            <h3>Availability</h3>
+                            <p class="service-description">Set your general availability for receiving referrals.</p>
+                            
+                            <div class="availability-settings">
+                                <div class="availability-option">
+                                    <input type="checkbox" id="availableWeekends" name="availableWeekends">
+                                    <label for="availableWeekends">Available on weekends</label>
+                                </div>
+                                <div class="availability-option">
+                                    <input type="checkbox" id="availableEvenings" name="availableEvenings">
+                                    <label for="availableEvenings">Available evenings (after 5pm)</label>
+                                </div>
+                                <div class="availability-option">
+                                    <input type="checkbox" id="emergencyService" name="emergencyService">
+                                    <label for="emergencyService">Provide emergency services</label>
+                                </div>
+                            </div>
+                            
+                            <div class="hours-container">
+                                <h4>Business Hours</h4>
+                                <div class="hours-table">
+                                    <div class="hours-row">
+                                        <div class="day-label">Monday</div>
+                                        <div class="hours-input">
+                                            <select id="mondayStart" class="time-select" aria-label="Monday start time">
+                                                <option value="closed">Closed</option>
+                                                <option value="7:00">7:00 AM</option>
+                                                <option value="8:00" selected>8:00 AM</option>
+                                                <option value="9:00">9:00 AM</option>
+                                                <option value="10:00">10:00 AM</option>
+                                            </select>
+                                            <span>to</span>
+                                            <select id="mondayEnd" class="time-select" aria-label="Monday end time">
+                                                <option value="closed">Closed</option>
+                                                <option value="16:00">4:00 PM</option>
+                                                <option value="17:00" selected>5:00 PM</option>
+                                                <option value="18:00">6:00 PM</option>
+                                                <option value="19:00">7:00 PM</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- Repeat for other days -->
+                                    <div class="hours-row">
+                                        <div class="day-label">Tuesday</div>
+                                        <div class="hours-input">
+                                            <select id="tuesdayStart" class="time-select" aria-label="Tuesday start time">
+                                                <option value="closed">Closed</option>
+                                                <option value="7:00">7:00 AM</option>
+                                                <option value="8:00" selected>8:00 AM</option>
+                                                <option value="9:00">9:00 AM</option>
+                                                <option value="10:00">10:00 AM</option>
+                                            </select>
+                                            <span>to</span>
+                                            <select id="tuesdayEnd" class="time-select" aria-label="Tuesday end time">
+                                                <option value="closed">Closed</option>
+                                                <option value="16:00">4:00 PM</option>
+                                                <option value="17:00" selected>5:00 PM</option>
+                                                <option value="18:00">6:00 PM</option>
+                                                <option value="19:00">7:00 PM</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- More days would be added here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Performance Section -->
+            <section class="content-section" id="performanceSection">
+                <div class="section-header">
+                    <h2>Performance Analytics</h2>
+                    <div class="date-range-picker">
+                        <button class="date-range-btn active" data-range="30">Last 30 Days</button>
+                        <button class="date-range-btn" data-range="90">Last 90 Days</button>
+                        <button class="date-range-btn" data-range="365">Last Year</button>
+                        <button class="date-range-btn" data-range="custom">Custom</button>
+                    </div>
+                </div>
+                
+                <div class="performance-overview">
+                    <div class="performance-card">
+                        <div class="performance-metric">
+                            <h3>Referral Conversion</h3>
+                            <div class="metric-value" id="conversionMetric">0%</div>
+                        </div>
+                        <div class="metric-chart" id="conversionChart"></div>
+                    </div>
+                    
+                    <div class="performance-card">
+                        <div class="performance-metric">
+                            <h3>Customer Satisfaction</h3>
+                            <div class="metric-value" id="satisfactionMetric">0.0</div>
+                        </div>
+                        <div class="metric-chart" id="satisfactionChart"></div>
+                    </div>
+                    
+                    <div class="performance-card">
+                        <div class="performance-metric">
+                            <h3>Response Time</h3>
+                            <div class="metric-value" id="responseTimeMetric">0h</div>
+                        </div>
+                        <div class="metric-chart" id="responseTimeChart"></div>
+                    </div>
+                </div>
+                
+                <div class="performance-details">
+                    <div class="performance-table-container">
+                        <h3>Referral Performance</h3>
+                        <table class="performance-table">
+                            <thead>
+                                <tr>
+                                    <th>Service Type</th>
+                                    <th>Total Referrals</th>
+                                    <th>Conversion Rate</th>
+                                    <th>Avg. Rating</th>
+                                    <th>Trend</th>
+                                </tr>
+                            </thead>
+                            <tbody id="performanceTableBody">
+                                <!-- Performance data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="performance-insights">
+                        <h3>Performance Insights</h3>
+                        <div class="insights-container" id="performanceInsights">
+                            <div class="insight-card">
+                                <div class="insight-icon positive">📈</div>
+                                <div class="insight-content">
+                                    <h4>Strong Performance</h4>
+                                    <p>Your plumbing service has a 85% conversion rate, which is 20% above average.</p>
+                                </div>
+                            </div>
+                            <div class="insight-card">
+                                <div class="insight-icon negative">📉</div>
+                                <div class="insight-content">
+                                    <h4>Area for Improvement</h4>
+                                    <p>Your response time for electrical jobs is 12 hours, which is longer than the 4-hour average.</p>
+                                </div>
+                            </div>
+                            <div class="insight-card">
+                                <div class="insight-icon neutral">📊</div>
+                                <div class="insight-content">
+                                    <h4>Opportunity</h4>
+                                    <p>Consider expanding your HVAC services, as demand in your area has increased by 30%.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section class="content-section" id="settingsSection">
+                <div class="section-header">
+                    <h2>Account Settings</h2>
+                </div>
+                
+                <div class="settings-container">
+                    <div class="settings-sidebar">
+                        <ul class="settings-nav">
+                            <li class="settings-nav-item active" data-settings="account">Account</li>
+                            <li class="settings-nav-item" data-settings="notifications">Notifications</li>
+                            <li class="settings-nav-item" data-settings="security">Security</li>
+                            <li class="settings-nav-item" data-settings="billing">Billing</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="settings-content">
+                        <!-- Account Settings -->
+                        <div class="settings-panel active" id="accountSettings">
+                            <h3>Account Settings</h3>
+                            <form id="accountSettingsForm">
+                                <div class="form-section">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="accountEmail">Email Address</label>
+                                            <input type="email" id="accountEmail" name="email">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="accountPhone">Phone Number</label>
+                                            <input type="tel" id="accountPhone" name="phone">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group full-width">
+                                            <label for="accountLanguage">Preferred Language</label>
+                                            <select id="accountLanguage" name="language">
+                                                <option value="en">English</option>
+                                                <option value="es">Spanish</option>
+                                                <option value="fr">French</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="save-btn">Save Changes</button>
+                            </form>
+                        </div>
+                        
+                        <!-- Notifications Settings -->
+                        <div class="settings-panel" id="notificationsSettings">
+                            <h3>Notification Preferences</h3>
+                            <div class="notification-options">
+                                <div class="notification-group">
+                                    <h4>Email Notifications</h4>
+                                    <div class="notification-option">
+                                        <div class="option-label">
+                                            <label for="emailNewReferrals">New Referrals</label>
+                                            <p class="option-description">Receive an email when you get a new customer referral</p>
+                                        </div>
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" id="emailNewReferrals" checked>
+                                            <label for="emailNewReferrals" class="toggle-label"></label>
+                                        </div>
+                                    </div>
+                                    <div class="notification-option">
+                                        <div class="option-label">
+                                            <label for="emailStatusUpdates">Status Updates</label>
+                                            <p class="option-description">Receive emails about changes to your account status</p>
+                                        </div>
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" id="emailStatusUpdates" checked>
+                                            <label for="emailStatusUpdates" class="toggle-label"></label>
+                                        </div>
+                                    </div>
+                                    <div class="notification-option">
+                                        <div class="option-label">
+                                            <label for="emailMarketing">Marketing & Promotions</label>
+                                            <p class="option-description">Receive promotional emails and special offers</p>
+                                        </div>
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" id="emailMarketing">
+                                            <label for="emailMarketing" class="toggle-label"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="notification-group">
+                                    <h4>SMS Notifications</h4>
+                                    <div class="notification-option">
+                                        <div class="option-label">
+                                            <label for="smsNewReferrals">New Referrals</label>
+                                            <p class="option-description">Receive a text message when you get a new customer referral</p>
+                                        </div>
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" id="smsNewReferrals" checked>
+                                            <label for="smsNewReferrals" class="toggle-label"></label>
+                                        </div>
+                                    </div>
+                                    <div class="notification-option">
+                                        <div class="option-label">
+                                            <label for="smsReminders">Reminders</label>
+                                            <p class="option-description">Receive text reminders about pending referrals</p>
+                                        </div>
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" id="smsReminders">
+                                            <label for="smsReminders" class="toggle-label"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="save-btn" id="saveNotificationSettings">Save Preferences</button>
+                        </div>
+                        
+                        <!-- Security Settings -->
+                        <div class="settings-panel" id="securitySettings">
+                            <h3>Security Settings</h3>
+                            <div class="security-options">
+                                <div class="form-section">
+                                    <h4>Change Password</h4>
+                                    <form id="changePasswordForm">
+                                        <div class="form-group">
+                                            <label for="currentPassword">Current Password</label>
+                                            <input type="password" id="currentPassword" name="currentPassword">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="newPassword">New Password</label>
+                                            <input type="password" id="newPassword" name="newPassword">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="confirmPassword">Confirm New Password</label>
+                                            <input type="password" id="confirmPassword" name="confirmPassword">
+                                        </div>
+                                        <button type="submit" class="save-btn">Update Password</button>
+                                    </form>
+                                </div>
+                                
+                                <div class="form-section">
+                                    <h4>Two-Factor Authentication</h4>
+                                    <div class="notification-option">
+                                        <div class="option-label">
+                                            <label for="enable2FA">Enable Two-Factor Authentication</label>
+                                            <p class="option-description">Add an extra layer of security to your account</p>
+                                        </div>
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" id="enable2FA">
+                                            <label for="enable2FA" class="toggle-label"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-section">
+                                    <h4>Session Management</h4>
+                                    <button class="secondary-btn" id="logoutAllDevices">Log Out From All Devices</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Billing Settings -->
+                        <div class="settings-panel" id="billingSettings">
+                            <h3>Billing Information</h3>
+                            <div class="billing-info">
+                                <div class="billing-plan">
+                                    <h4>Current Plan</h4>
+                                    <div class="plan-details">
+                                        <div class="plan-name">Standard Contractor</div>
+                                        <div class="plan-price">$0 / month</div>
+                                        <div class="plan-features">
+                                            <ul>
+                                                <li>Unlimited referrals</li>
+                                                <li>Basic analytics</li>
+                                                <li>Standard support</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="billing-payment">
+                                    <h4>Payment Method</h4>
+                                    <p class="billing-message">No payment method required for current plan.</p>
+                                </div>
+                                
+                                <div class="billing-history">
+                                    <h4>Billing History</h4>
+                                    <p class="billing-message">No billing history available.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Notification Center -->
+    <div class="notification-center" id="notificationCenter">
+        <div class="notification-header">
+            <h3>Notifications</h3>
+            <button class="close-notifications" id="closeNotifications">&times;</button>
+        </div>
+        <div class="notification-list" id="notificationList">
+            <!-- Notifications will be loaded here -->
+        </div>
+        <div class="notification-footer">
+            <button class="mark-all-read" id="markAllRead">Mark All as Read</button>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <script src="/js/contractor-dashboard.js"></script>
+</body>
+</html>

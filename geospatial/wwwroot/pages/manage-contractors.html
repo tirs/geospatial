@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Contractors - Urban Referral Network</title>
+    <link rel="stylesheet" href="../css/navigation.css">
+    <link rel="stylesheet" href="../css/urban-theme.css">
+    <link rel="stylesheet" href="../css/manage-contractors.css">
+    <script src="../js/config.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1>👷 Manage Contractors</h1>
+            <div class="header-actions">
+                <a href="../index.html" class="btn btn-secondary">← Back to Dashboard</a>
+                <button class="btn" onclick="alert('Add Contractor feature coming soon!')">+ Add New Contractor</button>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="totalContractors">0</div>
+                <div class="stat-label">Total Contractors</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="activeContractors">0</div>
+                <div class="stat-label">Active Contractors</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="suspendedContractors">0</div>
+                <div class="stat-label">Suspended</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="avgRating">0.0</div>
+                <div class="stat-label">Average Rating</div>
+            </div>
+        </div>
+
+        <div class="controls-section">
+            <div class="search-controls">
+                <input type="text" id="searchContractors" class="search-input" placeholder="🔍 Search contractors..." aria-label="Search contractors">
+                <select id="statusFilter" class="filter-select" aria-label="Filter by status" title="Filter contractors by status">
+                    <option value="all">All Status</option>
+                    <option value="active">Active Only</option>
+                    <option value="suspended">Suspended Only</option>
+                </select>
+                <select id="viewMode" class="filter-select" aria-label="Select view mode" title="Choose view mode">
+                    <option value="manage">Management Mode</option>
+                    <option value="view">View Only Mode</option>
+                </select>
+            </div>
+            <div class="action-controls">
+                <button id="refreshBtn" class="btn btn-secondary">🔄 Refresh</button>
+                <a href="contractor-finder.html" class="btn btn-primary">🔍 Contractor Finder</a>
+            </div>
+        </div>
+
+        <div id="loadingState" class="loading-state hidden">
+            <div class="loading-icon">⏳</div>
+            <h3>Loading contractors...</h3>
+        </div>
+
+        <div id="contractorsGrid" class="contractors-grid">
+            <!-- Contractors will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Contractor Details Modal -->
+    <div id="contractorModal" class="modal hidden">
+        <div class="modal-overlay" onclick="contractorManager.closeModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Contractor Details</h2>
+                <button class="modal-close" onclick="contractorManager.closeModal()">×</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Contractor details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/manage-contractors.js?v=2.0"></script>
+    <script>
+        // Debug and fix script
+        console.log('🔧 Debug script loaded');
+        
+        // Override edit function to test
+        window.testEdit = function(id) {
+            console.log('🧪 Test edit called for ID:', id);
+            alert('Edit function called for contractor ID: ' + id + '\n\nThis confirms the button click is working!');
+        };
+        
+        // Override view function to test  
+        window.testView = function(id) {
+            console.log('🧪 Test view called for ID:', id);
+            alert('View function called for contractor ID: ' + id + '\n\nThis confirms the button click is working!');
+        };
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔧 Applying fixes...');
+            
+            // Force button styles
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .card-actions .btn {
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                    display: inline-flex !important;
+                    background: #1a365d !important;
+                    color: white !important;
+                    border: none !important;
+                    padding: 10px 15px !important;
+                    margin: 3px !important;
+                    border-radius: 6px !important;
+                    cursor: pointer !important;
+                    font-size: 13px !important;
+                    min-width: 80px !important;
+                    justify-content: center !important;
+                    align-items: center !important;
+                    font-weight: 600 !important;
+                }
+                .btn-warning { background: #d69e2e !important; }
+                .btn-success { background: #38a169 !important; }
+                .btn-danger { background: #e53e3e !important; }
+                .btn-secondary { background: #4b5563 !important; }
+                .btn:hover { opacity: 0.8 !important; }
+            `;
+            document.head.appendChild(style);
+            
+            // Check for contractor manager
+            setTimeout(function() {
+                if (window.contractorManager) {
+                    console.log('✅ ContractorManager found:', window.contractorManager);
+                    console.log('📊 Contractors loaded:', window.contractorManager.contractors.length);
+                } else {
+                    console.log('❌ ContractorManager not found');
+                }
+                
+                // Force button visibility
+                const buttons = document.querySelectorAll('.card-actions .btn');
+                console.log('🔘 Found buttons:', buttons.length);
+                buttons.forEach((btn, index) => {
+                    btn.style.opacity = '1';
+                    btn.style.visibility = 'visible';
+                    btn.style.display = 'inline-flex';
+                    console.log('🔘 Fixed button', index, btn.textContent);
+                });
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

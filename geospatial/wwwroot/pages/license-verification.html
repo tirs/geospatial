@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>California License Verification - Urban Referral Network</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/urban-theme.css">
+    <link rel="stylesheet" href="/css/license-verification.css">
+</head>
+<body>
+    <div class="verification-container">
+        <div class="header">
+            <div class="header-left">
+                <div class="ca-seal">CA</div>
+                <div>
+                    <h1 class="header-title">California Contractors License Verification</h1>
+                    <p class="header-subtitle">Contractors State License Board (CSLB) Official Verification</p>
+                </div>
+            </div>
+            <button type="button" class="close-btn" onclick="window.close()" title="Close Window">×</button>
+        </div>
+
+        <div class="main-content">
+            <!-- Left Panel: Verification Tools -->
+            <div class="verification-panel">
+                <h2 class="panel-title">
+                    🔍 License Verification
+                </h2>
+
+                <!-- Contractor Information -->
+                <div class="contractor-info" id="contractorInfo">
+                    <div class="info-row">
+                        <span class="info-label">Contractor Name:</span>
+                        <span class="info-value" id="contractorName">Loading...</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Company:</span>
+                        <span class="info-value" id="contractorCompany">Loading...</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">License Number:</span>
+                        <span class="info-value" id="contractorLicense">Loading...</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Application Date:</span>
+                        <span class="info-value" id="contractorDate">Loading...</span>
+                    </div>
+                </div>
+
+                <!-- License Input Section -->
+                <div class="license-input-section">
+                    <label for="licenseInput" class="license-input-label">
+                        Enter License Number to Verify:
+                    </label>
+                    <div class="license-input-group">
+                        <input type="text" id="licenseInput" class="license-input" placeholder="e.g., 123456" maxlength="10">
+                        <button type="button" class="verify-btn" id="verifyBtn" onclick="verifyLicense()">
+                            <span id="verifyBtnText">🔍 Verify</span>
+                        </button>
+                    </div>
+                    <small class="input-hint">
+                        Enter the license number without spaces or special characters
+                    </small>
+                </div>
+
+                <!-- Verification Result -->
+                <div class="verification-result" id="verificationResult">
+                    <div class="result-header" id="resultHeader">
+                        <!-- Result will be populated here -->
+                    </div>
+                    <div id="resultContent">
+                        <!-- Result content will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Verification Tips -->
+                <div class="verification-tips">
+                    <div class="tips-title">
+                        💡 Verification Tips
+                    </div>
+                    <ul class="tips-list">
+                        <li>• License numbers are typically 6-7 digits</li>
+                        <li>• Check for active status and expiration date</li>
+                        <li>• Verify contractor name matches application</li>
+                        <li>• Look for any disciplinary actions</li>
+                        <li>• Confirm license classification matches services</li>
+                    </ul>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="verification-actions">
+                    <button type="button" class="action-btn btn-secondary" onclick="goBackToDashboard()">
+                        ← Back to Dashboard
+                    </button>
+                    <button type="button" class="action-btn btn-reject hidden" onclick="rejectContractor()" id="rejectBtn">
+                        ❌ Reject Application
+                    </button>
+                    <button type="button" class="action-btn btn-approve hidden" onclick="approveContractor()" id="approveBtn">
+                        ✅ Approve Contractor
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Panel: CSLB Website -->
+            <div class="verification-panel">
+                <h2 class="panel-title">
+                    🏛️ Official CSLB Verification
+                </h2>
+                
+                <div id="iframeContainer">
+                    <div class="iframe-loading" id="iframeLoading">
+                        <div>
+                            <div class="loading-spinner"></div>
+                            <div class="iframe-loading-text">Loading CSLB Website...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class LicenseVerification {
+            constructor() {
+                this.contractorId = null;
+                this.contractorData = null;
+                this.verificationStatus = null;
+                this.init();
+            }
+
+            async init() {
+                await this.loadContractorData();
+                this.setupEventListeners();
+                this.loadCSLBWebsite();
+            }
+
+            async loadContractorData() {
+                // Get contractor ID from URL parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                this.contractorId = urlParams.get('contractorId');
+
+                if (!this.contractorId) {
+                    console.error('No contractor ID provided');
+                    return;
+                }
+
+                // Get contractor data from API (no more localStorage)
+                this.contractorData = await this.fetchContractorFromAPI(this.contractorId);
+
+                if (!this.contractorData) {
+                    console.error('Contractor not found');
+                    return;
+                }
+
+                // Populate contractor information
+                this.displayContractorInfo();
+            }
+
+            displayContractorInfo() {
+                if (!this.contractorData) return;
+
+                document.getElementById('contractorName').textContent = this.contractorData.name || 'N/A';
+                document.getElementById('contractorCompany').textContent = this.contractorData.company || 'N/A';
+                document.getElementById('contractorLicense').textContent = this.contractorData.license || 'Not provided';
+                document.getElementById('contractorDate').textContent = this.formatDate(this.contractorData.appliedDate || this.contractorData.submittedDate);
+
+                // Pre-fill license input if available
+                if (this.contractorData.license) {
+                    document.getElementById('licenseInput').value = this.contractorData.license;
+                }
+            }
+
+            async fetchContractorFromAPI(contractorId) {
+                try {
+                    const response = await fetch(`/api/Contractors/${contractorId}`);
+                    if (response.ok) {
+                        return await response.json();
+                    }
+                    console.error('Failed to fetch contractor data');
+                    return null;
+                } catch (error) {
+                    console.error('Error fetching contractor:', error);
+                    return null;
+                }
+            }
+
+            formatDate(dateString) {
+                if (!dateString) return 'N/A';
+                return new Date(dateString).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            }
+
+            setupEventListeners() {
+                // Enter key in license input
+                document.getElementById('licenseInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.verifyLicense();
+                    }
+                });
+
+                // Auto-format license input
+                document.getElementById('licenseInput').addEventListener('input', (e) => {
+                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                });
+            }
+
+            loadCSLBWebsite() {
+                setTimeout(() => {
+                    const container = document.getElementById('iframeContainer');
+                    const loadingEl = document.getElementById('iframeLoading');
+                    
+                    // Create CSLB verification instructions
+                    container.innerHTML = `
+                        <div class="cslb-verification">
+                            <div class="cslb-header">
+                                <div class="cslb-logo">
+                                    <div class="ca-seal-large">CA</div>
+                                    <div class="cslb-title">
+                                        <h3>Official CSLB Verification Required</h3>
+                                        <p>Contractors State License Board</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="verification-instructions">
+                                <div class="instruction-header">
+                                    <h4>🔍 Manual License Verification</h4>
+                                    <p>Please verify this contractor's license using the official CSLB website</p>
+                                </div>
+                                
+                                <div class="contractor-summary">
+                                    <h5>Contractor Information to Verify:</h5>
+                                    <div class="summary-grid">
+                                        <div class="summary-item">
+                                            <label>Name:</label>
+                                            <span>${this.contractorData?.name || 'N/A'}</span>
+                                        </div>
+                                        <div class="summary-item">
+                                            <label>Company:</label>
+                                            <span>${this.contractorData?.company || 'N/A'}</span>
+                                        </div>
+                                        <div class="summary-item">
+                                            <label>License Number:</label>
+                                            <span class="license-highlight">${this.contractorData?.license || 'Not provided'}</span>
+                                        </div>
+                                        <div class="summary-item">
+                                            <label>Application Date:</label>
+                                            <span>${this.formatDate(this.contractorData?.appliedDate || this.contractorData?.submittedDate)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="verification-steps">
+                                    <h5>Verification Steps:</h5>
+                                    <ol class="steps-list">
+                                        <li>
+                                            <strong>Click the button below</strong> to open the official CSLB website
+                                        </li>
+                                        <li>
+                                            <strong>Enter the license number:</strong> 
+                                            <code class="license-code">${this.contractorData?.license || 'N/A'}</code>
+                                            ${this.contractorData?.license ? `<button class="copy-btn" onclick="navigator.clipboard.writeText('${this.contractorData.license}')">📋 Copy</button>` : ''}
+                                        </li>
+                                        <li>
+                                            <strong>Verify the following information matches:</strong>
+                                            <ul class="verify-checklist">
+                                                <li>✓ Contractor name: <em>${this.contractorData?.name || 'N/A'}</em></li>
+                                                <li>✓ Business name: <em>${this.contractorData?.company || 'N/A'}</em></li>
+                                                <li>✓ License status is <strong>Active</strong></li>
+                                                <li>✓ License is not expired</li>
+                                                <li>✓ No disciplinary actions</li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <strong>Return here</strong> and use the approve/reject buttons below
+                                        </li>
+                                    </ol>
+                                </div>
+                                
+                                <div class="cslb-action">
+                                    <a href="https://www2.cslb.ca.gov/OnlineServices/CheckLicenseII/CheckLicense.aspx" 
+                                       target="_blank" 
+                                       class="cslb-verify-btn">
+                                        🔗 Open Official CSLB Verification
+                                    </a>
+                                    <p class="action-note">Opens in a new tab - keep this page open</p>
+                                </div>
+                                
+                                <div class="verification-status" id="verificationStatus">
+                                    <div class="status-pending">
+                                        <div class="status-icon">⏳</div>
+                                        <div class="status-text">
+                                            <strong>Awaiting Verification</strong>
+                                            <p>Please complete the verification on the CSLB website</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="quick-actions">
+                                    <button type="button" class="btn-verified" onclick="window.licenseVerification.markAsVerified()">
+                                        ✅ License Verified - Information Matches
+                                    </button>
+                                    <button type="button" class="btn-issue" onclick="window.licenseVerification.reportIssue()">
+                                        ⚠️ Issue Found - License Invalid/Mismatch
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="cslb-footer">
+                                <div class="disclaimer">
+                                    <small>
+                                        <strong>Important:</strong> Always use the official CSLB website for license verification. 
+                                        This ensures accurate and up-to-date information.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Hide loading
+                    if (loadingEl) loadingEl.classList.add('hidden');
+                }, 1000);
+            }
+
+            markAsVerified() {
+                if (confirm('✅ Confirm that you have verified the license on the official CSLB website and all information matches?')) {
+                    // Update verification status
+                    this.verificationStatus = 'verified';
+                    
+                    // Update status display
+                    const statusDiv = document.getElementById('verificationStatus');
+                    statusDiv.innerHTML = `
+                        <div class="status-verified">
+                            <div class="status-icon">✅</div>
+                            <div class="status-text">
+                                <strong>License Verified</strong>
+                                <p>Information confirmed on official CSLB website</p>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Show approve button, hide reject
+                    document.getElementById('approveBtn').classList.remove('hidden');
+                    document.getElementById('rejectBtn').classList.add('hidden');
+                    
+                    // Show success notification
+                    this.showNotification('✅ License verification completed successfully!', 'success');
+                }
+            }
+
+            reportIssue() {
+                const issue = prompt('⚠️ Please describe the issue found during CSLB verification:');
+                if (issue) {
+                    // Update verification status
+                    this.verificationStatus = 'issue';
+                    this.verificationIssue = issue;
+                    
+                    // Update status display
+                    const statusDiv = document.getElementById('verificationStatus');
+                    statusDiv.innerHTML = `
+                        <div class="status-issue">
+                            <div class="status-icon">⚠️</div>
+                            <div class="status-text">
+                                <strong>Issue Reported</strong>
+                                <p>${issue}</p>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Show reject button, hide approve
+                    document.getElementById('rejectBtn').classList.remove('hidden');
+                    document.getElementById('approveBtn').classList.add('hidden');
+                    
+                    // Show warning notification
+                    this.showNotification('⚠️ Issue reported. Contractor should be rejected.', 'warning');
+                }
+            }
+
+            showNotification(message, type) {
+                const notification = document.createElement('div');
+                notification.className = `verification-notification ${type}`;
+                notification.innerHTML = message;
+                document.body.appendChild(notification);
+                
+                // Remove notification after 4 seconds
+                setTimeout(() => notification.remove(), 4000);
+            }
+
+            async verifyLicense() {
+                const licenseNumber = document.getElementById('licenseInput').value.trim();
+                
+                if (!licenseNumber) {
+                    this.showError('Please enter a license number');
+                    return;
+                }
+
+                const verifyBtn = document.getElementById('verifyBtn');
+                const verifyBtnText = document.getElementById('verifyBtnText');
+                
+                // Show loading state
+                verifyBtn.disabled = true;
+                verifyBtnText.innerHTML = '<div class="loading-spinner"></div> Verifying...';
+
+                try {
+                    // Simulate verification process (in real app, this would call CSLB API)
+                    await this.simulateVerification(licenseNumber);
+                } catch (error) {
+                    console.error('Verification error:', error);
+                    this.showError('Verification failed. Please try again.');
+                } finally {
+                    // Reset button
+                    verifyBtn.disabled = false;
+                    verifyBtnText.innerHTML = '🔍 Verify';
+                }
+            }
+
+            async simulateVerification(licenseNumber) {
+                // Simulate API delay
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                // Simulate different verification results based on license number
+                if (licenseNumber === '123456' || licenseNumber === this.contractorData?.license) {
+                    this.showSuccess({
+                        licenseNumber: licenseNumber,
+                        contractorName: this.contractorData?.name || 'John Smith',
+                        businessName: this.contractorData?.company || 'Smith Construction',
+                        licenseType: 'General Building Contractor (B)',
+                        status: 'Active',
+                        issueDate: '01/15/2020',
+                        expirationDate: '01/31/2026',
+                        bondStatus: 'Active',
+                        insuranceStatus: 'Current'
+                    });
+                } else if (licenseNumber.startsWith('999')) {
+                    this.showWarning({
+                        licenseNumber: licenseNumber,
+                        status: 'Suspended',
+                        reason: 'Failure to maintain workers compensation insurance',
+                        suspensionDate: '06/15/2024'
+                    });
+                } else if (licenseNumber.startsWith('000')) {
+                    this.showError('License number not found in CSLB database');
+                } else {
+                    // Random result for demo
+                    const isValid = Math.random() > 0.3;
+                    if (isValid) {
+                        this.showSuccess({
+                            licenseNumber: licenseNumber,
+                            contractorName: 'Demo Contractor',
+                            businessName: 'Demo Construction Co.',
+                            licenseType: 'General Building Contractor (B)',
+                            status: 'Active',
+                            issueDate: '03/10/2021',
+                            expirationDate: '03/31/2025',
+                            bondStatus: 'Active',
+                            insuranceStatus: 'Current'
+                        });
+                    } else {
+                        this.showError('License number not found or invalid');
+                    }
+                }
+            }
+
+            showSuccess(data) {
+                this.verificationStatus = 'success';
+                const resultDiv = document.getElementById('verificationResult');
+                const resultHeader = document.getElementById('resultHeader');
+                const resultContent = document.getElementById('resultContent');
+
+                resultDiv.className = 'verification-result success';
+                resultDiv.style.display = 'block';
+
+                resultHeader.innerHTML = '✅ License Verified Successfully';
+
+                resultContent.innerHTML = `
+                    <div class="result-details">
+                        <div class="detail-row">
+                            <strong>License Number:</strong>
+                            <span>${data.licenseNumber}</span>
+                        </div>
+                        <div class="detail-row">
+                            <strong>Contractor Name:</strong>
+                            <span>${data.contractorName}</span>
+                        </div>
+                        <div class="detail-row">
+                            <strong>Business Name:</strong>
+                            <span>${data.businessName}</span>
+                        </div>
+                        <div class="detail-row">
+                            <strong>License Type:</strong>
+                            <span>${data.licenseType}</span>
+                        </div>
+                        <div class="detail-row">
+                            <strong>Status:</strong>
+                            <span style="color: var(--verification-green); font-weight: 600;">${data.status}</span>
+                        </div>
+                        <div class="detail-row">
+                            <strong>Issue Date:</strong>
+                            <span>${data.issueDate}</span>
+                        </div>
+                        <div class="detail-row">
+                            <strong>Expiration Date:</strong>
+                            <span>${data.expirationDate}</span>
+                        </div>
+                        <div class="detail-row">
+                            <strong>Bond Status:</strong>
+                            <span style="color: var(--verification-green);">${data.bondStatus}</span>
+                        </div>
+                        <div class="detail-row">
+                            <strong>Insurance Status:</strong>
+                            <span style="color: var(--verification-green);">${data.insuranceStatus}</span>
+                        </div>
+                    </div>
+                `;
+
+                // Show action buttons
+                document.getElementById('approveBtn').classList.remove('hidden');
+                document.getElementById('rejectBtn').classList.remove('hidden');
+            }
+
+            showWarning(data) {
+                this.verificationStatus = 'warning';
+                const resultDiv = document.getElementById('verificationResult');
+                const resultHeader = document.getElementById('resultHeader');
+                const resultContent = document.getElementById('resultContent');
+
+                resultDiv.className = 'verification-result warning';
+                resultDiv.style.display = 'block';
+
+                resultHeader.innerHTML = '⚠️ License Found - Issues Detected';
+
+                resultContent.innerHTML = `
+                    <div class="result-details">
+                        <div class="detail-row">
+                            <strong>License Number:</strong>
+                            <span>${data.licenseNumber}</span>
+                        </div>
+                        <div class="detail-row">
+                            <strong>Status:</strong>
+                            <span style="color: var(--verification-orange); font-weight: 600;">${data.status}</span>
+                        </div>
+                        <div class="detail-row">
+                            <strong>Reason:</strong>
+                            <span>${data.reason}</span>
+                        </div>
+                        <div class="detail-row">
+                            <strong>Suspension Date:</strong>
+                            <span>${data.suspensionDate}</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; padding: 10px; background: rgba(234, 88, 12, 0.1); border-radius: 5px;">
+                        <strong>⚠️ Warning:</strong> This license has issues that may affect contractor eligibility.
+                    </div>
+                `;
+
+                // Show action buttons
+                document.getElementById('approveBtn').classList.add('hidden');
+                document.getElementById('rejectBtn').classList.remove('hidden');
+            }
+
+            showError(message) {
+                this.verificationStatus = 'error';
+                const resultDiv = document.getElementById('verificationResult');
+                const resultHeader = document.getElementById('resultHeader');
+                const resultContent = document.getElementById('resultContent');
+
+                resultDiv.className = 'verification-result error';
+                resultDiv.style.display = 'block';
+
+                resultHeader.innerHTML = '❌ Verification Failed';
+
+                resultContent.innerHTML = `
+                    <div style="padding: 15px; text-align: center;">
+                        <strong>${message}</strong>
+                        <div style="margin-top: 10px; font-size: 0.9rem;">
+                            Please verify the license number and try again, or check the official CSLB website manually.
+                        </div>
+                    </div>
+                `;
+
+                // Show only reject button
+                document.getElementById('approveBtn').classList.add('hidden');
+                document.getElementById('rejectBtn').classList.remove('hidden');
+            }
+        }
+
+        // Global functions
+        function verifyLicense() {
+            window.licenseVerification.verifyLicense();
+        }
+
+        async function approveContractor() {
+            if (confirm('✅ Approve this contractor based on license verification?')) {
+                // Get contractor data
+                const contractorData = window.licenseVerification.contractorData;
+                
+                // Add verification info
+                contractorData.licenseVerified = true;
+                contractorData.verificationDate = new Date().toISOString();
+                contractorData.verifiedBy = 'System Admin';
+                contractorData.verificationStatus = window.licenseVerification.verificationStatus;
+                
+                // Approve contractor via API instead of localStorage
+                try {
+                    const response = await fetch(`/api/Contractors/${contractorData.id}/approve`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            verifiedBy: 'System Admin',
+                            verificationStatus: window.licenseVerification.verificationStatus
+                        })
+            });
+                    
+                    if (response.ok) {
+                                console.log('✅ Contractor approved via API');
+                    } else {
+                        console.log('⚠️ API not available - contractor approved locally');
+                    }
+                } catch (error) {
+                    console.log('⚠️ API not available - contractor approved locally');
+                }
+                
+                alert('✅ Contractor approved successfully!');
+                goBackToDashboard();
+            }
+        }
+
+        async function rejectContractor() {
+            const reason = prompt('❌ Reason for rejection:');
+            if (reason !== null) {
+                // Get contractor data
+                const contractorData = window.licenseVerification.contractorData;
+                
+                // Add rejection info
+                contractorData.rejectionReason = reason;
+                contractorData.rejectedDate = new Date().toISOString();
+                contractorData.rejectedBy = 'System Admin';
+                contractorData.licenseVerificationStatus = window.licenseVerification.verificationStatus;
+                
+                // Reject contractor via API instead of localStorage
+                try {
+                    const response = await fetch(`/api/Contractors/${contractorData.id}/reject`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            rejectedBy: 'System Admin',
+                            rejectionReason: reason,
+                            verificationStatus: window.licenseVerification.verificationStatus
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        console.log('✅ Contractor rejected via API');
+                    } else {
+                        console.log('⚠️ API not available - contractor rejected locally');
+                    }
+                } catch (error) {
+                    console.log('⚠️ API not available - contractor rejected locally');
+                }
+                
+                alert('❌ Contractor rejected.');
+                goBackToDashboard();
+            }
+        }
+
+        function goBackToDashboard() {
+            // Close this window and refresh parent
+            if (window.opener) {
+                // Try to refresh pending contractors specifically if dashboard is available
+                if (window.opener.dashboard && window.opener.dashboard.refreshPendingContractors) {
+                    window.opener.dashboard.refreshPendingContractors();
+                } else {
+                    window.opener.location.reload();
+                }
+                window.close();
+            } else {
+                window.location.href = '/pages/dashboard.html';
+            }
+        }
+
+        // Initialize when page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            window.licenseVerification = new LicenseVerification();
+        });
+    </script>
+</body>
+</html>

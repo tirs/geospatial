@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrbanReferralNetwork", "geospatial\UrbanReferralNetwork.csproj", "{98EEC833-BE9F-B8EB-A2BD-E06B456B7B5F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{98EEC833-BE9F-B8EB-A2BD-E06B456B7B5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98EEC833-BE9F-B8EB-A2BD-E06B456B7B5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98EEC833-BE9F-B8EB-A2BD-E06B456B7B5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98EEC833-BE9F-B8EB-A2BD-E06B456B7B5F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CE978E80-C46A-41DE-91E8-80C4D9D8978E}
+	EndGlobalSection
+EndGlobal

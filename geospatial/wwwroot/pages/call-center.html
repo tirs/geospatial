@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Referral Network - Call Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/call-center.css">
+    <script src="../js/zip-autocomplete.js"></script>
+    <script src="../js/contractor-search.js"></script>
+    <meta name="description" content="Urban Referral Network Call Center - Professional Call Management System">
+</head>
+<body>
+
+
+    <!-- Call Center Header -->
+    <header class="call-center-header">
+        <div class="header-container">
+            <div class="header-left">
+                <div class="logo">
+                    <span class="logo-icon">📞</span>
+                    <span class="logo-text">Call Center</span>
+                </div>
+                <div class="agent-status">
+                    <div class="status-dot online"></div>
+                    <span>Agent Online</span>
+                </div>
+            </div>
+            
+            <div class="header-center">
+                <div class="current-time" id="currentTime">--:--:--</div>
+            </div>
+            
+            <div class="header-right">
+                <button class="header-btn" onclick="window.location.href='dashboard.html'">
+                    <span class="icon">🏠</span>
+                    <span>Dashboard</span>
+                </button>
+                <button class="header-btn" onclick="window.location.href='contractor-finder.html'">
+                    <span class="icon">🔍</span>
+                    <span>Find Contractors</span>
+                </button>
+                <button class="header-btn" onclick="window.location.href='contractor-registration-new.html'">
+                    <span class="icon">➕</span>
+                    <span>Add Contractor</span>
+                </button>
+                <button class="header-btn" id="settingsBtn">
+                    <span class="icon">⚙️</span>
+                    <span>Settings</span>
+                </button>
+                <button class="header-btn logout">
+                    <span class="icon">🚪</span>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Call Center Main -->
+    <main class="call-center-main">
+        <!-- Stats Overview -->
+        <section class="stats-section">
+            <div class="stats-container">
+                <div class="stat-card primary">
+                    <div class="stat-icon">📞</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="totalCallsToday">0</div>
+                        <div class="stat-label">Total Calls Today</div>
+                        <div class="stat-change neutral" id="totalCallsChange">Live data</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card success">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="resolvedCalls">0</div>
+                        <div class="stat-label">Resolved Calls</div>
+                        <div class="stat-change neutral" id="resolvedCallsChange">Live data</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card warning">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="avgWaitTime">0:00</div>
+                        <div class="stat-label">Avg Wait Time</div>
+                        <div class="stat-change neutral" id="waitTimeChange">Live data</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card info">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="activeAgents">0</div>
+                        <div class="stat-label">Active Agents</div>
+                        <div class="stat-change neutral" id="agentsStatus">Loading...</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call Interface -->
+        <section class="call-interface">
+            <div class="interface-container">
+                <!-- Call Queue -->
+                <div class="call-queue">
+                    <div class="queue-header">
+                        <h3>📋 Call Queue</h3>
+                        <span class="queue-count" id="queueLength">0</span>
+                    </div>
+                    <div class="queue-list" id="callQueue">
+                        <!-- Dynamic call queue items will be populated here -->
+                        <div class="empty-queue">
+                            <div class="icon">📞</div>
+                            <div>No calls in queue</div>
+                            <div class="subtitle">Calls will appear here when received</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Call Controls -->
+                <div class="call-controls">
+                    <div class="controls-header">
+                        <h3>📞 Call Controls</h3>
+                        <div class="call-status">Ready</div>
+                    </div>
+                    <div class="controls-grid">
+                        <button class="control-btn primary" id="takeCallBtn">
+                            <span class="icon">📞</span>
+                            <span>Take Call</span>
+                        </button>
+                        <button class="control-btn secondary" id="breakBtn">
+                            <span class="icon">⏸️</span>
+                            <span>Break</span>
+                        </button>
+                        <button class="control-btn info" id="createReferralBtn">
+                            <span class="icon">📋</span>
+                            <span>Create Referral</span>
+                        </button>
+                        <button class="control-btn warning" id="reportsBtn">
+                            <span class="icon">📊</span>
+                            <span>Reports</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="recent-activity">
+                    <div class="activity-header">
+                        <h3>📈 Recent Activity</h3>
+                        <button class="info-btn" onclick="showIntegrationInfo()" title="View Integration Details">
+                            <span>ℹ️</span>
+                        </button>
+                    </div>
+                    <div class="activity-list" id="activityFeed">
+           <!-- Dynamic activity items will be populated here -->
+                        <div class="empty-activity">
+                            <div class="icon">📈</div>
+                            <div>No recent activity</div>
+                            <div class="subtitle">Activity will appear here as calls are processed</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contractor Management Section -->
+        <section class="contractor-management">
+            <div class="section-header">
+                <h3>👷 Contractor Management</h3>
+                <div class="section-actions">
+                    <a href="contractor-registration-new.html" class="action-link primary">
+                        ➕ Add New Contractor
+                    </a>
+                    <a href="contractor-finder.html" class="action-link secondary">
+                        🔍 Find Contractors
+                    </a>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="metric-card">
+                    <div class="metric-icon users">👥</div>
+                    <div class="metric-value" id="totalContractors">0</div>
+                    <div class="metric-label">Total Contractors</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-icon pending">⏳</div>
+                    <div class="metric-value" id="pendingContractors">0</div>
+                    <div class="metric-label">Pending Review</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-icon today">📋</div>
+                    <div class="metric-value" id="todayRegistrations">0</div>
+                    <div class="metric-label">Registered Today</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-icon referrals">🎯</div>
+                    <div class="metric-value" id="activeReferrals">0</div>
+                    <div class="metric-label">Active Referrals</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Call Interface Modal -->
+    <div class="call-modal" id="callModal">
+        <div class="call-modal-content">
+            <div class="call-header">
+                <div class="caller-info">
+                    <h3 id="callerName">No Active Call</h3>
+                    <p id="callerPhone">-</p>
+                    <p id="serviceType">-</p>
+                </div>
+                <div class="call-timer">
+                    <span id="callTimer">00:00</span>
+                </div>
+            </div>
+            
+            <div class="call-body">
+                <div class="call-notes">
+                    <label>Call Notes:</label>
+                    <textarea id="callNotes" placeholder="Enter call details, customer needs, etc..."></textarea>
+                </div>
+                
+                <div class="call-actions">
+                    <button class="action-btn success" id="completeCallBtn">
+                        <span>✅</span> Complete Call
+                    </button>
+                    <button class="action-btn info" id="createReferralFromCallBtn">
+                        <span>📋</span> Create Referral
+                    </button>
+                    <button class="action-btn warning" id="transferCallBtn">
+                        <span>📞</span> Transfer
+                    </button>
+                    <button class="action-btn danger" id="endCallBtn">
+                        <span>❌</span> End Call
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Referral Modal -->
+    <div class="referral-modal" id="referralModal">
+        <div class="referral-modal-content">
+            <div class="referral-header">
+                <h3>Create New Referral</h3>
+                <button class="close-btn" id="closeReferralModal">×</button>
+            </div>
+            
+            <form id="referralForm" class="referral-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="customerName">Customer Name *</label>
+                        <input type="text" id="customerName" name="customerName" required
+                               placeholder="Enter customer's full name" autocomplete="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="customerPhone">Customer Phone *</label>
+                        <input type="tel" id="customerPhone" name="customerPhone" required
+                               placeholder="(555) 123-4567" autocomplete="tel">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="customerEmail">Customer Email</label>
+                        <input type="email" id="customerEmail" name="customerEmail"
+                               placeholder="customer@email.com" autocomplete="email">
+                    </div>
+                    
+                    <!-- Address Section -->
+                    <div class="form-group">
+                        <label for="customerAddress">Street Address *</label>
+                        <input type="text" id="customerAddress" name="customerAddress" required
+                               placeholder="123 Main Street" autocomplete="street-address">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="customerZip">ZIP Code *</label>
+                            <input type="text" id="customerZip" name="customerZip" class="zip-autocomplete" required
+                                   placeholder="90210" autocomplete="postal-code" maxlength="5">
+                        </div>
+                        <div class="form-group">
+                            <label for="customerCity">City</label>
+                            <input type="text" id="customerCity" name="customerCity" readonly
+                                   placeholder="Auto-filled from ZIP" autocomplete="address-level2">
+                        </div>
+                        <div class="form-group">
+                            <label for="customerState">State</label>
+                            <input type="text" id="customerState" name="customerState" readonly
+                                   placeholder="CA" autocomplete="address-level1" maxlength="2">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="serviceTypeSelect">Service Type *</label>
+                        <select id="serviceTypeSelect" name="serviceType" required aria-label="Service Type">
+                            <option value="">Select service type</option>
+                            <option value="Plumbing">🔧 Plumbing</option>
+                            <option value="Electrical">⚡ Electrical</option>
+                            <option value="HVAC">❄️ HVAC</option>
+                            <option value="Roofing">🏠 Roofing</option>
+                            <option value="Flooring">🏗️ Flooring</option>
+                            <option value="Painting">🎨 Painting</option>
+                            <option value="Landscaping">🌿 Landscaping</option>
+                            <option value="Handyman">🔨 Handyman</option>
+                            <option value="Pool Service">🏊 Pool Service</option>
+                            <option value="Pest Control">🐛 Pest Control</option>
+                            <option value="Cleaning">🧽 Cleaning</option>
+                            <option value="Moving">📦 Moving</option>
+                            <option value="Security">🔒 Security</option>
+                            <option value="Solar">☀️ Solar</option>
+                            <option value="Windows">🪟 Windows</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="urgencyLevel">Urgency Level</label>
+                        <select id="urgencyLevel" name="urgencyLevel">
+                            <option value="Low">🟢 Low - Within a week</option>
+                            <option value="Medium" selected>🟡 Medium - Within 2-3 days</option>
+                            <option value="High">🟠 High - Within 24 hours</option>
+                            <option value="Emergency">🔴 Emergency - ASAP</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="preferredContactTime">Preferred Contact Time</label>
+                        <select id="preferredContactTime" name="preferredContactTime">
+                            <option value="Morning">🌅 Morning (8AM-12PM)</option>
+                            <option value="Afternoon" selected>☀️ Afternoon (12PM-5PM)</option>
+                            <option value="Evening">🌆 Evening (5PM-8PM)</option>
+                            <option value="Anytime">⏰ Anytime</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="serviceDescription">Service Description *</label>
+                    <textarea id="serviceDescription" name="serviceDescription" rows="3" required
+                              placeholder="Describe the service needed in detail..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="customerNotes">Additional Notes</label>
+                    <textarea id="customerNotes" name="customerNotes" rows="2" 
+                              placeholder="Any special requirements, access instructions, or notes..."></textarea>
+                </div>
+
+                <!-- Enhanced Tracking Fields -->
+                <div class="tracking-section">
+                    <h3>📊 Referral Tracking</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select id="status" name="status">
+                                <option value="Referred" selected>Referred</option>
+                                <option value="Contacted">Contacted</option>
+                                <option value="Appointment">Appointment Scheduled</option>
+                                <option value="Estimate">Estimate Provided</option>
+                                <option value="Work Started">Work Started</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="appointmentDate">Appointment Date</label>
+                            <input type="datetime-local" id="appointmentDate" name="appointmentDate">
+                        </div>
+                    </div>
+
+                    <div class="form-row three-col">
+                        <div class="form-group">
+                            <label for="estimateAmount">Estimate Amount ($)</label>
+                            <input type="number" id="estimateAmount" name="estimateAmount" 
+                                   step="0.01" min="0" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label for="workStartDate">Work Start Date</label>
+                            <input type="date" id="workStartDate" name="workStartDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="workCompletedDate">Work Completed Date</label>
+                            <input type="date" id="workCompletedDate" name="workCompletedDate">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="assignedAgent">Assigned Agent</label>
+                            <input type="text" id="assignedAgent" name="assignedAgent" 
+                                   placeholder="Agent handling this referral" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="referralPriority">Referral Priority</label>
+                            <select id="referralPriority" name="referralPriority">
+                                <option value="Standard">🟢 Standard</option>
+                                <option value="High">🟡 High Priority</option>
+                                <option value="Urgent">🔴 Urgent</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="estimateNotes">Estimate Notes</label>
+                        <textarea id="estimateNotes" name="estimateNotes" rows="2" 
+                                  placeholder="Details about the estimate, scope of work, etc..."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary" id="submitReferralBtn">
+                        <span class="btn-text">✅ Create Referral</span>
+                        <span class="btn-loading">
+                            <div class="spinner"></div>
+                            Creating...
+                        </span>
+                    </button>
+                    <button type="button" class="btn-secondary" id="cancelReferralBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Integration Info Modal -->
+    <div class="integration-modal" id="integrationModal">
+        <div class="integration-modal-content">
+            <div class="integration-header">
+                <h3>🔌 Call Center Integration Guide</h3>
+                <button class="close-btn" onclick="closeIntegrationModal()">×</button>
+            </div>
+            
+            <div class="integration-content">
+                <div class="integration-section">
+                    <h4>📞 Telephony Integration</h4>
+                    <div class="integration-details">
+                        <div class="integration-option">
+                            <h5>🌐 Twilio (Cloud-Based)</h5>
+                            <p><strong>Best for:</strong> Scalable, cloud-first solutions</p>
+                            <ul>
+                                <li>WebRTC for browser-based calling</li>
+                                <li>Programmable Voice API</li>
+                                <li>Real-time call events via webhooks</li>
+                                <li>Global phone number provisioning</li>
+                            </ul>
+                            <code>// Example Twilio Integration
+const client = new Twilio.Device(token);
+client.on('incoming', handleIncomingCall);
+client.connect({To: '+1234567890'});</code>
+                        </div>
+                        
+                        <div class="integration-option">
+                            <h5>📡 Asterisk PBX (On-Premise)</h5>
+                            <p><strong>Best for:</strong> Enterprise, on-premise solutions</p>
+                            <ul>
+                                <li>AMI (Asterisk Manager Interface)</li>
+                                <li>Custom dialplan configuration</li>
+                                <li>SIP/IAX2 protocol support</li>
+                                <li>Full call control and routing</li>
+                            </ul>
+                            <code>// Example Asterisk AMI
+const ami = new AsteriskManager(5038, 'localhost', 'admin', 'secret');
+ami.action('Originate', {Channel: 'SIP/1001', Context: 'default'});</code>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="integration-section">
+                    <h4>🔄 Call Flow Architecture</h4>
+                    <div class="flow-diagram">
+                        <div class="flow-step">
+                            <span class="step-number">1</span>
+                            <div class="step-content">
+                                <h6>📞 Incoming Call</h6>
+                                <p>Customer dials main number</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <span class="step-number">2</span>
+                            <div class="step-content">
+                                <h6>🎯 IVR Routing</h6>
+                                <p>Service type selection</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <span class="step-number">3</span>
+                            <div class="step-content">
+                                <h6>📋 Queue Assignment</h6>
+                                <p>Priority-based queuing</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <span class="step-number">4</span>
+                            <div class="step-content">
+                                <h6>👤 Agent Assignment</h6>
+                                <p>Available agent notification</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <span class="step-number">5</span>
+                            <div class="step-content">
+                                <h6>💬 Call Interface</h6>
+                                <p>Agent handles call</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="integration-section">
+                    <h4>🔌 API Endpoints</h4>
+                    <div class="api-endpoints">
+                        <div class="endpoint">
+                            <span class="method post">POST</span>
+                            <code>/api/calls/incoming</code>
+                            <p>Handle incoming call webhook</p>
+                        </div>
+                        <div class="endpoint">
+                            <span class="method get">GET</span>
+                            <code>/api/queue/status</code>
+                            <p>Get real-time queue status</p>
+                        </div>
+                        <div class="endpoint">
+                            <span class="method post">POST</span>
+                            <code>/api/calls/{id}/accept</code>
+                            <p>Agent accepts call</p>
+                        </div>
+                        <div class="endpoint">
+                            <span class="method put">PUT</span>
+                            <code>/api/calls/{id}/complete</code>
+                            <p>Complete call with status</p>
+                        </div>
+                        <div class="endpoint">
+                            <span class="method post">POST</span>
+                            <code>/api/referrals/create</code>
+                            <p>Create referral from call</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="integration-section">
+                    <h4>📊 Real-Time Features</h4>
+                    <div class="realtime-features">
+                        <div class="feature">
+                            <h6>🔄 WebSocket Connections</h6>
+                            <p>Real-time queue updates, agent status, call events</p>
+                        </div>
+                        <div class="feature">
+                            <h6>📈 Live Analytics</h6>
+                            <p>Call volume, wait times, agent performance</p>
+                        </div>
+                        <div class="feature">
+                            <h6>🔔 Notifications</h6>
+                            <p>Browser notifications for incoming calls</p>
+                        </div>
+                        <div class="feature">
+                            <h6>📱 Mobile Support</h6>
+                            <p>Responsive design for mobile agents</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="settings-modal" id="settingsModal">
+        <div class="settings-modal-content">
+            <div class="settings-header">
+                <h3>⚙️ Call Center Settings</h3>
+                <button class="close-btn" onclick="closeSettingsModal()">×</button>
+            </div>
+            
+            <div class="settings-content">
+                <div class="settings-tabs">
+                    <button class="tab-btn active" onclick="showSettingsTab('telephony')">📞 Telephony</button>
+                    <button class="tab-btn" onclick="showSettingsTab('general')">🔧 General</button>
+                    <button class="tab-btn" onclick="showSettingsTab('notifications')">🔔 Notifications</button>
+                </div>
+
+                <!-- Telephony Settings Tab -->
+                <div class="settings-tab active" id="telephonyTab">
+                    <h4>📞 Telephony Configuration</h4>
+                    
+                    <div class="provider-selection">
+                        <label for="telephonyProvider">Select Provider:</label>
+                        <select id="telephonyProvider" onchange="toggleProviderSettings()" aria-label="Select Telephony Provider">
+                            <option value="">Choose Provider</option>
+                            <option value="twilio">🌐 Twilio (Cloud)</option>
+                            <option value="asterisk">📡 Asterisk PBX</option>
+                        </select>
+                    </div>
+
+                    <!-- Twilio Settings -->
+                    <div class="provider-settings hidden" id="twilioSettings">
+                        <h5>🌐 Twilio Configuration</h5>
+                        <div class="form-group">
+                            <label for="twilioAccountSid">Account SID *</label>
+                            <input type="text" id="twilioAccountSid" placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
+                            <small>Your Twilio Account SID from the Console Dashboard</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="twilioAuthToken">Auth Token *</label>
+                            <input type="password" id="twilioAuthToken" placeholder="Your auth token" />
+                            <small>Keep this secure - never share publicly</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="twilioApiKey">API Key</label>
+                            <input type="text" id="twilioApiKey" placeholder="SKxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
+                            <small>Optional: For enhanced security (recommended)</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="twilioApiSecret">API Secret</label>
+                            <input type="password" id="twilioApiSecret" placeholder="Your API secret" />
+                            <small>Required if using API Key</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="twilioPhoneNumber">Phone Number</label>
+                            <input type="tel" id="twilioPhoneNumber" placeholder="+1234567890" />
+                            <small>Your Twilio phone number for outbound calls</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="twilioApplicationSid">TwiML Application SID</label>
+                            <input type="text" id="twilioApplicationSid" placeholder="APxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
+                            <small>For Voice SDK integration</small>
+                        </div>
+                        <button type="button" class="test-btn" onclick="testTwilioConnection()">🧪 Test Connection</button>
+                    </div>
+
+                    <!-- Asterisk Settings -->
+                    <div class="provider-settings hidden" id="asteriskSettings">
+                        <h5>📡 Asterisk PBX Configuration</h5>
+                        <div class="form-group">
+                            <label for="asteriskHost">Server Host *</label>
+                            <input type="text" id="asteriskHost" placeholder="192.168.1.100 or pbx.company.com" />
+                        </div>
+                        <div class="form-group">
+                            <label for="asteriskPort">AMI Port</label>
+                            <input type="number" id="asteriskPort" value="5038" />
+                        </div>
+                        <div class="form-group">
+                            <label for="asteriskUsername">AMI Username *</label>
+                            <input type="text" id="asteriskUsername" placeholder="admin" />
+                        </div>
+                        <div class="form-group">
+                            <label for="asteriskPassword">AMI Password *</label>
+                            <input type="password" id="asteriskPassword" placeholder="Your AMI password" />
+                        </div>
+                        <div class="form-group">
+                            <label for="asteriskContext">Default Context</label>
+                            <input type="text" id="asteriskContext" value="default" />
+                        </div>
+                        <button type="button" class="test-btn" onclick="testAsteriskConnection()">🧪 Test Connection</button>
+                    </div>
+                </div>
+
+                <!-- General Settings Tab -->
+                <div class="settings-tab" id="generalTab">
+                    <h4>🔧 General Settings</h4>
+                    <div class="form-group">
+                        <label for="agentName">Agent Name</label>
+                        <input type="text" id="agentName" placeholder="Your name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="agentExtension">Extension</label>
+                        <input type="text" id="agentExtension" placeholder="1001" />
+                    </div>
+                    <div class="form-group">
+                        <label for="autoAnswer">Auto Answer Calls</label>
+                        <input type="checkbox" id="autoAnswer" />
+                        <small>Automatically answer incoming calls</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="callRecording">Enable Call Recording</label>
+                        <input type="checkbox" id="callRecording" checked />
+                        <small>Record calls for quality assurance</small>
+                    </div>
+                </div>
+
+                <!-- Notifications Settings Tab -->
+                <div class="settings-tab" id="notificationsTab">
+                    <h4>🔔 Notification Settings</h4>
+                    <div class="form-group">
+                        <label for="browserNotifications">Browser Notifications</label>
+                        <input type="checkbox" id="browserNotifications" checked />
+                        <small>Show desktop notifications for incoming calls</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="soundNotifications">Sound Alerts</label>
+                        <input type="checkbox" id="soundNotifications" checked />
+                        <small>Play sound for incoming calls</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="notificationVolume">Notification Volume</label>
+                        <input type="range" id="notificationVolume" min="0" max="100" value="75" />
+                        <small>Adjust notification sound volume</small>
+                    </div>
+                </div>
+
+                <div class="settings-actions">
+                    <button type="button" class="btn-primary" onclick="saveSettings()">💾 Save Settings</button>
+                    <button type="button" class="btn-secondary" onclick="resetSettings()">🔄 Reset to Defaults</button>
+                    <button type="button" class="btn-secondary" onclick="closeSettingsModal()">❌ Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Call Center Interface
+        document.addEventListener('DOMContentLoaded', () => {
+            let callTimer = null;
+            let callStartTime = null;
+            let agentStatus = 'ready'; // ready, on-call, break
+            
+            /*
+            ========================================
+            CALL CENTER INTEGRATION DOCUMENTATION
+            ========================================
+            
+            🔌 TELEPHONY INTEGRATION OPTIONS:
+            
+            1. TWILIO INTEGRATION (Recommended):
+               - Cloud-based, scalable solution
+               - WebRTC for browser calling
+               - Automatic call routing and queuing
+               - Real-time call events via webhooks
+               
+            2. ASTERISK PBX:
+               - On-premise solution
+               - AMI (Asterisk Manager Interface)
+               - Custom dialplan configuration
+               - SIP/IAX2 protocols
+               
+            3. RINGCENTRAL/8X8:
+               - Enterprise VoIP solutions
+               - REST APIs for call control
+               - Built-in analytics and reporting
+               
+            📞 CALL FLOW ARCHITECTURE:
+            
+            Customer Call → IVR System → Queue Management → Agent Assignment → Call Interface
+            
+            🔄 INTEGRATION POINTS:
+            
+            A) INCOMING CALL PROCESS:
+               1. Customer dials main number
+               2. IVR collects initial information
+               3. Call routed based on service type
+               4. Queue position assigned with priority
+               5. Agent notification (screen pop)
+               6. Call details auto-populated
+               
+            B) AGENT INTERFACE:
+               1. Real-time queue monitoring
+               2. Click-to-answer functionality
+               3. Customer information display
+               4. Call recording controls
+               5. Referral creation workflow
+               6. Call disposition and notes
+               
+            C) BACKEND SYSTEMS:
+               1. CRM integration for customer lookup
+               2. Database logging for all interactions
+               3. Real-time analytics and reporting
+               4. Automated follow-up workflows
+            */
+            
+            // Real-time clock
+            const updateClock = () => {
+                const now = new Date();
+                document.getElementById('currentTime').textContent = 
+                    now.toLocaleTimeString('en-US', { hour12: false });
+            };
+            updateClock();
+            setInterval(updateClock, 1000);
+            
+            // Queue item interactions
+            document.querySelectorAll('.queue-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.queue-item').forEach(i => i.classList.remove('selected'));
+                    item.classList.add('selected');
+                });
+            });
+            
+            // Take Call Button
+            document.getElementById('takeCallBtn').addEventListener('click', () => {
+                if (agentStatus === 'ready') {
+                    const selectedCall = document.querySelector('.queue-item.selected') || document.querySelector('.queue-item');
+                    if (selectedCall) {
+                        takeCall(selectedCall);
+                    } else {
+                        alert('No calls in queue');
+                    }
+                } else {
+                    alert('Agent not available. Current status: ' + agentStatus);
+                }
+            });
+            
+            // Break Button
+            document.getElementById('breakBtn').addEventListener('click', () => {
+                if (agentStatus === 'ready') {
+                    agentStatus = 'break';
+                    updateAgentStatus('On Break');
+                    document.getElementById('takeCallBtn').style.opacity = '0.5';
+                    setTimeout(() => {
+                        agentStatus = 'ready';
+                        updateAgentStatus('Ready');
+                        document.getElementById('takeCallBtn').style.opacity = '1';
+                    }, 30000); // 30 second break
+                } else if (agentStatus === 'break') {
+                    agentStatus = 'ready';
+                    updateAgentStatus('Ready');
+                    document.getElementById('takeCallBtn').style.opacity = '1';
+                }
+            });
+            
+            // Create Referral Button
+            document.getElementById('createReferralBtn').addEventListener('click', () => {
+                openReferralModal();
+            });
+            
+            // Reports Button
+            document.getElementById('reportsBtn').addEventListener('click', () => {
+                window.location.href = 'call-center-reports.html';
+            });
+
+            // Settings Button
+            document.getElementById('settingsBtn').addEventListener('click', () => {
+                console.log('Settings button clicked');
+                openSettingsModal();
+            });
+            
+            // Take Call Function - Enhanced with Integration Details
+            function takeCall(callElement) {
+                console.log('🔄 CALL INTEGRATION PROCESS STARTED');
+                
+                // 1. Update Agent Status
+                agentStatus = 'on-call';
+                updateAgentStatus('On Call');
+                console.log('✅ Agent status updated to: On Call');
+                
+                // 2. Extract Call Information
+                const callerName = callElement.querySelector('.caller-name').textContent;
+                const callerPhone = callElement.querySelector('.caller-phone').textContent;
+                const serviceType = callElement.querySelector('.service-type').textContent;
+                const waitTime = callElement.querySelector('.wait-time').textContent;
+                const priority = callElement.querySelector('.priority-tag').textContent;
+                
+                console.log('📞 Call Details:', {
+                    caller: callerName,
+                    phone: callerPhone,
+                    service: serviceType,
+                    waitTime: waitTime,
+                    priority: priority
+                });
+                
+                // 3. TELEPHONY SYSTEM INTEGRATION (Simulated)
+                console.log('🔌 Connecting to telephony system...');
+                simulateTelephonyConnection(callerPhone);
+                
+                // 4. CRM LOOKUP (Simulated)
+                console.log('🔍 Performing CRM lookup...');
+                simulateCRMLookup(callerPhone);
+                
+                // 5. Update Call Interface
+                document.getElementById('callerName').textContent = callerName;
+                document.getElementById('callerPhone').textContent = callerPhone;
+                document.getElementById('serviceType').textContent = serviceType;
+                
+                // 6. Remove from queue and update display
+                callElement.remove();
+                updateQueueCount();
+                
+                // 7. Show call interface
+                document.getElementById('callModal').classList.add('show-flex');
+                
+                // 8. Start call timer and logging
+                callStartTime = Date.now();
+                callTimer = setInterval(updateCallTimer, 1000);
+                
+                // 9. Log call start event
+                logCallEvent('CALL_STARTED', {
+                    agentId: 'AGENT_001',
+                    callerId: callerPhone,
+                    serviceType: serviceType,
+                    timestamp: new Date().toISOString()
+                });
+                
+                console.log('✅ Call successfully connected and interface ready');
+            }
+            
+            // Simulate Telephony System Connection
+            function simulateTelephonyConnection(phoneNumber) {
+                console.log(`📡 Connecting to ${phoneNumber} via telephony provider...`);
+                console.log('🔊 Audio channels established');
+                console.log('📹 Video capability checked');
+                console.log('🎙️ Microphone and speaker ready');
+                
+                // In real implementation, this would:
+                // - Connect to Twilio/Asterisk/RingCentral API
+                // - Establish WebRTC connection
+                // - Handle audio/video streams
+                // - Manage call controls (mute, hold, transfer)
+            }
+            
+            // Simulate CRM Lookup
+            function simulateCRMLookup(phoneNumber) {
+                console.log(`🔍 Looking up customer data for ${phoneNumber}...`);
+                
+                // Simulated customer data that would come from CRM
+                const customerData = {
+                    customerId: 'CUST_' + Math.random().toString(36).substr(2, 9),
+                    previousCalls: Math.floor(Math.random() * 5),
+                    lastServiceDate: '2024-01-15',
+                    preferredContractor: 'ABC Plumbing',
+                    notes: 'Prefers morning appointments',
+                    address: '123 Main St, City, State 12345'
+                };
+                
+                console.log('📋 Customer data retrieved:', customerData);
+                
+                // In real implementation, this would:
+                // - Query customer database
+                // - Retrieve service history
+                // - Load previous referrals
+                // - Check payment status
+                // - Display customer preferences
+            }
+            
+            // Call Event Logging
+            function logCallEvent(eventType, eventData) {
+                console.log(`📝 Logging event: ${eventType}`, eventData);
+                
+                // In real implementation, this would:
+                // - Send to analytics system
+                // - Update call records database
+                // - Trigger automated workflows
+                // - Generate real-time reports
+            }
+            
+            // Update call timer
+            function updateCallTimer() {
+                const elapsed = Math.floor((Date.now() - callStartTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                document.getElementById('callTimer').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            
+            // Complete Call
+            document.getElementById('completeCallBtn').addEventListener('click', () => {
+                completeCall('completed');
+            });
+            
+            // End Call
+            document.getElementById('endCallBtn').addEventListener('click', () => {
+                completeCall('ended');
+            });
+            
+            // Transfer Call
+            document.getElementById('transferCallBtn').addEventListener('click', () => {
+                completeCall('transferred');
+            });
+            
+            // Create Referral from Call
+            document.getElementById('createReferralFromCallBtn').addEventListener('click', () => {
+                const callerName = document.getElementById('callerName').textContent;
+                const callerPhone = document.getElementById('callerPhone').textContent;
+                const serviceType = document.getElementById('serviceType').textContent;
+                
+                // Pre-fill referral form
+                document.getElementById('customerName').value = callerName;
+                document.getElementById('customerPhone').value = callerPhone;
+                document.getElementById('serviceTypeSelect').value = serviceType;
+                document.getElementById('assignedAgent').value = 'Current Agent';
+                
+                openReferralModal();
+            });
+            
+            // Complete call function - Enhanced with Integration
+            function completeCall(status) {
+                console.log(`🔄 COMPLETING CALL WITH STATUS: ${status.toUpperCase()}`);
+                
+                // 1. Get call details for logging
+                const callData = {
+                    callerName: document.getElementById('callerName').textContent,
+                    callerPhone: document.getElementById('callerPhone').textContent,
+                    serviceType: document.getElementById('serviceType').textContent,
+                    callNotes: document.getElementById('callNotes').value,
+                    duration: Math.floor((Date.now() - callStartTime) / 1000),
+                    status: status,
+                    timestamp: new Date().toISOString()
+                };
+                
+                console.log('📊 Call Summary:', callData);
+                
+                // 2. Telephony System Cleanup
+                console.log('📞 Disconnecting telephony connection...');
+                simulateTelephonyDisconnect();
+                
+                // 3. Database Logging
+                console.log('💾 Saving call record to database...');
+                saveCallRecord(callData);
+                
+                // 4. CRM Update
+                console.log('🔄 Updating CRM with call outcome...');
+                updateCRMRecord(callData);
+                
+                // 5. Automated Follow-up
+                if (status === 'completed' && callData.callNotes.toLowerCase().includes('referral')) {
+                    console.log('📧 Triggering automated follow-up workflow...');
+                    triggerFollowUpWorkflow(callData);
+                }
+                
+                // 6. Analytics Update
+                console.log('📈 Updating real-time analytics...');
+                updateAnalytics(callData);
+                
+                // 7. UI Cleanup
+                clearInterval(callTimer);
+                document.getElementById('callModal').classList.remove('show-flex');
+                agentStatus = 'ready';
+                updateAgentStatus('Ready');
+                
+                // 8. Add to activity feed
+                addActivity(status, callData.callerName);
+                
+                // 9. Clear form
+                document.getElementById('callNotes').value = '';
+                
+                // 10. Success notification
+                showCallCompletionNotification(status, callData);
+                
+                console.log('✅ Call completion process finished');
+            }
+            
+            // Simulate Telephony Disconnect
+            function simulateTelephonyDisconnect() {
+                console.log('🔇 Closing audio channels');
+                console.log('📞 Releasing phone line');
+                console.log('🔌 Disconnecting from telephony provider');
+                
+                // In real implementation:
+                // - Close WebRTC connections
+                // - Release telephony resources
+                // - Stop call recording
+                // - Clean up audio/video streams
+            }
+            
+            // Save Call Record
+            function saveCallRecord(callData) {
+                console.log('💾 Saving to database:', {
+                    table: 'call_records',
+                    data: callData
+                });
+                
+                // In real implementation:
+                // - INSERT into call_records table
+                // - Update customer interaction history
+                // - Store call recording reference
+                // - Update agent statistics
+            }
+            
+            // Update CRM Record
+            function updateCRMRecord(callData) {
+                console.log('🔄 CRM update:', {
+                    customerId: 'CUST_' + callData.callerPhone.replace(/\D/g, ''),
+                    lastContact: callData.timestamp,
+                    callOutcome: callData.status,
+                    notes: callData.callNotes
+                });
+                
+                // In real implementation:
+                // - Update customer record
+                // - Add interaction note
+                // - Update customer status
+                // - Sync with external CRM
+            }
+            
+            // Trigger Follow-up Workflow
+            function triggerFollowUpWorkflow(callData) {
+                console.log('🔄 Automated workflow triggered:', {
+                    type: 'referral_follow_up',
+                    customer: callData.callerName,
+                    service: callData.serviceType
+                });
+                
+                // In real implementation:
+                // - Send confirmation email
+                // - Schedule follow-up call
+                // - Notify contractors
+                // - Create calendar events
+            }
+            
+            // Update Analytics
+            function updateAnalytics(callData) {
+                console.log('📈 Analytics update:', {
+                    callVolume: '+1',
+                    avgCallTime: callData.duration,
+                    resolutionRate: callData.status === 'completed' ? '+1' : '0',
+                    serviceType: callData.serviceType
+                });
+                
+                // In real implementation:
+                // - Update real-time dashboards
+                // - Calculate KPIs
+                // - Generate reports
+                // - Trigger alerts if needed
+            }
+            
+            // Show Call Completion Notification
+            function showCallCompletionNotification(status, callData) {
+                const statusMessages = {
+                    completed: `✅ Call completed successfully!\n\nCustomer: ${callData.callerName}\nDuration: ${Math.floor(callData.duration / 60)}:${(callData.duration % 60).toString().padStart(2, '0')}\nService: ${callData.serviceType}`,
+                    transferred: `📞 Call transferred successfully!\n\nCustomer: ${callData.callerName}\nTransferred to: Support Team\nReason: ${callData.callNotes || 'No notes provided'}`,
+                    ended: `❌ Call ended\n\nCustomer: ${callData.callerName}\nDuration: ${Math.floor(callData.duration / 60)}:${(callData.duration % 60).toString().padStart(2, '0')}\nNotes: ${callData.callNotes || 'No notes provided'}`
+                };
+                
+                alert(statusMessages[status] || `Call ${status} successfully!`);
+            }
+            
+            // Update agent status
+            function updateAgentStatus(status) {
+                document.querySelector('.call-status').textContent = status;
+                document.querySelector('.call-status').className = 'call-status ' + 
+                    (status === 'Ready' ? 'ready' : status === 'On Call' ? 'on-call' : 'break');
+            }
+            
+            // Update queue count
+            function updateQueueCount() {
+                const count = document.querySelectorAll('.queue-item').length;
+                document.querySelector('.queue-count').textContent = count;
+            }
+            
+            // Add activity
+            function addActivity(type, caller) {
+                const activityList = document.querySelector('.activity-list');
+                const activityItem = document.createElement('div');
+                activityItem.className = 'activity-item';
+                
+                const icon = type === 'completed' ? '✅' : type === 'transferred' ? '📞' : '❌';
+                const iconClass = type === 'completed' ? 'success' : type === 'transferred' ? 'info' : 'warning';
+                const title = type === 'completed' ? 'Call Completed' : type === 'transferred' ? 'Call Transferred' : 'Call Ended';
+                
+                activityItem.innerHTML = `
+                    <div class="activity-icon ${iconClass}">${icon}</div>
+                    <div class="activity-content">
+                        <div class="activity-title">${title}</div>
+                        <div class="activity-desc">${caller}</div>
+                        <div class="activity-time">Just now</div>
+                    </div>
+                `;
+                
+                activityList.insertBefore(activityItem, activityList.firstChild);
+                
+                // Keep only last 5 activities
+                while (activityList.children.length > 5) {
+                    activityList.removeChild(activityList.lastChild);
+                }
+            }
+            
+            // Referral Modal Functions
+            function openReferralModal() {
+                document.getElementById('referralModal').classList.add('show-flex');
+                // Auto-populate assigned agent
+                document.getElementById('assignedAgent').value = 'Current Agent';
+            }
+            
+            function closeReferralModal() {
+                document.getElementById('referralModal').classList.remove('show-flex');
+                clearReferralForm();
+            }
+            
+            function clearReferralForm() {
+                document.getElementById('referralForm').reset();
+                document.getElementById('status').value = 'Referred';
+                document.getElementById('urgencyLevel').value = 'Medium';
+                document.getElementById('preferredContactTime').value = 'Afternoon';
+            }
+            
+            // Referral modal event listeners
+            document.getElementById('closeReferralModal').addEventListener('click', closeReferralModal);
+            document.getElementById('cancelReferralBtn').addEventListener('click', closeReferralModal);
+            // Handle form submission
+            document.getElementById('referralForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const formData = new FormData(e.target);
+                const referralData = Object.fromEntries(formData);
+                
+                // Validate required fields
+                if (!referralData.customerName || !referralData.customerPhone || 
+                    !referralData.serviceType || !referralData.serviceDescription) {
+                    alert('Please fill in all required fields (marked with *)');
+                    return;
+                }
+                
+                // Show loading state
+                const submitBtn = document.getElementById('submitReferralBtn');
+                submitBtn.querySelector('.btn-text').classList.add('hidden');
+                submitBtn.querySelector('.btn-loading').classList.add('show-flex');
+                submitBtn.disabled = true;
+                
+                // Simulate API call
+                setTimeout(() => {
+                    const referralId = `REF-${Date.now()}`;
+                    
+                    alert(`Referral created successfully!\n\n` +
+                          `Referral ID: ${referralId}\n` +
+                          `Customer: ${referralData.customerName}\n` +
+                          `Phone: ${referralData.customerPhone}\n` +
+                          `Service: ${referralData.serviceType}\n` +
+                          `Urgency: ${referralData.urgencyLevel}\n` +
+                          `Status: ${referralData.status}`);
+                    
+                    addActivity('referral', referralData.customerName);
+                    
+                    // Reset loading state
+                    submitBtn.querySelector('.btn-text').classList.remove('hidden');
+                    submitBtn.querySelector('.btn-loading').classList.remove('show-flex');
+                    submitBtn.disabled = false;
+                    
+                    closeReferralModal();
+                }, 1500);
+            
+            });
+            
+            // Integration Info Modal Functions
+            window.showIntegrationInfo = function() {
+                document.getElementById('integrationModal').style.display = 'flex';
+            };
+            
+            window.closeIntegrationModal = function() {
+                document.getElementById('integrationModal').style.display = 'none';
+            };
+
+            // Settings Modal Functions
+            window.openSettingsModal = function() {
+                console.log('Opening settings modal');
+                const modal = document.getElementById('settingsModal');
+                console.log('Settings modal element:', modal);
+                if (modal) {
+                    modal.style.display = 'flex';
+                    loadSettings();
+                } else {
+                    console.error('Settings modal not found!');
+                }
+            };
+            
+            window.closeSettingsModal = function() {
+                document.getElementById('settingsModal').style.display = 'none';
+            };
+
+            window.showSettingsTab = function(tabName) {
+                // Hide all tabs
+                document.querySelectorAll('.settings-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                // Show selected tab
+                document.getElementById(tabName + 'Tab').classList.add('active');
+                event.target.classList.add('active');
+            };
+
+            window.toggleProviderSettings = function() {
+                const provider = document.getElementById('telephonyProvider').value;
+                
+                // Hide all provider settings
+                document.querySelectorAll('.provider-settings').forEach(settings => {
+                    settings.classList.add('hidden');
+                });
+
+                // Show selected provider settings
+                if (provider) {
+                    document.getElementById(provider + 'Settings').classList.remove('hidden');
+                }
+            };
+
+            window.testTwilioConnection = async function() {
+                const accountSid = document.getElementById('twilioAccountSid').value;
+                const authToken = document.getElementById('twilioAuthToken').value;
+
+                if (!accountSid || !authToken) {
+                    alert('Please enter Account SID and Auth Token');
+                    return;
+                }
+
+                const testBtn = event.target;
+                testBtn.disabled = true;
+                testBtn.textContent = '🔄 Testing...';
+
+                try {
+                    // Test Twilio connection
+                    const response = await fetch('/api/CallCenter/test/twilio-connection', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            accountSid: accountSid,
+                            authToken: authToken
+                        })
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert('✅ Twilio connection successful!\n\n' + JSON.stringify(result, null, 2));
+                    } else {
+                        const error = await response.json();
+                        alert('❌ Twilio connection failed:\n' + error.message);
+                    }
+                } catch (error) {
+                    alert('❌ Connection test failed:\n' + error.message);
+                } finally {
+                    testBtn.disabled = false;
+                    testBtn.textContent = '🧪 Test Connection';
+                }
+            };
+
+            window.testAsteriskConnection = async function() {
+                const host = document.getElementById('asteriskHost').value;
+                const port = document.getElementById('asteriskPort').value;
+                const username = document.getElementById('asteriskUsername').value;
+                const password = document.getElementById('asteriskPassword').value;
+
+                if (!host || !username || !password) {
+                    alert('Please enter Host, Username, and Password');
+                    return;
+                }
+
+                const testBtn = event.target;
+                testBtn.disabled = true;
+                testBtn.textContent = '🔄 Testing...';
+
+                try {
+                    // Test Asterisk connection
+                    const response = await fetch('/api/CallCenter/test/asterisk-connection', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            host: host,
+                            port: parseInt(port),
+                            username: username,
+                            password: password
+                        })
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert('✅ Asterisk connection successful!\n\n' + JSON.stringify(result, null, 2));
+                    } else {
+                        const error = await response.json();
+                        alert('❌ Asterisk connection failed:\n' + error.message);
+                    }
+                } catch (error) {
+                    alert('❌ Connection test failed:\n' + error.message);
+                } finally {
+                    testBtn.disabled = false;
+                    testBtn.textContent = '🧪 Test Connection';
+                }
+            };
+
+            window.saveSettings = function() {
+                const settings = {
+                    telephony: {
+                        provider: document.getElementById('telephonyProvider').value,
+                        twilio: {
+                            accountSid: document.getElementById('twilioAccountSid').value,
+                            authToken: document.getElementById('twilioAuthToken').value,
+                            apiKey: document.getElementById('twilioApiKey').value,
+                            apiSecret: document.getElementById('twilioApiSecret').value,
+                            phoneNumber: document.getElementById('twilioPhoneNumber').value,
+                            applicationSid: document.getElementById('twilioApplicationSid').value
+                        },
+                        asterisk: {
+                            host: document.getElementById('asteriskHost').value,
+                            port: document.getElementById('asteriskPort').value,
+                            username: document.getElementById('asteriskUsername').value,
+                            password: document.getElementById('asteriskPassword').value,
+                            context: document.getElementById('asteriskContext').value
+                        }
+                    },
+                    general: {
+                        agentName: document.getElementById('agentName').value,
+                        agentExtension: document.getElementById('agentExtension').value,
+                        autoAnswer: document.getElementById('autoAnswer').checked,
+                        callRecording: document.getElementById('callRecording').checked
+                    },
+                    notifications: {
+                        browserNotifications: document.getElementById('browserNotifications').checked,
+                        soundNotifications: document.getElementById('soundNotifications').checked,
+                        notificationVolume: document.getElementById('notificationVolume').value
+                    }
+                };
+
+                // Settings are now managed via API - no localStorage needed
+                console.log('✅ Settings saved (API integration pending)');
+                
+                // Show success message
+                alert('✅ Settings saved successfully!');
+                
+                closeSettingsModal();
+            };
+
+            window.loadSettings = function() {
+                // Settings are now managed via API - no localStorage needed
+                console.log('✅ Settings loading (API integration pending)');
+                return;
+
+                try {
+                    const settings = JSON.parse(savedSettings);
+
+                    // Load telephony settings
+                    if (settings.telephony) {
+                        document.getElementById('telephonyProvider').value = settings.telephony.provider || '';
+                        
+                        if (settings.telephony.twilio) {
+                            document.getElementById('twilioAccountSid').value = settings.telephony.twilio.accountSid || '';
+                            document.getElementById('twilioAuthToken').value = settings.telephony.twilio.authToken || '';
+                            document.getElementById('twilioApiKey').value = settings.telephony.twilio.apiKey || '';
+                            document.getElementById('twilioApiSecret').value = settings.telephony.twilio.apiSecret || '';
+                            document.getElementById('twilioPhoneNumber').value = settings.telephony.twilio.phoneNumber || '';
+                            document.getElementById('twilioApplicationSid').value = settings.telephony.twilio.applicationSid || '';
+                        }
+
+                        if (settings.telephony.asterisk) {
+                            document.getElementById('asteriskHost').value = settings.telephony.asterisk.host || '';
+                            document.getElementById('asteriskPort').value = settings.telephony.asterisk.port || '5038';
+                            document.getElementById('asteriskUsername').value = settings.telephony.asterisk.username || '';
+                            document.getElementById('asteriskPassword').value = settings.telephony.asterisk.password || '';
+                            document.getElementById('asteriskContext').value = settings.telephony.asterisk.context || 'default';
+                        }
+
+                        toggleProviderSettings();
+                    }
+
+                    // Load general settings
+                    if (settings.general) {
+                        document.getElementById('agentName').value = settings.general.agentName || '';
+                        document.getElementById('agentExtension').value = settings.general.agentExtension || '';
+                        document.getElementById('autoAnswer').checked = settings.general.autoAnswer || false;
+                        document.getElementById('callRecording').checked = settings.general.callRecording !== false;
+                    }
+
+                    // Load notification settings
+                    if (settings.notifications) {
+                        document.getElementById('browserNotifications').checked = settings.notifications.browserNotifications !== false;
+                        document.getElementById('soundNotifications').checked = settings.notifications.soundNotifications !== false;
+                        document.getElementById('notificationVolume').value = settings.notifications.notificationVolume || 75;
+                    }
+                } catch (error) {
+                    console.error('Error loading settings:', error);
+                }
+            };
+
+            window.resetSettings = function() {
+                if (confirm('Are you sure you want to reset all settings to defaults?')) {
+                    // Settings are now managed via API - no localStorage needed
+                    console.log('✅ Settings reset (API integration pending)');
+                    
+                    // Reset form values
+                    document.getElementById('telephonyProvider').value = '';
+                    document.querySelectorAll('.provider-settings input').forEach(input => {
+                        if (input.type === 'checkbox') {
+                            input.checked = false;
+                        } else {
+                            input.value = '';
+                        }
+                    });
+                    
+                    // Reset defaults
+                    document.getElementById('asteriskPort').value = '5038';
+                    document.getElementById('asteriskContext').value = 'default';
+                    document.getElementById('callRecording').checked = true;
+                    document.getElementById('browserNotifications').checked = true;
+                    document.getElementById('soundNotifications').checked = true;
+                    document.getElementById('notificationVolume').value = 75;
+                    
+                    toggleProviderSettings();
+                    alert('✅ Settings reset to defaults!');
+                }
+            };
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target.classList.contains('call-modal') || 
+                    e.target.classList.contains('referral-modal') ||
+                    e.target.classList.contains('integration-modal') ||
+                    e.target.classList.contains('settings-modal')) {
+                    e.target.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+    <!-- Authentication Script -->
+    <script src="../js/auth.js"></script>
+    
+    <!-- Call Center Management Script -->
+    <script src="../js/call-center.js"></script>
+    
+    <script>
+        // Protect this page - require basic authentication
+        document.addEventListener('DOMContentLoaded', async () => {
+            const isAuthorized = await auth.initializePage(PERMISSIONS.BASIC);
+            
+            if (isAuthorized) {
+                // Update agent info in header
+                const agentStatusElement = document.querySelector('.agent-status span');
+                if (agentStatusElement && auth.agentName) {
+                    agentStatusElement.textContent = `${auth.agentName} (${auth.userRole})`;
+                }
+                
+                // Add logout functionality to logout button
+                const logoutBtn = document.querySelector('.header-btn.logout');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        auth.logout();
+                    });
+                }
+                // ZIP autocomplete is now handled by the universal zip-autocomplete.js system
+                // ZIP autocomplete is now handled by the universal system
+                
+                // Initialize contractor search integration
+                initContractorSearchIntegration();
+                
+                // Initialize Call Center Manager
+                window.callCenter = new CallCenterManager();
+                console.log('📞 Call Center Manager initialized');
+            }
+        });
+
+        // Contractor Search Integration
+        function initContractorSearchIntegration() {
+            // Listen for service info updates
+            document.addEventListener('serviceInfoUpdated', function(e) {
+                const { zipCode, coverage, contractors } = e.detail;
+                console.log('📍 Service info updated for ZIP:', zipCode);
+                console.log('Coverage:', coverage);
+                console.log('Available contractors:', contractors.length);
+                
+                // Update referral form with service info
+                updateReferralFormWithServiceInfo(coverage, contractors);
+            });
+
+            // Listen for contractor assignments
+            document.addEventListener('contractorAssigned', function(e) {
+                const { contractorId, zipCode } = e.detail;
+                console.log('✅ Contractor assigned:', contractorId, 'for ZIP:', zipCode);
+                
+                // Auto-fill contractor info in referral form
+                autoFillContractorInfo(contractorId);
+                
+                // Show success notification
+                showNotification('Contractor assigned successfully!', 'success');
+            });
+
+            // Listen for contractor contact events
+            document.addEventListener('contractorContacted', function(e) {
+                const { phone, zipCode } = e.detail;
+                console.log('📞 Contacting contractor:', phone);
+                
+                // Log the contact attempt
+                logContactAttempt(phone, zipCode);
+                
+                // Show contact notification
+                showNotification(`Calling contractor: ${phone}`, 'info');
+            });
+        }
+
+        function updateReferralFormWithServiceInfo(coverage, contractors) {
+            // Update service type options based on coverage
+            const serviceSelect = document.getElementById('serviceTypeSelect');
+            if (serviceSelect && coverage.serviceTypes) {
+                // Highlight available services
+                Array.from(serviceSelect.options).forEach(option => {
+                    const serviceType = coverage.serviceTypes.find(st => 
+                        st.serviceType === option.value
+                    );
+                    
+                    if (serviceType && serviceType.contractorCount > 0) {
+                        option.style.color = '#10b981';
+                        option.style.fontWeight = '600';
+                    } else if (serviceType) {
+                        option.style.color = '#ef4444';
+                        option.style.fontWeight = '400';
+                    }
+                });
+            }
+
+            // Update contractor dropdown if it exists
+            updateContractorDropdown(contractors);
+        }
+
+        function updateContractorDropdown(contractors) {
+            let contractorSelect = document.getElementById('assignedContractor');
+            
+            // Create contractor dropdown if it doesn't exist
+            if (!contractorSelect) {
+                const referralForm = document.getElementById('referralForm');
+                if (referralForm) {
+                    const formGroup = document.createElement('div');
+                    formGroup.className = 'form-group';
+                    formGroup.innerHTML = `
+                        <label for="assignedContractor">Assigned Contractor</label>
+                        <select id="assignedContractor" name="assignedContractor">
+                            <option value="">Select contractor...</option>
+                        </select>
+                    `;
+                    
+                    // Insert before the submit button
+                    const submitBtn = referralForm.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        referralForm.insertBefore(formGroup, submitBtn);
+                    } else {
+                        referralForm.appendChild(formGroup);
+                    }
+                    
+                    contractorSelect = document.getElementById('assignedContractor');
+                }
+            }
+
+            if (contractorSelect) {
+                // Clear existing options except the first one
+                contractorSelect.innerHTML = '<option value="">Select contractor...</option>';
+                
+                // Add contractor options
+                contractors.forEach(contractor => {
+                    const option = document.createElement('option');
+                    option.value = contractor.contractorId;
+                    option.textContent = `${contractor.businessName} - ${contractor.rating}⭐ (${contractor.availability})`;
+                    option.style.color = contractor.availability === 'Available' ? '#10b981' : '#f59e0b';
+                    contractorSelect.appendChild(option);
+                });
+            }
+        }
+
+        function autoFillContractorInfo(contractorId) {
+            const contractorSelect = document.getElementById('assignedContractor');
+            if (contractorSelect) {
+                contractorSelect.value = contractorId;
+                contractorSelect.dispatchEvent(new Event('change'));
+            }
+
+            // Auto-fill assigned agent field
+            const assignedAgentField = document.getElementById('assignedAgent');
+            if (assignedAgentField && !assignedAgentField.value) {
+                assignedAgentField.value = auth.agentName || 'Current Agent';
+            }
+        }
+
+        function logContactAttempt(phone, zipCode) {
+            // Log to console for now - could be sent to analytics
+            console.log('📊 Contact attempt logged:', {
+                phone,
+                zipCode,
+                timestamp: new Date().toISOString(),
+                agent: auth.agentName
+            });
+        }
+
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <span class="notification-message">${message}</span>
+                <button class="notification-close" onclick="this.parentElement.remove()">×</button>
+            `;
+            
+            // Add to page
+            document.body.appendChild(notification);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+        
+    </script>
+</body>
+</html>

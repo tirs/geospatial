@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Referral Network - Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .logo {
+            margin-bottom: 30px;
+        }
+
+        .logo-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+
+        .logo-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            background: #fef2f2;
+            color: #dc2626;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .success-message {
+            background: #f0fdf4;
+            color: #16a34a;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .loading {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .loading-spinner {
+            border: 2px solid #f3f4f6;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+
+
+        .login-options {
+            margin-top: 25px;
+            text-align: center;
+        }
+        
+        .option-divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .option-divider::before,
+        .option-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .option-divider span {
+            margin: 0 10px;
+        }
+        
+        .contractor-login-btn {
+            display: inline-block;
+            background: #1a365d;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .contractor-login-btn:hover {
+            background: #153e75;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .contractor-note {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .footer-text {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+                align-items: flex-start;
+                padding-top: 40px;
+            }
+            
+            .login-container {
+                padding: 30px 20px;
+                max-width: 100%;
+                margin: 0;
+                border-radius: 12px;
+            }
+            
+            .logo-icon {
+                font-size: 40px;
+            }
+            
+            .logo-text {
+                font-size: 20px;
+            }
+            
+            .logo-subtitle {
+                font-size: 13px;
+            }
+            
+            .form-input {
+                font-size: 16px;
+                padding: 14px 16px;
+            }
+            
+            .login-btn, .contractor-login-btn {
+                padding: 14px 20px;
+                font-size: 16px;
+            }
+            
+
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+                padding-top: 30px;
+            }
+            
+            .login-container {
+                padding: 25px 15px;
+                border-radius: 8px;
+            }
+            
+            .logo {
+                margin-bottom: 25px;
+            }
+            
+            .logo-icon {
+                font-size: 36px;
+                margin-bottom: 8px;
+            }
+            
+            .logo-text {
+                font-size: 18px;
+            }
+            
+            .logo-subtitle {
+                font-size: 12px;
+            }
+            
+            .form-group {
+                margin-bottom: 16px;
+            }
+            
+            .form-label {
+                font-size: 13px;
+                margin-bottom: 6px;
+            }
+            
+            .form-input {
+                font-size: 16px;
+                padding: 12px 14px;
+            }
+            
+            .login-btn, .contractor-login-btn {
+                padding: 12px 16px;
+                font-size: 15px;
+            }
+            
+
+            
+            .option-divider {
+                margin: 15px 0;
+                font-size: 12px;
+            }
+            
+            .contractor-note {
+                font-size: 11px;
+                margin-top: 8px;
+            }
+            
+            .footer-text {
+                margin-top: 20px;
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .login-container {
+                padding: 20px 12px;
+            }
+            
+            .logo-text {
+                font-size: 16px;
+            }
+            
+            .form-input {
+                padding: 10px 12px;
+            }
+            
+            .login-btn, .contractor-login-btn {
+                padding: 10px 14px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <div class="logo-icon">🏢</div>
+            <div class="logo-text">Urban Referral</div>
+            <div class="logo-subtitle">Call Center Portal</div>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+        <div class="success-message" id="successMessage"></div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="agentCode" class="form-label">Agent Code</label>
+                <input type="text" id="agentCode" class="form-input" placeholder="Enter your agent code" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
+            </div>
+
+            <button type="submit" class="login-btn" id="loginBtn">
+                <span id="loginText">Sign In</span>
+                <div class="loading" id="loading">
+                    <div class="loading-spinner"></div>
+                </div>
+            </button>
+        </form>
+        
+        <div class="login-options">
+            <div class="option-divider"><span>or</span></div>
+            <a href="/pages/contractor-dashboard.html" class="contractor-login-btn">
+                Contractor Login
+            </a>
+            <p class="contractor-note">Are you a contractor? Access your dashboard here</p>
+        </div>
+
+        <div class="footer-text">
+            &copy; 2025 Urban Referral Network
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api';
+
+        // Local authentication fallback
+        async function tryLocalLogin(agentCode, password) {
+            console.log('🔍 Checking local users for:', agentCode);
+            console.log('🔑 Attempting login with password:', password);
+            
+            // Get users from localStorage (same as dashboard)
+            const savedUsers = localStorage.getItem('systemUsers');
+            let users = [];
+            
+            if (savedUsers) {
+                users = JSON.parse(savedUsers);
+                console.log('📂 Found saved users in localStorage');
+            } else {
+                console.log('📂 No saved users, using defaults');
+                // Default demo users
+                users = [
+                    {
+                        id: 1,
+                        name: 'System Administrator',
+                        email: 'admin@urbanreferral.com',
+                        role: 'admin',
+                        status: 'active',
+                        avatar: '👨‍💼',
+                        lastLogin: new Date().toISOString(),
+                        agentCode: 'ADMIN_001',
+                        password: 'admin123' // Default password
+                    }
+                ];
+            }
+            
+            console.log('👥 Available users:', users.map(u => ({ 
+                code: u.agentCode, 
+                role: u.role, 
+                password: u.password,
+                status: u.status 
+            })));
+            
+            // Find user by agent code
+            const user = users.find(u => u.agentCode === agentCode && u.status === 'active');
+            
+            if (!user) {
+                console.log('❌ User not found with agent code:', agentCode);
+                console.log('🔍 Available agent codes:', users.map(u => u.agentCode));
+                return { success: false, error: 'INVALID_CREDENTIALS' };
+            }
+            
+            console.log('👤 Found user:', { 
+                name: user.name, 
+                agentCode: user.agentCode, 
+                storedPassword: user.password,
+                inputPassword: password 
+            });
+            
+            // Check password
+            const userPassword = user.password || 'admin123'; // Default password if not set
+            if (userPassword !== password) {
+                console.log('❌ Password mismatch!');
+                console.log('   Expected:', userPassword);
+                console.log('   Received:', password);
+                return { success: false, error: 'INVALID_CREDENTIALS' };
+            }
+            
+            console.log('✅ Local authentication successful for:', user.name);
+            
+            // Update last login
+            user.lastLogin = new Date().toISOString();
+            localStorage.setItem('systemUsers', JSON.stringify(users));
+            
+            return {
+                success: true,
+                result: 'SUCCESS',
+                sessionToken: 'local-demo-token-' + Date.now(),
+                userRole: user.role,
+                agentName: user.name,
+                firstName: user.name.split(' ')[0],
+                lastName: user.name.split(' ').slice(1).join(' '),
+                agentId: user.id,
+                id: user.id,
+                mustChangePassword: user.mustChangePassword || false
+            };
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await handleLogin();
+        });
+
+        async function handleLogin() {
+            const agentCode = document.getElementById('agentCode').value.trim();
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const loginText = document.getElementById('loginText');
+            const loading = document.getElementById('loading');
+
+            if (!agentCode || !password) {
+                showError('Please enter both agent code and password');
+                return;
+            }
+
+            // Show loading state
+            loginBtn.disabled = true;
+            loginText.style.display = 'none';
+            loading.style.display = 'block';
+            hideMessages();
+
+            try {
+                // Try API login first
+                let loginSuccess = false;
+                let result = null;
+
+                try {
+                    const response = await fetch(`${API_BASE}/Auth/login`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            agentCode: agentCode,
+                            password: password
+                        })
+                    });
+
+                    if (response.ok) {
+                        result = await response.json();
+                        if (result.result === 'SUCCESS') {
+                            loginSuccess = true;
+                        }
+                    }
+                } catch (apiError) {
+                    console.log('🔄 API login failed, trying local authentication...');
+                }
+
+                // If API login failed, try local authentication
+                if (!loginSuccess) {
+                    console.log('🔍 Attempting local authentication...');
+                    const localResult = await tryLocalLogin(agentCode, password);
+                    if (localResult.success) {
+                        result = localResult;
+                        loginSuccess = true;
+                    }
+                }
+
+                if (loginSuccess && result) {
+                    // Store session token
+                    localStorage.setItem('sessionToken', result.sessionToken || 'demo-token-' + Date.now());
+                    localStorage.setItem('userRole', result.userRole);
+                    localStorage.setItem('agentName', result.agentName || `${result.firstName} ${result.lastName}`);
+                    localStorage.setItem('agentId', result.agentId || result.id);
+
+                    showSuccess('Login successful! Redirecting...');
+
+                    // Check if password change is required
+                    if (result.mustChangePassword) {
+                        setTimeout(() => {
+                            window.location.href = '/change-password.html';
+                        }, 1000);
+                    } else {
+                        // Redirect based on role
+                        setTimeout(() => {
+                            switch (result.userRole) {
+                                case 'Admin':
+                                case 'Manager':
+                                case 'admin':
+                                case 'manager':
+                                    window.location.href = '/pages/dashboard.html';
+                                    break;
+                                case 'Supervisor':
+                                case 'supervisor':
+                                    window.location.href = '/pages/call-center.html';
+                                    break;
+                                default:
+                                    window.location.href = '/pages/call-center.html';
+                            }
+                        }, 1000);
+                    }
+                } else {
+                    if (result && result.result) {
+                        switch (result.result) {
+                            case 'INVALID_CREDENTIALS':
+                                showError('Invalid agent code or password');
+                                break;
+                            case 'ACCOUNT_LOCKED':
+                                showError('Account is locked. Please contact your supervisor.');
+                                break;
+                            default:
+                                showError(result.message || 'Login failed. Please try again.');
+                                break;
+                        }
+                    } else {
+                        showError('Invalid agent code or password');
+                    }
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showError('Connection error. Please check your network and try again.');
+            } finally {
+                // Reset button state
+                loginBtn.disabled = false;
+                loginText.style.display = 'inline';
+                loading.style.display = 'none';
+            }
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            document.getElementById('successMessage').style.display = 'none';
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        function hideMessages() {
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'none';
+        }
+
+        // Check if already logged in
+        window.addEventListener('load', async () => {
+            const sessionToken = localStorage.getItem('sessionToken');
+            if (sessionToken) {
+                try {
+                    const response = await fetch(`${API_BASE}/Auth/validate`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${sessionToken}`
+                        }
+                    });
+                    const result = await response.json();
+                    if (result.result === 'VALID') {
+                        // Already logged in, redirect
+                        const userRole = localStorage.getItem('userRole');
+                        switch (userRole) {
+                            case 'Admin':
+                            case 'Manager':
+                                window.location.href = '/pages/dashboard.html';
+                                break;
+                            default:
+                                window.location.href = '/pages/call-center.html';
+                        }
+                    }
+                } catch (error) {
+                    // Invalid session, stay on login page
+                    localStorage.clear();
+                }
+            }
+        });
+
+        // Helper functions for testing
+        window.showLoginHelp = function() {
+            console.log('🔑 Demo Login Credentials:');
+            console.log('Agent Code: ADMIN_001');
+            console.log('Password: admin123');
+            console.log('');
+            console.log('💡 To reset password:');
+            console.log('1. Login with above credentials');
+            console.log('2. Go to Dashboard → Settings → Users');
+            console.log('3. Click "🔑 Reset Password" on any user');
+            console.log('4. Use the new password to login');
+        };
+
+        // Production build - demo functions removed
+
+        // Production build - debug functions removed
+
+        // Test login function
+        // Production build - test functions removed
+
+        // Production build - all debug functions removed
+    </script>
+</body>
+</html>

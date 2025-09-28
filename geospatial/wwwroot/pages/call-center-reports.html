@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Call Center Reports - Urban Referral Network</title>
+    <link rel="stylesheet" href="../css/navigation.css">
+    <link rel="stylesheet" href="../css/urban-theme.css">
+    <link rel="stylesheet" href="../css/call-center-reports.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Call Center Reports</h1>
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" id="startDate" aria-label="Start Date">
+                </div>
+                <div class="filter-group">
+                    <label for="endDate">End Date</label>
+                    <input type="date" id="endDate" aria-label="End Date">
+                </div>
+                <div class="filter-group">
+                    <label for="agentFilter">Agent</label>
+                    <select id="agentFilter" aria-label="Select Agent">
+                        <option value="">All Agents</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="serviceTypeFilter">Service Type</label>
+                    <select id="serviceTypeFilter" aria-label="Select Service Type">
+                        <option value="">All Services</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="loadReports()">Update Reports</button>
+                <a href="contractor-finder.html" class="btn btn-primary">🔍 Find Contractors</a>
+                <a href="contractor-registration-new.html" class="btn btn-success">➕ Add Contractor</a>
+                <a href="call-center.html" class="btn btn-secondary">← Back to Call Center</a>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('overview')">📈 Overview</button>
+            <button class="tab" onclick="showTab('calls')">📞 Call Statistics</button>
+            <button class="tab" onclick="showTab('agents')">👥 Agent Performance</button>
+            <button class="tab" onclick="showTab('queue')">⏰ Queue Analytics</button>
+            <button class="tab" onclick="showTab('satisfaction')">⭐ Customer Satisfaction</button>
+        </div>
+
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-content active">
+            <div class="stats-grid" id="overviewStats">
+                <div class="loading">Loading overview...</div>
+            </div>
+            <div class="grid-2">
+                <div class="chart-container">
+                    <div class="chart-title">Monthly Call Trends</div>
+                    <canvas id="monthlyTrendsChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Real-time Status</div>
+                    <canvas id="realTimeChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call Statistics Tab -->
+        <div id="calls" class="tab-content">
+            <div class="stats-grid" id="callStats">
+                <div class="loading">Loading call statistics...</div>
+            </div>
+            <div class="grid-2">
+                <div class="chart-container">
+                    <div class="chart-title">Daily Call Volume</div>
+                    <canvas id="dailyCallsChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Service Type Distribution</div>
+                    <canvas id="serviceTypeChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agent Performance Tab -->
+        <div id="agents" class="tab-content">
+            <div class="stats-grid" id="agentStats">
+                <div class="loading">Loading agent performance...</div>
+            </div>
+            <div class="table-container">
+                <div class="chart-title chart-title-with-padding">Agent Performance Details</div>
+                <table class="table" id="agentTable">
+                    <thead>
+                        <tr>
+                            <th>Agent</th>
+                            <th>Total Calls</th>
+                            <th>Completion Rate</th>
+                            <th>Avg Call Duration</th>
+                            <th>Customer Satisfaction</th>
+                            <th>Talk Time (hrs)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="agentTableBody">
+                        <tr><td colspan="6" class="loading">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Queue Analytics Tab -->
+        <div id="queue" class="tab-content">
+            <div class="stats-grid" id="queueStats">
+                <div class="loading">Loading queue analytics...</div>
+            </div>
+            <div class="grid-2">
+                <div class="chart-container">
+                    <div class="chart-title">Hourly Call Distribution</div>
+                    <canvas id="hourlyChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Priority Distribution</div>
+                    <canvas id="priorityChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Satisfaction Tab -->
+        <div id="satisfaction" class="tab-content">
+            <div class="stats-grid" id="satisfactionStats">
+                <div class="loading">Loading satisfaction data...</div>
+            </div>
+            <div class="grid-2">
+                <div class="chart-container">
+                    <div class="chart-title">Satisfaction Distribution</div>
+                    <canvas id="satisfactionChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Daily Satisfaction Trends</div>
+                    <canvas id="satisfactionTrendsChart"></canvas>
+                </div>
+            </div>
+            <div class="table-container">
+                <div class="chart-title chart-title-with-padding">Agent Satisfaction Ratings</div>
+                <table class="table" id="satisfactionTable">
+                    <thead>
+                        <tr>
+                            <th>Agent</th>
+                            <th>Avg Rating</th>
+                            <th>Total Ratings</th>
+                            <th>High Ratings (4-5)</th>
+                            <th>Low Ratings (1-2)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="satisfactionTableBody">
+                        <tr><td colspan="5" class="loading">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/call-center-reports.js"></script>
+</body>
+</html>

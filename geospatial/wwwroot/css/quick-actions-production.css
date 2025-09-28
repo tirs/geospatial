@@ -1,0 +1,295 @@
+/* Quick Actions Production Styles */
+
+/* Loading animation for action icons */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Quick action button states */
+.action-card {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.action-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.action-card:active {
+    transform: translateY(0) scale(0.95);
+}
+
+.action-card.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.action-card.loading .action-icon {
+    animation: spin 1s linear infinite;
+}
+
+/* Loading states */
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    text-align: center;
+    color: var(--gray-600);
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+/* Empty states */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    text-align: center;
+    color: var(--gray-600);
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+}
+
+.empty-state h3 {
+    margin-bottom: 0.5rem;
+    color: var(--gray-800);
+}
+
+.empty-state p {
+    margin-bottom: 1.5rem;
+    opacity: 0.8;
+}
+
+/* Notification system */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    z-index: 10000;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.notification.success {
+    background-color: #4CAF50;
+}
+
+.notification.error {
+    background-color: #F44336;
+}
+
+.notification.warning {
+    background-color: #FF9800;
+}
+
+.notification.info {
+    background-color: #2196F3;
+}
+
+/* Enhanced action cards with better feedback */
+.action-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s;
+}
+
+.action-card:hover::before {
+    left: 100%;
+}
+
+/* Status indicators */
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+.status-indicator.active {
+    background-color: #4CAF50;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3);
+}
+
+.status-indicator.inactive {
+    background-color: #F44336;
+    box-shadow: 0 0 0 2px rgba(244, 67, 54, 0.3);
+}
+
+.status-indicator.pending {
+    background-color: #FF9800;
+    box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .actions-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .action-card {
+        padding: 1.5rem;
+    }
+    
+    .notification {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+}
+
+/* Debug and testing styles */
+.debug-info {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 12px;
+    z-index: 9999;
+    max-width: 300px;
+    display: none;
+}
+
+.debug-info.show {
+    display: block;
+}
+
+/* Enhanced contractor cards */
+.contractor-card {
+    transition: all 0.3s ease;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.contractor-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+/* Enhanced analytics cards */
+.analytics-card {
+    transition: all 0.3s ease;
+}
+
+.analytics-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+/* Button enhancements */
+.btn-small {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.btn-small:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.btn-small.primary {
+    background-color: var(--primary);
+    color: white;
+}
+
+.btn-small.secondary {
+    background-color: var(--gray-600);
+    color: white;
+}
+
+.btn-small.success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-small.warning {
+    background-color: #FF9800;
+    color: white;
+}
+
+/* Chart enhancements */
+.chart-bar {
+    transition: all 0.3s ease;
+    animation: chartGrow 0.5s ease-out forwards;
+    transform-origin: bottom;
+    opacity: 0;
+}
+
+@keyframes chartGrow {
+    from {
+        transform: scaleY(0);
+        opacity: 0;
+    }
+    to {
+        transform: scaleY(1);
+        opacity: 1;
+    }
+}
+
+.chart-bar:hover {
+    opacity: 0.8;
+    transform: scaleY(1.05);
+}
+
+/* Service bars animation */
+.service-fill {
+    transition: width 0.8s ease-out;
+    animation: fillGrow 0.8s ease-out;
+}
+
+@keyframes fillGrow {
+    from {
+        width: 0% !important;
+    }
+    to {
+        width: var(--final-width, 0%);
+    }
+}

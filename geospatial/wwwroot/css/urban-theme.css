@@ -1,0 +1,286 @@
+/* Urban Referral Network - Official Color Theme */
+/* Matching urbanreferralnetwork.com brand colors */
+
+:root {
+    /* Primary Brand Colors - Based on Urban Referral Network website */
+    --urn-primary: #1a365d;          /* Deep navy blue - main brand color */
+    --urn-primary-dark: #153e75;     /* Darker navy for hover states */
+    --urn-primary-light: #2c5282;    /* Lighter navy for backgrounds */
+    
+    --urn-secondary: #2b6cb0;        /* Professional blue */
+    --urn-secondary-dark: #2c5282;   /* Darker blue */
+    --urn-secondary-light: #4299e1;  /* Lighter blue */
+    
+    --urn-accent: #3182ce;           /* Bright blue accent */
+    --urn-accent-light: #63b3ed;     /* Light blue accent */
+    
+    /* Status Colors */
+    --urn-success: #38a169;          /* Green for success states */
+    --urn-success-light: #68d391;    /* Light green */
+    --urn-warning: #d69e2e;          /* Orange for warnings */
+    --urn-warning-light: #f6e05e;    /* Light orange */
+    --urn-error: #e53e3e;            /* Red for errors */
+    --urn-error-light: #fc8181;      /* Light red */
+    --urn-info: #3182ce;             /* Blue for info */
+    
+    /* Neutral Colors */
+    --urn-white: #ffffff;
+    --urn-light: #f7fafc;            /* Very light gray background */
+    --urn-light-blue: #ebf8ff;       /* Very light blue background */
+    --urn-dark: #1a202c;             /* Dark text color */
+    
+    /* Gray Scale */
+    --urn-gray-50: #f9fafb;
+    --urn-gray-100: #f3f4f6;
+    --urn-gray-200: #e5e7eb;
+    --urn-gray-300: #d1d5db;
+    --urn-gray-400: #9ca3af;
+    --urn-gray-500: #6b7280;
+    --urn-gray-600: #4b5563;
+    --urn-gray-700: #374151;
+    --urn-gray-800: #1f2937;
+    --urn-gray-900: #111827;
+    
+    /* Gradients */
+    --urn-gradient-primary: linear-gradient(135deg, var(--urn-primary) 0%, var(--urn-secondary) 50%, var(--urn-accent) 100%);
+    --urn-gradient-light: linear-gradient(135deg, var(--urn-light-blue) 0%, var(--urn-light) 100%);
+    --urn-gradient-card: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
+    
+    /* Shadows */
+    --urn-shadow-sm: 0 1px 2px 0 rgba(26, 54, 93, 0.05);
+    --urn-shadow: 0 4px 6px -1px rgba(26, 54, 93, 0.1), 0 2px 4px -1px rgba(26, 54, 93, 0.06);
+    --urn-shadow-md: 0 10px 15px -3px rgba(26, 54, 93, 0.1), 0 4px 6px -2px rgba(26, 54, 93, 0.05);
+    --urn-shadow-lg: 0 20px 25px -5px rgba(26, 54, 93, 0.1), 0 10px 10px -5px rgba(26, 54, 93, 0.04);
+    --urn-shadow-xl: 0 25px 50px -12px rgba(26, 54, 93, 0.25);
+    
+    /* Border Radius */
+    --urn-radius-sm: 6px;
+    --urn-radius: 8px;
+    --urn-radius-md: 12px;
+    --urn-radius-lg: 16px;
+    --urn-radius-xl: 20px;
+    --urn-radius-full: 9999px;
+    
+    /* Transitions */
+    --urn-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --urn-transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Typography */
+    --urn-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --urn-font-size-xs: 0.75rem;
+    --urn-font-size-sm: 0.875rem;
+    --urn-font-size-base: 1rem;
+    --urn-font-size-lg: 1.125rem;
+    --urn-font-size-xl: 1.25rem;
+    --urn-font-size-2xl: 1.5rem;
+    --urn-font-size-3xl: 1.875rem;
+    --urn-font-size-4xl: 2.25rem;
+    
+    /* Spacing */
+    --urn-space-1: 0.25rem;
+    --urn-space-2: 0.5rem;
+    --urn-space-3: 0.75rem;
+    --urn-space-4: 1rem;
+    --urn-space-5: 1.25rem;
+    --urn-space-6: 1.5rem;
+    --urn-space-8: 2rem;
+    --urn-space-10: 2.5rem;
+    --urn-space-12: 3rem;
+    --urn-space-16: 4rem;
+    --urn-space-20: 5rem;
+}
+
+/* Base Styles */
+body.urn-theme {
+    font-family: var(--urn-font-family);
+    color: var(--urn-dark);
+    background: var(--urn-gradient-primary);
+    line-height: 1.6;
+}
+
+/* Button Styles */
+.urn-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--urn-space-2);
+    padding: var(--urn-space-3) var(--urn-space-6);
+    border: none;
+    border-radius: var(--urn-radius);
+    font-weight: 600;
+    font-size: var(--urn-font-size-base);
+    cursor: pointer;
+    transition: var(--urn-transition);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.urn-btn-primary {
+    background: var(--urn-primary);
+    color: var(--urn-white);
+    box-shadow: var(--urn-shadow);
+}
+
+.urn-btn-primary:hover {
+    background: var(--urn-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--urn-shadow-lg);
+}
+
+.urn-btn-secondary {
+    background: var(--urn-secondary);
+    color: var(--urn-white);
+    box-shadow: var(--urn-shadow);
+}
+
+.urn-btn-secondary:hover {
+    background: var(--urn-secondary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--urn-shadow-lg);
+}
+
+.urn-btn-outline {
+    background: transparent;
+    color: var(--urn-primary);
+    border: 2px solid var(--urn-primary);
+}
+
+.urn-btn-outline:hover {
+    background: var(--urn-primary);
+    color: var(--urn-white);
+}
+
+/* Card Styles */
+.urn-card {
+    background: var(--urn-gradient-card);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--urn-radius-lg);
+    padding: var(--urn-space-6);
+    box-shadow: var(--urn-shadow-lg);
+    transition: var(--urn-transition);
+}
+
+.urn-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--urn-shadow-xl);
+}
+
+/* Form Styles */
+.urn-input {
+    width: 100%;
+    padding: var(--urn-space-4) var(--urn-space-5);
+    border: 2px solid var(--urn-gray-200);
+    border-radius: var(--urn-radius);
+    font-size: var(--urn-font-size-base);
+    font-weight: 500;
+    background: var(--urn-white);
+    color: var(--urn-dark);
+    transition: var(--urn-transition);
+}
+
+.urn-input:focus {
+    outline: none;
+    border-color: var(--urn-primary);
+    box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.1);
+    transform: translateY(-2px);
+}
+
+.urn-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: var(--urn-space-2);
+    color: var(--urn-gray-700);
+    font-size: var(--urn-font-size-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Text Styles */
+.urn-text-primary { color: var(--urn-primary); }
+.urn-text-secondary { color: var(--urn-secondary); }
+.urn-text-success { color: var(--urn-success); }
+.urn-text-warning { color: var(--urn-warning); }
+.urn-text-error { color: var(--urn-error); }
+.urn-text-white { color: var(--urn-white); }
+.urn-text-gray { color: var(--urn-gray-600); }
+
+/* Service Description Text */
+.service-description {
+    color: var(--urn-gray-500);
+    margin-bottom: var(--urn-space-5);
+}
+
+/* Background Styles */
+.urn-bg-primary { background-color: var(--urn-primary); }
+.urn-bg-secondary { background-color: var(--urn-secondary); }
+.urn-bg-success { background-color: var(--urn-success); }
+.urn-bg-warning { background-color: var(--urn-warning); }
+.urn-bg-error { background-color: var(--urn-error); }
+.urn-bg-white { background-color: var(--urn-white); }
+.urn-bg-light { background-color: var(--urn-light); }
+.urn-bg-gradient { background: var(--urn-gradient-primary); }
+
+/* Utility Classes */
+.urn-shadow { box-shadow: var(--urn-shadow); }
+.urn-shadow-lg { box-shadow: var(--urn-shadow-lg); }
+.urn-rounded { border-radius: var(--urn-radius); }
+.urn-rounded-lg { border-radius: var(--urn-radius-lg); }
+.urn-transition { transition: var(--urn-transition); }
+
+/* Professional Trust-Building Elements */
+.urn-trust-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--urn-space-2);
+    padding: var(--urn-space-2) var(--urn-space-4);
+    background: var(--urn-success);
+    color: var(--urn-white);
+    border-radius: var(--urn-radius-full);
+    font-size: var(--urn-font-size-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.urn-professional-header {
+    background: var(--urn-gradient-card);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--urn-radius-lg);
+    padding: var(--urn-space-10) var(--urn-space-6);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.urn-professional-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--urn-gradient-primary);
+}
+
+/* Admin-only elements */
+.admin-only {
+    display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .urn-btn {
+        padding: var(--urn-space-2) var(--urn-space-4);
+        font-size: var(--urn-font-size-sm);
+    }
+    
+    .urn-card {
+        padding: var(--urn-space-4);
+    }
+    
+    .urn-professional-header {
+        padding: var(--urn-space-6) var(--urn-space-4);
+    }
+}
